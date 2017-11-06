@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4404E8071FACBB930086FE0C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4404E8061FACBB930086FE0C /* Pin.swift */; };
+		44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */; };
+		446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446DEA1B1FA326E60086E7FD /* LoginController.swift */; };
 		44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */; };
-		44CE2AA51FA1D63C0011E8A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */; };
+		44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */; };
 		44CE2AA81FA1D63C0011E8A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */; };
 		44CE2AAA1FA1D63C0011E8A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */; };
 		44CE2AAD1FA1D63C0011E8A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */; };
 		44CE2AB81FA1D63C0011E8A1 /* CatcallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */; };
+		44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */; };
+		86D3C00B4A6B8A9A55E1BD19 /* Pods_Catcaller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +31,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.release.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.release.xcconfig"; sourceTree = "<group>"; };
+		4404E8061FACBB930086FE0C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerApiWrapper.swift; sourceTree = "<group>"; };
+		446DEA1B1FA326E60086E7FD /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		44CE2A9F1FA1D63C0011E8A1 /* Catcaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catcaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		44CE2AA71FA1D63C0011E8A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44CE2AAC1FA1D63C0011E8A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +45,9 @@
 		44CE2AB31FA1D63C0011E8A1 /* CatcallerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatcallerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerTests.swift; sourceTree = "<group>"; };
 		44CE2AB91FA1D63C0011E8A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserController.swift; sourceTree = "<group>"; };
+		A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Catcaller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86D3C00B4A6B8A9A55E1BD19 /* Pods_Catcaller.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +69,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		44460B241FA2258E00A898AD /* API */ = {
+			isa = PBXGroup;
+			children = (
+				44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		44CE2A961FA1D63B0011E8A1 = {
 			isa = PBXGroup;
 			children = (
 				44CE2AA11FA1D63C0011E8A1 /* Catcaller */,
 				44CE2AB61FA1D63C0011E8A1 /* CatcallerTests */,
 				44CE2AA01FA1D63C0011E8A1 /* Products */,
+				C9C41762553E7680AFC2E4A8 /* Pods */,
+				F830867F4CA265FBE3E1C277 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,12 +100,12 @@
 		44CE2AA11FA1D63C0011E8A1 /* Catcaller */ = {
 			isa = PBXGroup;
 			children = (
-				44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */,
-				44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */,
-				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
-				44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */,
-				44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */,
+				44460B241FA2258E00A898AD /* API */,
 				44CE2AAE1FA1D63C0011E8A1 /* Info.plist */,
+				44F65D721FA2213600E43783 /* Model */,
+				44F65D711FA2212300E43783 /* View */,
+				44E207EE1FA2163D00D11CE0 /* Controller */,
+				44F65D701FA2210400E43783 /* Supporting Files */,
 			);
 			path = Catcaller;
 			sourceTree = "<group>";
@@ -96,6 +119,59 @@
 			path = CatcallerTests;
 			sourceTree = "<group>";
 		};
+		44E207EE1FA2163D00D11CE0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */,
+				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
+				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44F65D701FA2210400E43783 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */,
+				44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */,
+				44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		44F65D711FA2212300E43783 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44F65D721FA2213600E43783 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4404E8061FACBB930086FE0C /* Pin.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C9C41762553E7680AFC2E4A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */,
+				3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F830867F4CA265FBE3E1C277 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,9 +179,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44CE2ABC1FA1D63C0011E8A1 /* Build configuration list for PBXNativeTarget "Catcaller" */;
 			buildPhases = (
+				9B04E752BBF4DF9E09BA7847 /* [CP] Check Pods Manifest.lock */,
 				44CE2A9B1FA1D63B0011E8A1 /* Sources */,
 				44CE2A9C1FA1D63B0011E8A1 /* Frameworks */,
 				44CE2A9D1FA1D63B0011E8A1 /* Resources */,
+				B013C77F93B45BE7F90131C2 /* [CP] Embed Pods Frameworks */,
+				E35C1F1D856C443720008443 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -194,13 +273,75 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9B04E752BBF4DF9E09BA7847 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Catcaller-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B013C77F93B45BE7F90131C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E35C1F1D856C443720008443 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		44CE2A9B1FA1D63B0011E8A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44CE2AA51FA1D63C0011E8A1 /* ViewController.swift in Sources */,
+				44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */,
 				44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */,
+				44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */,
+				4404E8071FACBB930086FE0C /* Pin.swift in Sources */,
+				44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */,
+				446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +492,7 @@
 		};
 		44CE2ABD1FA1D63C0011E8A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -367,6 +509,7 @@
 		};
 		44CE2ABE1FA1D63C0011E8A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
