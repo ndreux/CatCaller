@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4404E8071FACBB930086FE0C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4404E8061FACBB930086FE0C /* Pin.swift */; };
 		44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */; };
+		44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */; };
+		44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572ECC1FB2008500FD0544 /* RoundedButton.swift */; };
 		446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446DEA1B1FA326E60086E7FD /* LoginController.swift */; };
 		44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */; };
 		44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */; };
@@ -34,6 +36,8 @@
 		3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.release.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.release.xcconfig"; sourceTree = "<group>"; };
 		4404E8061FACBB930086FE0C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerApiWrapper.swift; sourceTree = "<group>"; };
+		44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FromHex.swift"; sourceTree = "<group>"; };
+		44572ECC1FB2008500FD0544 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		446DEA1B1FA326E60086E7FD /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		44CE2A9F1FA1D63C0011E8A1 /* Catcaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catcaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +81,14 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		44572EC71FB1F40900FD0544 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		44CE2A961FA1D63B0011E8A1 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +112,7 @@
 		44CE2AA11FA1D63C0011E8A1 /* Catcaller */ = {
 			isa = PBXGroup;
 			children = (
+				44572EC71FB1F40900FD0544 /* Extension */,
 				44460B241FA2258E00A898AD /* API */,
 				44CE2AAE1FA1D63C0011E8A1 /* Info.plist */,
 				44F65D721FA2213600E43783 /* Model */,
@@ -142,7 +155,9 @@
 		44F65D711FA2212300E43783 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4404E8061FACBB930086FE0C /* Pin.swift */,
 				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
+				44572ECC1FB2008500FD0544 /* RoundedButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -150,7 +165,6 @@
 		44F65D721FA2213600E43783 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4404E8061FACBB930086FE0C /* Pin.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -339,6 +353,8 @@
 				44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */,
 				44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */,
 				44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */,
+				44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */,
+				44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */,
 				4404E8071FACBB930086FE0C /* Pin.swift in Sources */,
 				44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */,
 				446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */,

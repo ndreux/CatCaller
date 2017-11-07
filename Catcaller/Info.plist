@@ -41,5 +41,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Used to show reports around you</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

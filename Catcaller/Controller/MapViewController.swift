@@ -15,6 +15,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var navItem: UINavigationItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet weak var addReportButton: UIButton!
 
     var activityIndicator: UIActivityIndicatorView!
     var locationManager: CLLocationManager?
@@ -38,7 +39,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
     }
 
