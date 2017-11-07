@@ -12,8 +12,11 @@ import SwiftyJSON
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBOutlet weak var navItem: UINavigationItem!
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet var mapView: MKMapView!
 
+    var activityIndicator: UIActivityIndicatorView!
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
     var displayedReports: Dictionary<String, MKAnnotation>!
@@ -31,7 +34,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         locationManager!.delegate = self
 
         checkLocationAuthorizationStatus()
-        
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.activityIndicator.hidesWhenStopped = true
     }
 
     /**
@@ -77,15 +85,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         print("Failed to initialize GPS: ", error.localizedDescription)
     }
 
+    @IBAction func refreshReportsAction(_ sender: Any) {
+        self.loadReports()
+    }
+
     /**
      Load reports in the displayed area
      */
     func loadReports() -> Void {
         print("loadReports - START")
+        self.startLoading()
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
 
         catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
+
         print("loadReports - END")
     }
 
@@ -104,6 +118,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
             self.addPin(latitude: latitude, longitude: longitude)
         }
+        self.stopLoading()
         print("displayReports - END")
     }
 
@@ -135,6 +150,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         loadReports()
         print("mapViewDidFinishLoadingMap - END")
+    }
+
+    func startLoading() {
+        self.activityIndicator.startAnimating()
+        self.navItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
+    }
+
+    func stopLoading() {
+        self.activityIndicator.stopAnimating()
+        self.navItem.rightBarButtonItem = self.refreshButton
     }
 }
 
