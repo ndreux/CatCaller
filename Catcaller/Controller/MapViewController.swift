@@ -112,6 +112,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func displayReports(reports: [String : JSON]) -> Void {
         print("displayReports - START")
 
+        let oldAnnotations = self.mapView.annotations
+
         for (_,subJson):(String, JSON) in reports["hydra:member"]! {
 
             let latitude = subJson["harassment"]["location"]["latitude"].double!
@@ -119,6 +121,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
             self.addPin(latitude: latitude, longitude: longitude)
         }
+
+        self.mapView.removeAnnotations(oldAnnotations)
+
         self.stopLoading()
         print("displayReports - END")
     }
@@ -130,35 +135,37 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func addPin(latitude: Double, longitude: Double) -> Void {
         print("MapViewController.addPin - START")
-        let pin: MKAnnotation = Pin(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
 
-        if self.displayedReports["\(latitude)\(longitude)"] == nil {
-            print("MapViewController.addPin - the pin does not exist")
-            mapView.addAnnotation(pin)
-            displayedReports["\(latitude)\(longitude)"] = pin
-        } else {
-            print("MapViewController.addPin - the pin already exists")
-        }
+        let pin: MKAnnotation = Pin(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        mapView.addAnnotation(pin)
+
         print("MapViewController.addPin - END")
     }
-    
+
+
     /**
-     Load the pin displayed in the view after it has been moved.
+     Loads the pins of the new region after it was changed
      */
-    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) -> Void {
-        print("mapViewDidFinishLoadingMap - START")
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print("regionDidChange - START")
         self.mapView = mapView
 
         loadReports()
-        print("mapViewDidFinishLoadingMap - END")
+        print("regionDidChange - STOP")
     }
 
-    func startLoading() {
+    /**
+     This function starts animating the activity indicator and hides the refresh button
+     */
+    func startLoading() -> Void {
         self.activityIndicator.startAnimating()
         self.navItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
     }
 
-    func stopLoading() {
+    /**
+     This function stops the activity indicator and show the refresh button
+     */
+    func stopLoading() -> Void {
         self.activityIndicator.stopAnimating()
         self.navItem.rightBarButtonItem = self.refreshButton
     }
