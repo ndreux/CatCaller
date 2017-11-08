@@ -20,13 +20,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var activityIndicator: UIActivityIndicatorView!
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
-    var displayedReports: Dictionary<String, MKAnnotation>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.mapView!.delegate = self
-        self.displayedReports = [:]
 
         catcallerApi = CatcallerApiWrapper()
         catcallerApi.from = self
