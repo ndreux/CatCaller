@@ -15,6 +15,11 @@ class CatcallerApiWrapper {
 
     let baseURL: String = "https://blooming-mesa-38452.herokuapp.com/"
     var from: MapViewController? = nil
+    var apiFormatter: CatcallerApiFormatter!
+
+    init() {
+        self.apiFormatter = CatcallerApiFormatter()
+    }
 
     public func createUser(email: String, password: String) {
 
@@ -57,8 +62,8 @@ class CatcallerApiWrapper {
     }
 
     /**
-    Load the reports made to the
-    */
+     Load the reports made to the
+     */
     public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) {
 
         let url: String = self.baseURL + "reports"
@@ -78,9 +83,10 @@ class CatcallerApiWrapper {
             switch response.result {
             case .success(let value):
                 print("Success")
-                let json = JSON(value)
-                print("JSON :\(json)")
-                self.from!.displayReports(reports: json.dictionary!)
+                let reports: [Report] = self.apiFormatter.formatJsonIntoReports(json: JSON(value))
+
+                print("Reports :\(reports)")
+                self.from!.displayReports(reports: reports)
             case .failure(let error):
                 print("Error")
                 print(error)
@@ -88,5 +94,7 @@ class CatcallerApiWrapper {
         }
 
     }
+
+    
 
 }

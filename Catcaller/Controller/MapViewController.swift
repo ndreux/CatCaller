@@ -12,14 +12,23 @@ import SwiftyJSON
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
-    @IBOutlet var mapView: MKMapView!
+
     @IBOutlet weak var addReportButton: UIButton!
 
+    @IBOutlet weak var bottomPanel: UIView!
+    @IBOutlet weak var reportTypeLabel: UILabel!
+    @IBOutlet weak var reportDatetimeLabel: UILabel!
+
     var activityIndicator: UIActivityIndicatorView!
+
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
+
+    // todo (ndreux - 2017-11-09) Find a better way to avoid reloding
+    var doReload: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +42,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         locationManager!.delegate = self
 
         checkLocationAuthorizationStatus()
+
+        self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 150)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,13 +104,44 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
         print("loadReports - START")
-        self.startLoading()
+
+        
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
+
+        if isRegionTooBig(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude) {
+            print("Region is too big")
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            return
+        }
+
+        self.startLoading()
 
         catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
 
         print("loadReports - END")
+    }
+
+    private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
+
+
+        print("isRegionTooBig - MinLat - \(minLat)")
+        print("isRegionTooBig - MaxLat - \(maxLat)")
+
+        print("isRegionTooBig - MinLong - \(minLong)")
+        print("isRegionTooBig - MaxLong - \(minLong)")
+
+
+
+        let latitudeDifference = abs(minLat - maxLat)
+        let longitudeDifference = abs(minLong - maxLong)
+
+        print("isRegionTooBig - Latitude difference : \(latitudeDifference)")
+        print("isRegionTooBig - Longitude difference : \(longitudeDifference)")
+
+        let maxDifferenceAccepted = 0.2
+
+        return latitudeDifference > maxDifferenceAccepted || longitudeDifference > maxDifferenceAccepted
     }
 
     /**
@@ -107,17 +149,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      Add a pin for each report.
      - parameter reports: JSON object containing the reports
      */
-    func displayReports(reports: [String : JSON]) -> Void {
+    func displayReports(reports: [Report]) -> Void {
         print("displayReports - START")
 
         let oldAnnotations = self.mapView.annotations
 
-        for (_,subJson):(String, JSON) in reports["hydra:member"]! {
-
-            let latitude = subJson["harassment"]["location"]["latitude"].double!
-            let longitude = subJson["harassment"]["location"]["longitude"].double!
-
-            self.addPin(latitude: latitude, longitude: longitude)
+        for report:Report in reports {
+            self.addPin(report: report)
         }
 
         self.mapView.removeAnnotations(oldAnnotations)
@@ -131,10 +169,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      - parameter latitude: Latitude of the pin
      - parameter longitude: Longitude of the pin
      */
-    func addPin(latitude: Double, longitude: Double) -> Void {
+    func addPin(report: Report) -> Void {
         print("MapViewController.addPin - START")
 
-        let pin: MKAnnotation = Pin(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        let pin: MKAnnotation = Pin(
+            coordinate: CLLocationCoordinate2D(
+                latitude: report.harassment.location.latitude,
+                longitude: report.harassment.location.longitude
+            ),
+            report: report
+        )
         mapView.addAnnotation(pin)
 
         print("MapViewController.addPin - END")
@@ -145,11 +189,40 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      Loads the pins of the new region after it was changed
      */
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+        if !self.doReload {
+            print("Do not reload")
+            return
+        }
+
         print("regionDidChange - START")
         self.mapView = mapView
 
         loadReports()
         print("regionDidChange - STOP")
+    }
+
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        self.doReload = false
+
+        let report = (view.annotation as! Pin).report
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        self.reportTypeLabel.text = report.type
+        self.reportDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
+
+        self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+
+        self.showBottomPanel()
+        self.hideAddButton()
+    }
+
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        self.doReload = true
+        self.hideBottomPanel()
+        self.showAddButton()
     }
 
     /**
@@ -166,6 +239,30 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func stopLoading() -> Void {
         self.activityIndicator.stopAnimating()
         self.navItem.rightBarButtonItem = self.refreshButton
+    }
+
+    func showBottomPanel() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+    }
+
+    func hideBottomPanel() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 150)
+        })
+    }
+
+    func showAddButton() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+    }
+
+    func hideAddButton() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 100)
+        })
     }
 }
 

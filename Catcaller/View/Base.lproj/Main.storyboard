@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -36,13 +37,48 @@
                                     <segue destination="IvT-RI-VeQ" kind="show" id="Zji-5b-tSn"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMF-JF-ijJ" customClass="BottomPanelView" customModule="Catcaller" customModuleProvider="target">
+                                <rect key="frame" x="16" y="483.5" width="343" height="149.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O2f-uj-ZGY">
+                                        <rect key="frame" x="8" y="8" width="327" height="29.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbn-8O-AIe">
+                                        <rect key="frame" x="8" y="45.5" width="327" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="2yk-Mh-mO4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="top" secondItem="O2f-uj-ZGY" secondAttribute="bottom" constant="8" symbolic="YES" id="JCC-MA-eeR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Zbn-8O-AIe" secondAttribute="bottom" constant="83" id="aG1-NS-U29"/>
+                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="leading" secondItem="cMF-JF-ijJ" secondAttribute="leadingMargin" id="fCR-RF-BBg"/>
+                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="leading" secondItem="O2f-uj-ZGY" secondAttribute="leading" id="fuS-4p-Mcm"/>
+                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="trailing" secondItem="O2f-uj-ZGY" secondAttribute="trailing" id="g5C-lw-JrI"/>
+                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="trailing" secondItem="cMF-JF-ijJ" secondAttribute="trailingMargin" id="oh3-cT-vcO"/>
+                                    <constraint firstItem="O2f-uj-ZGY" firstAttribute="top" secondItem="cMF-JF-ijJ" secondAttribute="topMargin" id="rqj-qu-Cgy"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerX" secondItem="vtO-Qp-dVi" secondAttribute="centerX" id="16u-Yi-rXu"/>
                             <constraint firstItem="Jhf-Ae-QoJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9MR-iV-lhA"/>
+                            <constraint firstItem="cMF-JF-ijJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9xl-Gi-4Km"/>
+                            <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dee-os-VGX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Jhf-Ae-QoJ" secondAttribute="bottom" id="MD0-y9-av6"/>
                             <constraint firstItem="Jhf-Ae-QoJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OL5-jx-Wub"/>
+                            <constraint firstAttribute="bottom" secondItem="cMF-JF-ijJ" secondAttribute="bottom" constant="-30" id="POi-ls-tvk"/>
                             <constraint firstItem="vtO-Qp-dVi" firstAttribute="centerX" secondItem="Jhf-Ae-QoJ" secondAttribute="centerX" id="WQL-y0-0bt"/>
+                            <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerY" secondItem="vtO-Qp-dVi" secondAttribute="centerY" id="XMM-s0-Jwb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Jhf-Ae-QoJ" secondAttribute="trailing" id="tYI-6U-plE"/>
                             <constraint firstAttribute="bottom" secondItem="vtO-Qp-dVi" secondAttribute="bottom" constant="20" symbolic="YES" id="x6d-65-h3j"/>
                         </constraints>
@@ -58,15 +94,18 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addReportButton" destination="vtO-Qp-dVi" id="0E5-RA-cqF"/>
+                        <outlet property="bottomPanel" destination="cMF-JF-ijJ" id="Ixz-Aw-N46"/>
                         <outlet property="mapView" destination="Jhf-Ae-QoJ" id="Ine-rD-iAa"/>
                         <outlet property="navItem" destination="68j-mQ-Skm" id="Grg-vQ-Uni"/>
                         <outlet property="navigationItem" destination="68j-mQ-Skm" id="8up-EO-Siv"/>
                         <outlet property="refreshButton" destination="Xgv-kR-Rsd" id="Kie-Ld-21X"/>
+                        <outlet property="reportDatetimeLabel" destination="Zbn-8O-AIe" id="TcU-ou-gVj"/>
+                        <outlet property="reportTypeLabel" destination="O2f-uj-ZGY" id="JwU-lg-i6P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1863" y="-442"/>
+            <point key="canvasLocation" x="-1863.2" y="-442.12893553223392"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ua2-S4-V29">

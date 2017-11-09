@@ -9,10 +9,13 @@
 import MapKit
 
 class Pin: NSObject, MKAnnotation {
-    let coordinate: CLLocationCoordinate2D
 
-    init(coordinate: CLLocationCoordinate2D) {
+    let coordinate: CLLocationCoordinate2D
+    let report: Report
+
+    init(coordinate: CLLocationCoordinate2D, report: Report) {
         self.coordinate = coordinate
+        self.report = report
 
         super.init()
     }
