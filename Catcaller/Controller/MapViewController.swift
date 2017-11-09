@@ -18,6 +18,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     @IBOutlet weak var addReportButton: UIButton!
 
+    @IBOutlet weak var summaryBar: UIView!
+    @IBOutlet weak var summaryLabel: UILabel!
+    
     @IBOutlet weak var bottomPanel: UIView!
     @IBOutlet weak var reportTypeLabel: UILabel!
     @IBOutlet weak var reportDatetimeLabel: UILabel!
@@ -43,13 +46,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         checkLocationAuthorizationStatus()
 
-        self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 150)
+        self.hideBottomPanel()
+        self.hideSummaryBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
+        self.summaryLabel.textColor = .white
     }
 
     /**
@@ -104,7 +109,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
         print("loadReports - START")
-
         
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
@@ -116,6 +120,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
 
         self.startLoading()
+        self.hideSummaryBar()
 
         catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
 
@@ -124,24 +129,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
 
-
-        print("isRegionTooBig - MinLat - \(minLat)")
-        print("isRegionTooBig - MaxLat - \(maxLat)")
-
-        print("isRegionTooBig - MinLong - \(minLong)")
-        print("isRegionTooBig - MaxLong - \(minLong)")
-
-
-
         let latitudeDifference = abs(minLat - maxLat)
         let longitudeDifference = abs(minLong - maxLong)
-
-        print("isRegionTooBig - Latitude difference : \(latitudeDifference)")
-        print("isRegionTooBig - Longitude difference : \(longitudeDifference)")
 
         let maxDifferenceAccepted = 0.2
 
         return latitudeDifference > maxDifferenceAccepted || longitudeDifference > maxDifferenceAccepted
+    }
+
+    private func isRegionTooBig () -> Bool {
+
+        let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
+        let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
+
+        return self.isRegionTooBig (minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
     }
 
     /**
@@ -160,6 +161,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.mapView.removeAnnotations(oldAnnotations)
 
+        // todo (ndreux - 2017-11-09) Use localisation
+        self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
+        self.showSummaryBar()
         self.stopLoading()
         print("displayReports - END")
     }
@@ -190,12 +194,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
 
+        print("regionDidChange - START")
+
         if !self.doReload {
             print("Do not reload")
             return
         }
 
-        print("regionDidChange - START")
+        if isRegionTooBig() {
+            self.refreshButton.isEnabled = false
+            self.summaryLabel.text = "This area is to big to be scanned"
+        }
+
         self.mapView = mapView
 
         loadReports()
@@ -216,19 +226,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
         self.showBottomPanel()
+        self.hideSummaryBar()
         self.hideAddButton()
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         self.doReload = true
         self.hideBottomPanel()
+        self.showSummaryBar()
         self.showAddButton()
     }
 
     /**
      This function starts animating the activity indicator and hides the refresh button
      */
-    func startLoading() -> Void {
+    private func startLoading() -> Void {
         self.activityIndicator.startAnimating()
         self.navItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
     }
@@ -236,32 +248,44 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     /**
      This function stops the activity indicator and show the refresh button
      */
-    func stopLoading() -> Void {
+    private func stopLoading() -> Void {
         self.activityIndicator.stopAnimating()
         self.navItem.rightBarButtonItem = self.refreshButton
     }
 
-    func showBottomPanel() -> Void {
+    private func showBottomPanel() -> Void {
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
-    func hideBottomPanel() -> Void {
+    private func hideBottomPanel() -> Void {
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 150)
         })
     }
 
-    func showAddButton() -> Void {
+    private func showAddButton() -> Void {
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
-    func hideAddButton() -> Void {
+    private func hideAddButton() -> Void {
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 100)
+        })
+    }
+
+    private func showSummaryBar() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+    }
+
+    private func hideSummaryBar() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.summaryBar.transform = CGAffineTransform(translationX: 0, y: -20)
         })
     }
 }

@@ -67,10 +67,27 @@
                                     <constraint firstItem="O2f-uj-ZGY" firstAttribute="top" secondItem="cMF-JF-ijJ" secondAttribute="topMargin" id="rqj-qu-Cgy"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5l-4s-EU1" customClass="SummaryBar" customModule="Catcaller" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abh-H1-4Z7">
+                                        <rect key="frame" x="8" y="0.0" width="359" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="esE-aI-yku"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerX" secondItem="vtO-Qp-dVi" secondAttribute="centerX" id="16u-Yi-rXu"/>
+                            <constraint firstItem="k5l-4s-EU1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4wz-0J-c97"/>
                             <constraint firstItem="Jhf-Ae-QoJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9MR-iV-lhA"/>
                             <constraint firstItem="cMF-JF-ijJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9xl-Gi-4Km"/>
                             <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dee-os-VGX"/>
@@ -79,6 +96,8 @@
                             <constraint firstAttribute="bottom" secondItem="cMF-JF-ijJ" secondAttribute="bottom" constant="-30" id="POi-ls-tvk"/>
                             <constraint firstItem="vtO-Qp-dVi" firstAttribute="centerX" secondItem="Jhf-Ae-QoJ" secondAttribute="centerX" id="WQL-y0-0bt"/>
                             <constraint firstItem="cMF-JF-ijJ" firstAttribute="centerY" secondItem="vtO-Qp-dVi" secondAttribute="centerY" id="XMM-s0-Jwb"/>
+                            <constraint firstItem="k5l-4s-EU1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ieq-C8-hbg"/>
+                            <constraint firstItem="k5l-4s-EU1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="scV-Ad-Buf"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Jhf-Ae-QoJ" secondAttribute="trailing" id="tYI-6U-plE"/>
                             <constraint firstAttribute="bottom" secondItem="vtO-Qp-dVi" secondAttribute="bottom" constant="20" symbolic="YES" id="x6d-65-h3j"/>
                         </constraints>
@@ -101,6 +120,8 @@
                         <outlet property="refreshButton" destination="Xgv-kR-Rsd" id="Kie-Ld-21X"/>
                         <outlet property="reportDatetimeLabel" destination="Zbn-8O-AIe" id="TcU-ou-gVj"/>
                         <outlet property="reportTypeLabel" destination="O2f-uj-ZGY" id="JwU-lg-i6P"/>
+                        <outlet property="summaryBar" destination="k5l-4s-EU1" id="IU3-pD-2eg"/>
+                        <outlet property="summaryLabel" destination="abh-H1-4Z7" id="qkB-D7-Ja9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
