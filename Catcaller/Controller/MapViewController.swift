@@ -23,7 +23,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBOutlet weak var bottomPanel: UIView!
     @IBOutlet weak var reportTypeLabel: UILabel!
-    @IBOutlet weak var reportDatetimeLabel: UILabel!
+    @IBOutlet weak var harassmentDatetimeLabel: UILabel!
+    @IBOutlet weak var harassmentTypesLabel: UILabel!
 
     var activityIndicator: UIActivityIndicatorView!
 
@@ -52,6 +53,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.hideBottomPanel()
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
         self.summaryLabel.textColor = .white
@@ -161,7 +163,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.mapView.removeAnnotations(oldAnnotations)
 
-        // todo (ndreux - 2017-11-09) Use localisation
+        // todo (ndreux - 2017-11-09) Use localization
         self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
         self.showSummaryBar()
         self.stopLoading()
@@ -176,13 +178,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func addPin(report: Report) -> Void {
         print("MapViewController.addPin - START")
 
-        let pin: MKAnnotation = Pin(
-            coordinate: CLLocationCoordinate2D(
-                latitude: report.harassment.location.latitude,
-                longitude: report.harassment.location.longitude
-            ),
-            report: report
-        )
+        let pin: MKAnnotation = Pin(report: report)
         mapView.addAnnotation(pin)
 
         print("MapViewController.addPin - END")
@@ -218,10 +214,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let report = (view.annotation as! Pin).report
 
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.dateFormat = "MMM d, yyyy HH:mm"
 
         self.reportTypeLabel.text = report.type
-        self.reportDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
+        self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
+        let arrayMap: Array = report.harassment.types.map(){ $0.description }   
+        self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
 
         self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
@@ -254,36 +252,43 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func showBottomPanel() -> Void {
+        self.bottomPanel.layoutIfNeeded()
+        print("ANIMATION - Show bottom panel")
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 30 )
         })
     }
 
     private func hideBottomPanel() -> Void {
+        print("ANIMATION - Hide bottom panel")
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height)
         })
     }
 
     private func showAddButton() -> Void {
+        print("ANIMATION - Show Add button")
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
     private func hideAddButton() -> Void {
+        print("ANIMATION - Hide Add button")
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 100)
         })
     }
 
     private func showSummaryBar() -> Void {
+        print("ANIMATION - Show Summary bar")
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
     private func hideSummaryBar() -> Void {
+        print("ANIMATION - Hide Symmary bar")
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: -20)
         })

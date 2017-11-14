@@ -1,0 +1,18 @@
+PODS:
+  - Alamofire (4.5.1)
+  - IQKeyboardManagerSwift (5.0.2)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - Alamofire
+  - IQKeyboardManagerSwift
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  IQKeyboardManagerSwift: e580da046d804d2836ee84668cc17e43a850a35d
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: e7e1735da15ec6e39ef813967aaf7a55d51fc14a
+
+COCOAPODS: 1.3.1

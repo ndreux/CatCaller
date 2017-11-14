@@ -13,9 +13,9 @@ class BottomPanelView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        backgroundColor = UIColor(white: 1, alpha: 0.8)
+        backgroundColor = UIColor(white: 1, alpha: 0.9)
         layer.cornerRadius = 10
         clipsToBounds = true
     }
-
+    
 }
