@@ -49,6 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func didFinishLaunchingWithOptions() {
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+
+        UINavigationBar.appearance().clipsToBounds = true
+
+        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+
+        statusBar.backgroundColor = UIColor(hex: "020440")
     }
 
 

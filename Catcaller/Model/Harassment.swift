@@ -9,7 +9,7 @@
 import Foundation
 
 class Harassment {
-    var types: [String]!
+    var types: [HarassmentType]!
     var location: Location!
     var datetime: Date!
 

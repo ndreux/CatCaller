@@ -13,9 +13,12 @@ class Pin: NSObject, MKAnnotation {
     let coordinate: CLLocationCoordinate2D
     let report: Report
 
-    init(coordinate: CLLocationCoordinate2D, report: Report) {
-        self.coordinate = coordinate
+    init(report: Report) {
         self.report = report
+        self.coordinate = CLLocationCoordinate2D(
+            latitude: report.harassment.location.latitude,
+            longitude: report.harassment.location.longitude
+        )
 
         super.init()
     }

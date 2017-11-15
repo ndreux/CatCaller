@@ -42,10 +42,10 @@ class CatcallerApiFormatter {
         print("formatJsonIntoHarassment - START")
         print("formatJsonIntoHarassment - JSON \(json)")
 
-        var types: [String] = []
+        var types: [HarassmentType] = []
 
         for (_,harassmentType):(String, JSON) in json["types"] {
-            types.append(harassmentType["label"].string!)
+            types.append(HarassmentType(label: harassmentType["label"].string!))
         }
 
         let harassment = Harassment()
@@ -95,6 +95,11 @@ class CatcallerApiFormatter {
         }
     }
 
+    func formatJsonIntoHarassmentTypes(json: JSON) -> [HarassmentType]{
 
+        let harassmentTypes: [HarassmentType] = []
+
+        return harassmentTypes
+    }
 
 }
