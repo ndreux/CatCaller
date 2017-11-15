@@ -100,14 +100,14 @@ class CatcallerApiWrapper {
 
         let url: String = self.baseURL + "harassment_types"
 
-        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: self.headers).validate().responseJSON { response in
+        Alamofire.request(url, method: .get, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
                 print("Success")
                 let harassmentTypes: [HarassmentType] = self.apiFormatter.formatJsonIntoHarassmentTypes(json: JSON(value))
 
-                print("Reports :\(reports)")
-                (self.from as! MapViewController).displayReports(reports: reports)
+                print("Harassment types :\(harassmentTypes)")
+
             case .failure(let error):
                 print("Error")
                 print(error)

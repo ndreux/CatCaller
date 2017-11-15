@@ -95,6 +95,11 @@ class CatcallerApiFormatter {
         }
     }
 
-    func formatJsonIntoHarassmentTypes(json: JSON)
+    func formatJsonIntoHarassmentTypes(json: JSON) -> [HarassmentType]{
+
+        let harassmentTypes: [HarassmentType] = []
+
+        return harassmentTypes
+    }
 
 }
