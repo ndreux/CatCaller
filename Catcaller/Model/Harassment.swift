@@ -9,11 +9,14 @@
 import Foundation
 
 class Harassment {
+    
     var types: [HarassmentType]!
     var location: Location!
     var datetime: Date!
+    var note: String
 
     init() {
+        self.note = String()
         self.types = []
     }
 }

@@ -10,6 +10,13 @@ import Foundation
 
 class Report {
 
-    var harassment: Harassment!
+    static let typeVictim: Int = 1
+    static let typeWitness: Int = 2
+
+    var harassment: Harassment
     var type: String!
+
+    init() {
+        self.harassment = Harassment()
+    }
 }

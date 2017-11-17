@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: (ndreux - 2017-11-15) Should be deleted
 class CreateReportController: UIViewController {
 
     let reportTypes = ["Victim", "Witness"]

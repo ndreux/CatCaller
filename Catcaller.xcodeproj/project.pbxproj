@@ -12,6 +12,9 @@
 		4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */; };
 		4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */; };
 		44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */; };
+		444C49121FBD828200AD3CF6 /* TableViewCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */; };
+		444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */; };
+		444C49161FBDCBE800AD3CF6 /* TableViewCellTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */; };
 		44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */; };
 		44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572ECC1FB2008500FD0544 /* RoundedButton.swift */; };
 		445FC6EE1FB4629A00C8EAB8 /* SummaryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */; };
@@ -52,6 +55,9 @@
 		4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+DisclosureIcon.swift"; sourceTree = "<group>"; };
 		4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Alpha.swift"; sourceTree = "<group>"; };
 		44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerApiWrapper.swift; sourceTree = "<group>"; };
+		444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellTextField.swift; sourceTree = "<group>"; };
+		444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellDatePicker.swift; sourceTree = "<group>"; };
+		444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellTextView.swift; sourceTree = "<group>"; };
 		44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FromHex.swift"; sourceTree = "<group>"; };
 		44572ECC1FB2008500FD0544 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryBar.swift; sourceTree = "<group>"; };
@@ -193,6 +199,9 @@
 				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
 				44572ECC1FB2008500FD0544 /* RoundedButton.swift */,
 				445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */,
+				444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */,
+				444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */,
+				444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -395,15 +404,18 @@
 				44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */,
 				44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */,
 				4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */,
+				444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */,
 				44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */,
 				4412409E1FB49B8600D70B48 /* CreateReportController.swift in Sources */,
 				44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */,
 				44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */,
 				44B1A5681FBAE16500369623 /* CreateReportTableController.swift in Sources */,
 				44F8E1F01FB44767001ECA2B /* Location.swift in Sources */,
+				444C49121FBD828200AD3CF6 /* TableViewCellTextField.swift in Sources */,
 				44B1A56C1FBB3B3E00369623 /* HarassmentType.swift in Sources */,
 				4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */,
 				44F8E1E81FB34C9E001ECA2B /* Report.swift in Sources */,
+				444C49161FBDCBE800AD3CF6 /* TableViewCellTextView.swift in Sources */,
 				4404E8071FACBB930086FE0C /* Pin.swift in Sources */,
 				44F8E1EC1FB44012001ECA2B /* BottomPanelView.swift in Sources */,
 				445FC6EE1FB4629A00C8EAB8 /* SummaryBar.swift in Sources */,

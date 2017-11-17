@@ -97,9 +97,28 @@ class CatcallerApiFormatter {
 
     func formatJsonIntoHarassmentTypes(json: JSON) -> [HarassmentType]{
 
-        let harassmentTypes: [HarassmentType] = []
+        print("formatJsonIntoHarassmentTypes - START")
+        print("formatJsonIntoHarassmentTypes - JSON \(json)")
+        var harassmentTypes: [HarassmentType] = []
+
+        for (_,subJson):(String, JSON) in json.dictionary!["hydra:member"]! {
+            let harassmentType: HarassmentType = self.formatJsonIntoHarassmentType(json: subJson)
+            harassmentTypes.append(harassmentType)
+        }
+        print("formatJsonIntoHarassmentTypes - END")
 
         return harassmentTypes
+    }
+
+    func formatJsonIntoHarassmentType(json: JSON) -> HarassmentType{
+
+        print("formatJsonIntoHarassmentType - START")
+        print("formatJsonIntoHarassmentType - JSON \(json)")
+
+        let harassmentType: HarassmentType = HarassmentType(id: json["id"].int!, label: json["label"].string!)
+        print("formatJsonIntoHarassmentType - END")
+
+        return harassmentType
     }
 
 }

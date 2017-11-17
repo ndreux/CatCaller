@@ -105,9 +105,8 @@ class CatcallerApiWrapper {
             case .success(let value):
                 print("Success")
                 let harassmentTypes: [HarassmentType] = self.apiFormatter.formatJsonIntoHarassmentTypes(json: JSON(value))
-
                 print("Harassment types :\(harassmentTypes)")
-
+                (self.from as! CreateReportTableController).harassmentTypes = harassmentTypes
             case .failure(let error):
                 print("Error")
                 print(error)
