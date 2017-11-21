@@ -73,15 +73,24 @@ class CatcallerApiFormatter {
 
         print("formatJsonIntoLocation - START")
 
-
-        // toto - Manage TimeZone
+        // TODO: Manage TimeZone
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
 
         print("formatJsonIntoLocation - END")
 
         return dateFormatter.date(from: datetime)!
+    }
 
+    func formatDateFromModelToJson(date: Date) -> String {
+
+        // TODO: Manage TimeZone
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+
+        print("formatJsonIntoLocation - END")
+
+        return dateFormatter.string(from: date)
     }
 
     func formatReportTypeFromApiToModel(reportType: Int) -> String {
@@ -121,4 +130,45 @@ class CatcallerApiFormatter {
         return harassmentType
     }
 
+    func formatReportToJson(report: Report) -> JSON {
+
+        var json: JSON = JSON()
+
+        json["reporter"].string = "/users/1"
+        json["type"].int = report.type == "Victim" ? 1 : 2
+        json["harassment"] = self.formatHarassmentToJson(harassment: report.harassment)
+
+        return json
+    }
+
+    func formatHarassmentToJson(harassment: Harassment) -> JSON {
+        var json = JSON()
+
+        json["datetime"].string = self.formatDateFromModelToJson(date: harassment.datetime)
+        json["location"] = self.formatLocationToJson(location: harassment.location)
+        json["types"].arrayObject = self.formatHarassmentTypesToJson(harassmentTypes: harassment.types)
+        json["note"].string = harassment.note
+
+        return json
+    }
+
+    func formatLocationToJson(location: Location) -> JSON {
+
+        var json: JSON = JSON()
+        json["latitude"].string = String(location.latitude)
+        json["longitude"].string = String(location.longitude)
+
+        return json
+    }
+
+    func formatHarassmentTypesToJson(harassmentTypes: [HarassmentType]) -> [String] {
+        let harassmentTypeUrl: String = "/harassment_types"
+        var harassmentTypesArray: [String] = [String]()
+
+        for harassmentType in harassmentTypes {
+            harassmentTypesArray.append("\(harassmentTypeUrl)/\(harassmentType.id!)")
+        }
+
+        return harassmentTypesArray
+    }
 }

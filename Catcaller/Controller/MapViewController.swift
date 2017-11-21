@@ -14,7 +14,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
-    @IBOutlet weak var refreshButton: UIBarButtonItem!
 
     @IBOutlet weak var addReportButton: UIButton!
 
@@ -27,11 +26,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var harassmentTypesLabel: UILabel!
 
     var activityIndicator: UIActivityIndicatorView!
+    var refreshButton: UIBarButtonItem!
 
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
 
-    // todo (ndreux - 2017-11-09) Find a better way to avoid reloding
+    // TODO: (ndreux - 2017-11-09) Find a better way to avoid reloding
     var doReload: Bool = true
 
     override func viewDidLoad() {
@@ -39,11 +39,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.mapView!.delegate = self
 
-        catcallerApi = CatcallerApiWrapper()
-        catcallerApi.from = self
+        self.catcallerApi = CatcallerApiWrapper()
+        self.catcallerApi.from = self
 
-        locationManager = CLLocationManager()
-        locationManager!.delegate = self
+        self.locationManager = CLLocationManager()
+        self.locationManager!.delegate = self
 
         checkLocationAuthorizationStatus()
 
@@ -53,9 +53,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         self.hideBottomPanel()
+        self.loadReports()
+
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
+
+        self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
+        self.navItem.rightBarButtonItem = self.refreshButton
+
         self.summaryLabel.textColor = .white
     }
 
@@ -102,7 +109,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         print("Failed to initialize GPS: ", error.localizedDescription)
     }
 
-    @IBAction func refreshReportsAction(_ sender: Any) {
+    @objc func refreshReportsAction(_ sender: Any) {
         self.loadReports()
     }
 
@@ -163,7 +170,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.mapView.removeAnnotations(oldAnnotations)
 
-        // todo (ndreux - 2017-11-09) Use localization
+        // TODO: (ndreux - 2017-11-09) Use localization
         self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
         self.showSummaryBar()
         self.stopLoading()

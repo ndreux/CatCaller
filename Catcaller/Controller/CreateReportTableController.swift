@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import MapKit
 
 class CreateReportTableController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
 
@@ -15,13 +16,17 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
     var pickerView: UIPickerView!
     var datepickerView: UIDatePicker!
     var dateFormatter: DateFormatter!
+    var activityIndicator: UIActivityIndicatorView!
 
     let reportType: [String] = ["Victim", "Witness"]
     let sections = [["You are ?"],["Datetime", "Place", "Harassment types", "Note"]]
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int:HarassmentType]!
+    var harassmentLocation: String = String()
 
     var report: Report!
+    @IBOutlet weak var saveReportButton: UIBarButtonItem!
+    @IBOutlet weak var navigationBar: UINavigationItem!
 
     override func viewDidLoad() {
 
@@ -43,12 +48,40 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 50
-        
+
+        self.updateSaveButtonState()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        self.activityIndicator.hidesWhenStopped = true
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+    }
+
+    @IBAction func saveReport(_ sender: UIBarButtonItem) {
+        self.activityIndicator.startAnimating()
+        self.navigationBar.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
+        self.apiWrapper.createReport(report: self.report)
+    }
+
+    func saveReportSuccess() {
+        self.activityIndicator.stopAnimating()
+        self.navigationBar.rightBarButtonItem = self.saveReportButton
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func saveReportError() {
+        self.activityIndicator.stopAnimating()
+        self.navigationBar.rightBarButtonItem = self.saveReportButton
+    }
+
+    func updateSaveButtonState() {
+        let hasReportType = !self.report.type.isEmpty
+        let hasPlace = self.report.harassment.location != nil
+        let hasTypes = !self.report.harassment.types.isEmpty
+
+        self.saveReportButton.isEnabled = (hasReportType && hasTypes && hasPlace)
     }
 
     // MARK: - UITableViewDataSource
@@ -63,6 +96,7 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        // Report Type (Witness/Victim)
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ReportTypeCell", for: indexPath) as! TableViewCellTextField
 
@@ -79,7 +113,9 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentDateTimeCell", for: indexPath) as! TableViewCellDatePicker
 
-            cell.textField.text = self.dateFormatter.string(from: Date())
+            let now = Date()
+            self.report.harassment.datetime = now
+            cell.textField.text = self.dateFormatter.string(from: now)
             cell.textField.textColor = UIColor.black
 
             return cell
@@ -134,11 +170,17 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
             destinationVC.selectedHarassmentTypes = self.selectedHarassmentTypes
             destinationVC.from = self
         }
+
+        if let destinationVC = segue.destination as? HarassmentLocationController {
+            destinationVC.from = self
+            destinationVC.searchString = self.harassmentLocation
+        }
     }
 
     func updateSelectedHarassmentTypes(harassmentTypes: [Int:HarassmentType]) -> Void {
         print("updateSelectedHarassmentTypes - START")
         print("Harassment types: \(harassmentTypes)")
+
         let indexPath = IndexPath(row: 2, section: 1)
         let cell = self.tableView.cellForRow(at: indexPath)
 
@@ -157,7 +199,23 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
         self.selectedHarassmentTypes = harassmentTypes
         self.report.harassment.types = harassmentTypes.map {$0.value}
 
+        self.updateSaveButtonState()
+
         print("updateSelectedHarassmentTypes - END")
+    }
+
+    func updateHarassmentLocation(placemark: MKPlacemark) {
+
+        print("Placemark : \(placemark)")
+        print("Placemark : \(String(describing: placemark.title))")
+
+        self.harassmentLocation = placemark.title!
+        let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1))
+        cell?.textLabel?.text = self.harassmentLocation
+        cell?.textLabel?.textColor = UIColor.black
+        self.report.harassment.location = Location(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
+
+        self.updateSaveButtonState()
     }
 
     // MARK: Report Type - UIPicker
@@ -177,8 +235,9 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableViewCellTextField
         cell.textField.textColor = UIColor.black
-        cell.textField.text = "You are a \(self.reportType[row])"
+        cell.textField.text = "you are a \(self.reportType[row]) of street harassment".lowercased().firstUppercased
         self.report.type = self.reportType[row]
+        self.updateSaveButtonState()
     }
 
     // MARK: Harassment DateTime - DatePicker
@@ -188,17 +247,19 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = .dateAndTime
         datePickerView.minuteInterval = 10
+        datePickerView.maximumDate = Date()
 
         sender.inputView = datePickerView
 
         datePickerView.addTarget(self, action: #selector(CreateReportTableController.datePickerValueChanged), for: UIControlEvents.valueChanged)
-
     }
 
     @objc func datePickerValueChanged(sender:UIDatePicker) {
         let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as! TableViewCellDatePicker
         cell.textField.text = self.dateFormatter.string(from: sender.date)
         self.report.harassment.datetime = sender.date
+
+        self.updateSaveButtonState()
     }
 
     // MARK: HarassmentNote - TextView
@@ -217,11 +278,11 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
     func textViewDidEndEditing(_ textView: UITextView) {
         self.report.harassment.note = textView.text
+        print("TEXTVIEW: \(textView.text)")
         if textView.text.isEmpty {
             textView.text = self.sections[1][3]
             textView.textColor = UIColor.lightGray
         }
-
-
     }
+
 }

@@ -115,6 +115,30 @@ class CatcallerApiWrapper {
 
     }
 
-    
+    public func createReport(report: Report) {
 
+        let url: String = self.baseURL + "reports"
+
+        let jsonReport = self.apiFormatter.formatReportToJson(report: report)
+
+        self.headers["Content-type"] = "application/json"
+
+        Alamofire.request(url, method: .post, parameters: jsonReport.dictionaryObject!, encoding: JSONEncoding.default, headers: self.headers).validate().responseJSON { response in
+            switch response.result {
+            case .success( _):
+                print("Success")
+                if let controller = self.from as? CreateReportTableController {
+                    controller.saveReportSuccess()
+                }
+            case .failure(let error):
+                print("Error")
+                if let controller = self.from as? CreateReportTableController {
+                    controller.saveReportError()
+                }
+                print(error)
+            }
+        }
+
+        print("JSON REPORT: \(jsonReport.dictionaryValue)")
+    }
 }
