@@ -78,6 +78,5 @@ class HarassmentTypesController: UIViewController, UITableViewDelegate, UITableV
                 self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] = self.harassmentTypes[indexPath.row]
             }
         }
-        print("Selected harassmentTypes : \(self.selectedHarassmentTypes)")
     }
 }

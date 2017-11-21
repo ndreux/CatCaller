@@ -10,11 +10,14 @@ import MapKit
 import UIKit
 import SwiftyJSON
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var harassmentTypesTableView: UITableView!
 
     @IBOutlet weak var addReportButton: UIButton!
 
@@ -35,6 +38,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var userLocation: CLLocation?
     var selectedAnnotation: Pin?
 
+    var harassmentTypes: [HarassmentType]!
+    var selectedHarassmentTypes: [Int:HarassmentType]!
+
     // MARK: Main view loading functions
 
     override func viewDidLoad() {
@@ -48,7 +54,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.locationManager = CLLocationManager()
         self.locationManager!.delegate = self
 
+        self.harassmentTypesTableView.delegate = self
+        self.harassmentTypesTableView.dataSource = self
+
+        self.harassmentTypes = [HarassmentType]()
+        self.selectedHarassmentTypes = [Int:HarassmentType]()
+
         checkLocationAuthorizationStatus()
+
+        self.loadHarassmentTypes()
 
         self.hideBottomPanel()
         self.hideSummaryBar()
@@ -58,7 +72,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         super.viewWillAppear(animated)
 
         self.hideBottomPanel()
+        self.hideMenu()
         self.loadReports()
+
 
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
@@ -102,7 +118,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) -> Void {
 
-        self.userLocation = locations.first!
+        self.userLocation = manager.location
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
 
         mapView.setRegion(coordinateRegion, animated: true)
@@ -124,13 +140,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      Load reports in the displayed area
      */
     func loadReports() -> Void {
-        print("loadReports - START")
 
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
 
         if isRegionTooBig(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude) {
-            print("Region is too big")
             self.mapView.removeAnnotations(self.mapView.annotations)
             return
         }
@@ -139,8 +153,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.hideSummaryBar()
 
         catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
-
-        print("loadReports - END")
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -167,8 +179,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      - parameter reports: JSON object containing the reports
      */
     func displayReports(reports: [Report]) -> Void {
-        print("displayReports - START")
-
         var oldAnnotations: [MKAnnotation] = [MKAnnotation]()
 
         for annotation in self.mapView.annotations {
@@ -191,7 +201,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
         self.showSummaryBar()
         self.stopLoading()
-        print("displayReports - END")
     }
 
     /**
@@ -200,12 +209,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      - parameter longitude: Longitude of the pin
      */
     func addPin(report: Report) -> Void {
-        print("MapViewController.addPin - START")
-
-        let pin: MKAnnotation = Pin(report: report)
-        mapView.addAnnotation(pin)
-
-        print("MapViewController.addPin - END")
+        mapView.addAnnotation(Pin(report: report))
     }
 
     // MARK: MapViewDelegate functions
@@ -214,9 +218,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      Loads the pins of the new region after it was changed
      */
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-
-        print("regionDidChange - START")
-
         if isRegionTooBig() {
             self.refreshButton.isEnabled = false
             self.summaryLabel.text = "This area is to big to be scanned"
@@ -225,7 +226,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.mapView = mapView
 
         loadReports()
-        print("regionDidChange - STOP")
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -243,6 +243,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
+        self.hideMenu()
         self.showBottomPanel()
         self.hideSummaryBar()
         self.hideAddButton()
@@ -305,45 +306,100 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     private func showBottomPanel() -> Void {
         self.bottomPanel.layoutIfNeeded()
-        print("ANIMATION - Show bottom panel")
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 30 )
         })
     }
 
     private func hideBottomPanel() -> Void {
-        print("ANIMATION - Hide bottom panel")
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height)
         })
     }
 
     private func showAddButton() -> Void {
-        print("ANIMATION - Show Add button")
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
     private func hideAddButton() -> Void {
-        print("ANIMATION - Hide Add button")
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 100)
         })
     }
 
     private func showSummaryBar() -> Void {
-        print("ANIMATION - Show Summary bar")
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
         })
     }
 
     private func hideSummaryBar() -> Void {
-        print("ANIMATION - Hide Symmary bar")
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: -20)
         })
+    }
+
+    func loadHarassmentTypes() {
+        self.catcallerApi.loadHarassmentTypes()
+    }
+
+    @IBAction func toggleMenu(_ sender: UIBarButtonItem) {
+        self.menuView.isHidden ? self.showMenu() : self.hideMenu()
+    }
+
+    private func showMenu() -> Void {
+        self.menuView.isHidden = false
+        UIView.animate(withDuration: 0.3, animations: {
+            self.menuView.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+
+    }
+
+    private func hideMenu() -> Void {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.menuView.transform = CGAffineTransform(translationX: -self.menuView.frame.width, y: 0)
+        }, completion: { (finished: Bool) in
+            self.menuView.isHidden = true
+        })
+    }
+
+    func updateHarassmentTypeList(harassmentTypes: [HarassmentType]) {
+        self.harassmentTypes = harassmentTypes
+        self.harassmentTypesTableView.reloadData()
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.harassmentTypes.count
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentTypeMenuCell", for: indexPath)
+
+        cell.textLabel?.text = self.harassmentTypes[indexPath.row].label
+
+        return cell
+
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.harassmentTypesTableView.deselectRow(at: indexPath, animated: true)
+
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+                self.selectedHarassmentTypes.removeValue(forKey: self.harassmentTypes[indexPath.row].id)
+            }
+            else{
+                cell.accessoryType = .checkmark
+                self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] = self.harassmentTypes[indexPath.row]
+            }
+        }
     }
 }
 
