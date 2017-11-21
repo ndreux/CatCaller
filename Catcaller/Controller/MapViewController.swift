@@ -19,7 +19,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     @IBOutlet weak var summaryBar: UIView!
     @IBOutlet weak var summaryLabel: UILabel!
-    
+
     @IBOutlet weak var bottomPanel: UIView!
     @IBOutlet weak var reportTypeLabel: UILabel!
     @IBOutlet weak var harassmentDatetimeLabel: UILabel!
@@ -30,6 +30,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
+
+    var userLocation: CLLocation?
 
     // TODO: (ndreux - 2017-11-09) Find a better way to avoid reloding
     var doReload: Bool = true
@@ -97,8 +99,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) -> Void {
 
-        let location = locations.first!
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
+        self.userLocation = locations.first!
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
 
         mapView.setRegion(coordinateRegion, animated: true)
         locationManager?.stopUpdatingLocation()
@@ -118,7 +120,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
         print("loadReports - START")
-        
+
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
 
@@ -225,7 +227,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.reportTypeLabel.text = report.type
         self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-        let arrayMap: Array = report.harassment.types.map(){ $0.description }   
+        let arrayMap: Array = report.harassment.types.map(){ $0.description }
         self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
 
         self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
@@ -240,6 +242,36 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.hideBottomPanel()
         self.showSummaryBar()
         self.showAddButton()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? CreateReportTableController {
+            if self.userLocation != nil {
+                let geocoder = CLGeocoder()
+                geocoder.reverseGeocodeLocation(self.userLocation!){
+                    (placemarks, error) -> Void in
+                    let placeArray = placemarks as [CLPlacemark]!
+                    let placeMark: CLPlacemark! = placeArray?[0]
+
+                    if let locationName = placeMark.addressDictionary?["Name"] as? String {
+                        destinationVC.harassmentLocation.append(locationName)
+                    }
+
+                    if let city = placeMark.addressDictionary?["City"] as? String {
+                        destinationVC.harassmentLocation.append(" \(city)")
+                    }
+
+                    if let zip = placeMark.addressDictionary?["ZIP"] as? String {
+                        destinationVC.harassmentLocation.append(" \(zip)")
+                    }
+
+                    if let country = placeMark.addressDictionary?["Country"] as? String {
+                        destinationVC.harassmentLocation.append(" \(country)")
+                    }
+                }
+
+            }
+        }
     }
 
     /**
