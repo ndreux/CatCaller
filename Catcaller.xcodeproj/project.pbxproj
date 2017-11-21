@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4404E8071FACBB930086FE0C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4404E8061FACBB930086FE0C /* Pin.swift */; };
 		440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */; };
-		4412409E1FB49B8600D70B48 /* CreateReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4412409D1FB49B8600D70B48 /* CreateReportController.swift */; };
 		442BEE301FBED10D00A6298B /* HarassmentLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */; };
 		4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */; };
 		4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */; };
@@ -54,7 +53,6 @@
 		3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.release.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.release.xcconfig"; sourceTree = "<group>"; };
 		4404E8061FACBB930086FE0C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FirstLetterCapitalized.swift"; sourceTree = "<group>"; };
-		4412409D1FB49B8600D70B48 /* CreateReportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportController.swift; sourceTree = "<group>"; };
 		442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentLocationController.swift; sourceTree = "<group>"; };
 		4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+DisclosureIcon.swift"; sourceTree = "<group>"; };
 		4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Alpha.swift"; sourceTree = "<group>"; };
@@ -179,7 +177,6 @@
 				44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */,
 				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
 				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
-				4412409D1FB49B8600D70B48 /* CreateReportController.swift */,
 				44B1A5671FBAE16500369623 /* CreateReportTableController.swift */,
 				44B1A5691FBB274600369623 /* HarassmentTypesController.swift */,
 				442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */,
@@ -413,7 +410,6 @@
 				4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */,
 				444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */,
 				44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */,
-				4412409E1FB49B8600D70B48 /* CreateReportController.swift in Sources */,
 				440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */,
 				44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */,
 				44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */,

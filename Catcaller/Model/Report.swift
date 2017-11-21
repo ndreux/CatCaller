@@ -10,6 +10,7 @@ import Foundation
 
 class Report {
 
+    var id: Int?
     var harassment: Harassment
     var type: String
 

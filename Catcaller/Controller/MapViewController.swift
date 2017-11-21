@@ -12,6 +12,7 @@ import SwiftyJSON
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    // MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
 
@@ -32,9 +33,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var catcallerApi: CatcallerApiWrapper!
 
     var userLocation: CLLocation?
+    var selectedAnnotation: Pin?
 
-    // TODO: (ndreux - 2017-11-09) Find a better way to avoid reloding
-    var doReload: Bool = true
+    // MARK: Main view loading functions
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +68,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         self.summaryLabel.textColor = .white
     }
+
+    // MARK: User location management
 
     /**
      Check if the app has the authorization to use user location.
@@ -114,6 +117,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @objc func refreshReportsAction(_ sender: Any) {
         self.loadReports()
     }
+
+    // MARK: Reports
 
     /**
      Load reports in the displayed area
@@ -164,10 +169,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func displayReports(reports: [Report]) -> Void {
         print("displayReports - START")
 
-        let oldAnnotations = self.mapView.annotations
+        var oldAnnotations: [MKAnnotation] = [MKAnnotation]()
+
+        for annotation in self.mapView.annotations {
+            let annotationIsNotSelected = (annotation as? Pin)?.report.id != self.selectedAnnotation?.report.id
+            if annotationIsNotSelected {
+                oldAnnotations.append(annotation)
+            }
+        }
 
         for report:Report in reports {
-            self.addPin(report: report)
+            let annotationIsNotSelected = report.id != self.selectedAnnotation?.report.id
+            if annotationIsNotSelected {
+                self.addPin(report: report)
+            }
         }
 
         self.mapView.removeAnnotations(oldAnnotations)
@@ -193,6 +208,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         print("MapViewController.addPin - END")
     }
 
+    // MARK: MapViewDelegate functions
 
     /**
      Loads the pins of the new region after it was changed
@@ -200,11 +216,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
 
         print("regionDidChange - START")
-
-        if !self.doReload {
-            print("Do not reload")
-            return
-        }
 
         if isRegionTooBig() {
             self.refreshButton.isEnabled = false
@@ -218,8 +229,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        self.doReload = false
 
+        self.selectedAnnotation = view.annotation as? Pin
         let report = (view.annotation as! Pin).report
 
         let formatter = DateFormatter()
@@ -238,12 +249,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        self.doReload = true
+        self.selectedAnnotation = nil
         self.hideBottomPanel()
         self.showSummaryBar()
         self.showAddButton()
     }
 
+    // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? CreateReportTableController {
             if self.userLocation != nil {
@@ -269,10 +281,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                         destinationVC.harassmentLocation.append(" \(country)")
                     }
                 }
-
             }
         }
     }
+
+    // MARK: Helpers
 
     /**
      This function starts animating the activity indicator and hides the refresh button

@@ -32,6 +32,7 @@ class CatcallerApiFormatter {
         let report: Report = Report()
         report.harassment = self.formatJsonIntoHarassment(json: json["harassment"])
         report.type = self.formatReportTypeFromApiToModel(reportType: json["type"].int!)
+        report.id = json["id"].int!
 
         print("formatJsonIntoReport - END")
         return report
