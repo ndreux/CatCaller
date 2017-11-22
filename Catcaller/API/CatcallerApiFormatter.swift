@@ -12,36 +12,28 @@ import SwiftyJSON
 class CatcallerApiFormatter {
 
     func formatJsonIntoReports(json: JSON) -> [Report] {
-        print("formatJsonIntoReports - START")
-        print("formatJsonIntoReports - JSON \(json)")
+        
         var reports: [Report] = []
-
-        print("JSON DICTIONNARY : \(json.dictionary!["hydra:member"]!)")
 
         for (_,subJson):(String, JSON) in json.dictionary!["hydra:member"]! {
             let report = self.formatJsonIntoReport(json: subJson)
             reports.append(report)
         }
-        print("formatJsonIntoReports - END")
+
         return reports
     }
 
     func formatJsonIntoReport(json: JSON) -> Report {
-        print("formatJsonIntoReport - START")
-        print("formatJsonIntoReport - JSON \(json)")
+
         let report: Report = Report()
         report.harassment = self.formatJsonIntoHarassment(json: json["harassment"])
         report.type = self.formatReportTypeFromApiToModel(reportType: json["type"].int!)
         report.id = json["id"].int!
 
-        print("formatJsonIntoReport - END")
         return report
     }
 
     func formatJsonIntoHarassment(json: JSON) -> Harassment {
-
-        print("formatJsonIntoHarassment - START")
-        print("formatJsonIntoHarassment - JSON \(json)")
 
         var types: [HarassmentType] = []
 
@@ -53,32 +45,22 @@ class CatcallerApiFormatter {
         harassment.types = types
         harassment.location = self.formatJsonIntoLocation(json: json["location"])
         harassment.datetime = self.formatDateFromApiToModel(datetime: json["datetime"].string!)
-        print("formatJsonIntoHarassment - END")
 
         return harassment
     }
     
     func formatJsonIntoLocation(json: JSON) -> Location {
-
-        print("formatJsonIntoLocation - START")
-        print("formatJsonIntoLocation - JSON \(json)")
-
         let latitude = json["latitude"].double!
         let longitude = json["longitude"].double!
 
-        print("formatJsonIntoLocation - END")
         return Location(latitude: latitude, longitude: longitude)
     }
 
     func formatDateFromApiToModel(datetime: String) -> Date {
 
-        print("formatJsonIntoLocation - START")
-
         // TODO: Manage TimeZone
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-
-        print("formatJsonIntoLocation - END")
 
         return dateFormatter.date(from: datetime)!
     }
@@ -88,8 +70,6 @@ class CatcallerApiFormatter {
         // TODO: Manage TimeZone
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-
-        print("formatJsonIntoLocation - END")
 
         return dateFormatter.string(from: date)
     }
@@ -107,28 +87,18 @@ class CatcallerApiFormatter {
 
     func formatJsonIntoHarassmentTypes(json: JSON) -> [HarassmentType]{
 
-        print("formatJsonIntoHarassmentTypes - START")
-        print("formatJsonIntoHarassmentTypes - JSON \(json)")
         var harassmentTypes: [HarassmentType] = []
 
         for (_,subJson):(String, JSON) in json.dictionary!["hydra:member"]! {
             let harassmentType: HarassmentType = self.formatJsonIntoHarassmentType(json: subJson)
             harassmentTypes.append(harassmentType)
         }
-        print("formatJsonIntoHarassmentTypes - END")
 
         return harassmentTypes
     }
 
     func formatJsonIntoHarassmentType(json: JSON) -> HarassmentType{
-
-        print("formatJsonIntoHarassmentType - START")
-        print("formatJsonIntoHarassmentType - JSON \(json)")
-
-        let harassmentType: HarassmentType = HarassmentType(id: json["id"].int!, label: json["label"].string!)
-        print("formatJsonIntoHarassmentType - END")
-
-        return harassmentType
+        return HarassmentType(id: json["id"].int!, label: json["label"].string!)
     }
 
     func formatReportToJson(report: Report) -> JSON {

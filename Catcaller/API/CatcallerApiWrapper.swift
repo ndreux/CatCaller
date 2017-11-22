@@ -54,9 +54,7 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .post, parameters: parameters).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                print("Success")
                 let json = JSON(value)
-                print("JSON: \(json)")
             case .failure(let error):
                 print("Error")
                 print(error)
@@ -71,25 +69,20 @@ class CatcallerApiWrapper {
 
         let url: String = self.baseURL + "reports"
 
-        print("HarassmentKeys : \(Array(harassmentTypes.keys))")
-
         let parameters: Parameters = [
             "harassment.location.latitude[between]": "\(minLat)..\(maxLat)",
             "harassment.location.longitude[between]": "\(minLong)..\(maxLong)",
             "itemsPerPage": 500,
             "harassment.types.id": Array(harassmentTypes.keys)
         ]
-
-        print("Load pins request parameters : \(parameters)")
         
         Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                print("Success")
-                let reports: [Report] = self.apiFormatter.formatJsonIntoReports(json: JSON(value))
-
-                print("Reports :\(reports)")
-                (self.from as! MapViewController).displayReports(reports: reports)
+                if let controller = self.from as? MapViewController {
+                    let reports: [Report] = self.apiFormatter.formatJsonIntoReports(json: JSON(value))
+                    controller.displayReports(reports: reports)
+                }
             case .failure(let error):
                 print("Error")
                 print(error)
@@ -105,9 +98,7 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .get, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                print("Success")
                 let harassmentTypes: [HarassmentType] = self.apiFormatter.formatJsonIntoHarassmentTypes(json: JSON(value))
-                print("Harassment types :\(harassmentTypes)")
                 if let controller = self.from as? CreateReportTableController {
                     controller.harassmentTypes = harassmentTypes
                 }
@@ -133,7 +124,6 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .post, parameters: jsonReport.dictionaryObject!, encoding: JSONEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success( _):
-                print("Success")
                 if let controller = self.from as? CreateReportTableController {
                     controller.saveReportSuccess()
                 }
@@ -145,7 +135,5 @@ class CatcallerApiWrapper {
                 print(error)
             }
         }
-
-        print("JSON REPORT: \(jsonReport.dictionaryValue)")
     }
 }

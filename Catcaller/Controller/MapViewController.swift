@@ -17,6 +17,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var navItem: UINavigationItem!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var harassmentTypesSwitch: UISwitch!
     @IBOutlet weak var harassmentTypesTableView: UITableView!
 
     @IBOutlet weak var addReportButton: UIButton!
@@ -51,6 +52,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.from = self
 
+        DispatchQueue.main.async {
+            self.loadHarassmentTypes()
+        }
+
         self.locationManager = CLLocationManager()
         self.locationManager!.delegate = self
 
@@ -60,9 +65,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.harassmentTypes = [HarassmentType]()
         self.selectedHarassmentTypes = [Int:HarassmentType]()
 
-        checkLocationAuthorizationStatus()
-
-        self.loadHarassmentTypes()
+        self.checkLocationAuthorizationStatus()
 
         self.hideBottomPanel()
         self.hideSummaryBar()
@@ -74,7 +77,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.hideBottomPanel()
         self.hideMenu()
         self.loadReports()
-
 
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
@@ -93,10 +95,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func checkLocationAuthorizationStatus() -> Void {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            locationManager!.startUpdatingLocation()
-            mapView.showsUserLocation = true
+            self.locationManager!.startUpdatingLocation()
+            self.mapView.showsUserLocation = true
         } else {
-            locationManager!.requestWhenInUseAuthorization()
+            self.locationManager!.requestWhenInUseAuthorization()
         }
     }
 
@@ -148,7 +150,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.mapView.removeAnnotations(self.mapView.annotations)
             print("Remove all annotations")
             return
-
         }
 
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
@@ -353,6 +354,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         })
     }
 
+    // MARK: Menu
+
     func loadHarassmentTypes() {
         self.catcallerApi.loadHarassmentTypes()
     }
@@ -385,10 +388,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func updateHarassmentTypeList(harassmentTypes: [HarassmentType]) {
         self.harassmentTypes = harassmentTypes
-        for harassmentType in harassmentTypes {
-            self.selectedHarassmentTypes[harassmentType.id] = harassmentType
-        }
+        self.selectAllHarassmentTypes()
         self.harassmentTypesTableView.reloadData()
+
+        self.updateHarassmentTypeSwitchStatus()
+        self.loadReports()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -412,20 +416,67 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     }
 
+    @IBAction func toggleHarassmentTypesSwitch(_ sender: UISwitch) {
+        print("MVC - Toggle Switch")
+        print("MVC - is on ? \(sender.isOn)")
+        sender.isOn = !sender.isOn
+        print("MVC - Switched to \(sender.isOn)")
+        sender.isOn ? self.selectAllHarassmentTypes() : self.deselectAllHarassmentTypes()
+        DispatchQueue.main.async {
+            self.harassmentTypesTableView.reloadData()
+            self.loadReports()
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.harassmentTypesTableView.deselectRow(at: indexPath, animated: true)
 
         if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
             if cell.accessoryType == .checkmark{
                 cell.accessoryType = .none
-                self.selectedHarassmentTypes.removeValue(forKey: self.harassmentTypes[indexPath.row].id)
+                self.deselectHarassmentType(harassmentType: self.harassmentTypes[indexPath.row])
             }
             else{
                 cell.accessoryType = .checkmark
-                self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] = self.harassmentTypes[indexPath.row]
+                self.selectHarassmentType(harassmentType: self.harassmentTypes[indexPath.row])
             }
+            self.updateHarassmentTypeSwitchStatus()
             self.loadReports()
         }
+    }
+
+    private func selectAllHarassmentTypes() {
+        print("MVC - Select all harassment types")
+        for (row, harassmentType) in self.harassmentTypes.enumerated() {
+            self.selectHarassmentType(harassmentType: harassmentType)
+            let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
+            cell?.accessoryType = .checkmark
+        }
+    }
+
+    private func deselectAllHarassmentTypes() {
+        print("MVC - Deselect all harassment types")
+        for (row, harassmentType) in self.harassmentTypes.enumerated() {
+            self.deselectHarassmentType(harassmentType: harassmentType)
+            let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
+            cell?.accessoryType = .none
+        }
+    }
+
+    private func selectHarassmentType(harassmentType: HarassmentType) {
+        print("MVC - Select harassment type : \(harassmentType.label)")
+        self.selectedHarassmentTypes[harassmentType.id] = harassmentType
+        self.updateHarassmentTypeSwitchStatus()
+    }
+
+    private func deselectHarassmentType(harassmentType: HarassmentType) {
+        print("MVC - Deselect harassment type : \(harassmentType.label)")
+        self.selectedHarassmentTypes.removeValue(forKey: harassmentType.id)
+        self.updateHarassmentTypeSwitchStatus()
+    }
+
+    func updateHarassmentTypeSwitchStatus() {
+        self.harassmentTypesSwitch.isOn = self.harassmentTypes.count == self.selectedHarassmentTypes.count
     }
 }
 

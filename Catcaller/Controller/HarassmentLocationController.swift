@@ -37,11 +37,11 @@ class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLoc
     }
 
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.addresses = completer.results
         print("search: \(completer.results)")
         DispatchQueue.main.async {
+            self.addresses = completer.results
             self.searchResultTableView.reloadData()
-        };
+        }
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

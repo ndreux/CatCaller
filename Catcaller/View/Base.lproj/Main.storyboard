@@ -27,7 +27,7 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtO-Qp-dVi" customClass="RoundedButton" customModule="Catcaller" customModuleProvider="target">
-                                <rect key="frame" x="162.5" y="533" width="50" height="50"/>
+                                <rect key="frame" x="163" y="533" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="KxP-Gg-DPm"/>
                                     <constraint firstAttribute="width" constant="50" id="sdl-Nn-Z0d"/>
@@ -127,12 +127,12 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="xgx-yv-1uy">
-                                        <rect key="frame" x="0.0" y="111" width="255" height="438"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xgx-yv-1uy">
+                                        <rect key="frame" x="0.0" y="135" width="255" height="414"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HarassmentTypeMenuCell" id="XzU-f8-mXO">
-                                                <rect key="frame" x="0.0" y="55.5" width="255" height="44"/>
+                                                <rect key="frame" x="0.0" y="28" width="255" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XzU-f8-mXO" id="tlQ-Et-ZLo">
                                                     <rect key="frame" x="0.0" y="0.0" width="255" height="43.5"/>
@@ -146,31 +146,39 @@
                                         <state key="normal" title="Log out"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harassment types" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfD-70-8je">
-                                        <rect key="frame" x="8" y="79" width="239" height="24"/>
+                                        <rect key="frame" x="8" y="103" width="164" height="24"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wl3-5v-GO6">
+                                        <rect key="frame" x="196" y="100" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleHarassmentTypesSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="NHH-zq-ZOl"/>
+                                        </connections>
+                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="GCh-bX-Dd9" firstAttribute="top" secondItem="xgx-yv-1uy" secondAttribute="bottom" constant="16" id="1yZ-jq-PHC"/>
-                                    <constraint firstAttribute="trailing" secondItem="qfD-70-8je" secondAttribute="trailing" constant="8" id="20w-vx-11w"/>
+                                    <constraint firstItem="qfD-70-8je" firstAttribute="top" secondItem="kdT-aa-8LP" secondAttribute="bottom" constant="37" id="6gc-pA-Vva"/>
                                     <constraint firstItem="YNi-rO-PwP" firstAttribute="leading" secondItem="Pgk-ci-GWs" secondAttribute="leading" constant="8" id="8zi-zg-arv"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wl3-5v-GO6" secondAttribute="trailing" constant="10" id="9pJ-Hf-3Zi"/>
                                     <constraint firstItem="kdT-aa-8LP" firstAttribute="top" secondItem="YNi-rO-PwP" secondAttribute="bottom" constant="13" id="ApP-dV-xZu"/>
-                                    <constraint firstItem="xgx-yv-1uy" firstAttribute="top" secondItem="qfD-70-8je" secondAttribute="bottom" constant="8" id="DNv-lf-CrI"/>
                                     <constraint firstAttribute="width" constant="255" id="Ggh-Ag-KkJ"/>
+                                    <constraint firstItem="qfD-70-8je" firstAttribute="centerY" secondItem="Wl3-5v-GO6" secondAttribute="centerY" id="JZO-my-DCg"/>
                                     <constraint firstAttribute="trailing" secondItem="xgx-yv-1uy" secondAttribute="trailing" id="Lqs-7J-n05"/>
+                                    <constraint firstItem="Wl3-5v-GO6" firstAttribute="leading" secondItem="qfD-70-8je" secondAttribute="trailing" constant="24" id="RRF-8Z-23G"/>
                                     <constraint firstItem="cVA-NJ-31A" firstAttribute="top" secondItem="YNi-rO-PwP" secondAttribute="bottom" constant="8" id="TVT-2o-eAG"/>
+                                    <constraint firstItem="qfD-70-8je" firstAttribute="leading" secondItem="kdT-aa-8LP" secondAttribute="leading" id="X6R-pw-RWP"/>
                                     <constraint firstAttribute="trailing" secondItem="YNi-rO-PwP" secondAttribute="trailing" constant="8" id="XEb-DK-xIo"/>
                                     <constraint firstItem="cVA-NJ-31A" firstAttribute="leading" secondItem="kdT-aa-8LP" secondAttribute="trailing" constant="24" id="ZSs-Ax-xrs"/>
                                     <constraint firstItem="cVA-NJ-31A" firstAttribute="leading" secondItem="kdT-aa-8LP" secondAttribute="trailing" constant="24" id="aso-bz-ztd"/>
-                                    <constraint firstItem="qfD-70-8je" firstAttribute="leading" secondItem="Pgk-ci-GWs" secondAttribute="leading" constant="8" id="eqM-u3-233"/>
                                     <constraint firstItem="xgx-yv-1uy" firstAttribute="leading" secondItem="Pgk-ci-GWs" secondAttribute="leading" id="gFp-gM-TGj"/>
                                     <constraint firstItem="YNi-rO-PwP" firstAttribute="top" secondItem="Pgk-ci-GWs" secondAttribute="top" constant="8" id="qHL-o0-RFG"/>
+                                    <constraint firstItem="xgx-yv-1uy" firstAttribute="top" secondItem="qfD-70-8je" secondAttribute="bottom" constant="8" symbolic="YES" id="rC1-zy-sSu"/>
                                     <constraint firstItem="GCh-bX-Dd9" firstAttribute="leading" secondItem="Pgk-ci-GWs" secondAttribute="leading" constant="8" id="w3B-O6-hex"/>
                                     <constraint firstAttribute="bottom" secondItem="GCh-bX-Dd9" secondAttribute="bottom" constant="8" id="wXC-wS-eeH"/>
-                                    <constraint firstItem="qfD-70-8je" firstAttribute="top" secondItem="cVA-NJ-31A" secondAttribute="bottom" constant="8" symbolic="YES" id="x7D-7h-iZJ"/>
                                     <constraint firstAttribute="trailing" secondItem="cVA-NJ-31A" secondAttribute="trailing" constant="8" id="y1a-bQ-koW"/>
                                     <constraint firstItem="kdT-aa-8LP" firstAttribute="leading" secondItem="Pgk-ci-GWs" secondAttribute="leading" constant="8" id="yNU-nY-HL8"/>
                                 </constraints>
@@ -209,6 +217,7 @@
                         <outlet property="bottomPanel" destination="cMF-JF-ijJ" id="Ixz-Aw-N46"/>
                         <outlet property="harassmentDatetimeLabel" destination="Zbn-8O-AIe" id="YHU-HR-Lbq"/>
                         <outlet property="harassmentTypesLabel" destination="dvk-P4-cwK" id="or4-kj-lg8"/>
+                        <outlet property="harassmentTypesSwitch" destination="Wl3-5v-GO6" id="9V8-hC-q76"/>
                         <outlet property="harassmentTypesTableView" destination="xgx-yv-1uy" id="2h0-GA-DPa"/>
                         <outlet property="mapView" destination="Jhf-Ae-QoJ" id="Ine-rD-iAa"/>
                         <outlet property="menuButton" destination="Vxk-N5-VeW" id="hgE-n6-zNX"/>
