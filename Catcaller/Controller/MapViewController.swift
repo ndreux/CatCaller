@@ -141,6 +141,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
 
+        print("load reports")
+        print("Selected harassment types : \(self.selectedHarassmentTypes)")
+
+        if self.selectedHarassmentTypes.count == 0 {
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            print("Remove all annotations")
+            return
+
+        }
+
         let northEast = mapView.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = mapView.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
 
@@ -152,7 +162,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.startLoading()
         self.hideSummaryBar()
 
-        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
+        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes)
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -230,23 +240,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 
-        self.selectedAnnotation = view.annotation as? Pin
-        let report = (view.annotation as! Pin).report
+        if let annotation = view.annotation as? Pin {
+            self.selectedAnnotation = annotation
+            let report = annotation.report
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy HH:mm"
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM d, yyyy HH:mm"
 
-        self.reportTypeLabel.text = report.type
-        self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-        let arrayMap: Array = report.harassment.types.map(){ $0.description }
-        self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
+            self.reportTypeLabel.text = report.type
+            self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
+            let arrayMap: Array = report.harassment.types.map(){ $0.description }
+            self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
 
-        self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+            self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
-        self.hideMenu()
-        self.showBottomPanel()
-        self.hideSummaryBar()
-        self.hideAddButton()
+            self.hideMenu()
+            self.showBottomPanel()
+            self.hideSummaryBar()
+            self.hideAddButton()
+        }
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
@@ -349,6 +361,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.menuView.isHidden ? self.showMenu() : self.hideMenu()
     }
 
+    @IBAction func touchMap(_ sender: UITapGestureRecognizer) {
+        if !self.menuView.isHidden {
+            self.hideMenu()
+        }
+    }
+
     private func showMenu() -> Void {
         self.menuView.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
@@ -367,6 +385,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func updateHarassmentTypeList(harassmentTypes: [HarassmentType]) {
         self.harassmentTypes = harassmentTypes
+        for harassmentType in harassmentTypes {
+            self.selectedHarassmentTypes[harassmentType.id] = harassmentType
+        }
         self.harassmentTypesTableView.reloadData()
     }
 
@@ -382,6 +403,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentTypeMenuCell", for: indexPath)
 
         cell.textLabel?.text = self.harassmentTypes[indexPath.row].label
+
+        if self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] != nil {
+            cell.accessoryType = .checkmark
+        }
 
         return cell
 
@@ -399,6 +424,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 cell.accessoryType = .checkmark
                 self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] = self.harassmentTypes[indexPath.row]
             }
+            self.loadReports()
         }
     }
 }

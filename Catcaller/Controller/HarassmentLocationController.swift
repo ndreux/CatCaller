@@ -38,12 +38,17 @@ class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLoc
 
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         self.addresses = completer.results
-        self.searchResultTableView.reloadData()
+        print("search: \(completer.results)")
+        DispatchQueue.main.async {
+            self.searchResultTableView.reloadData()
+        };
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("search - TEXT DID CHANGE - \(searchText)")
         self.completer.queryFragment = searchText
     }
+    
 
     // MARK: Search Result Table View
 
@@ -52,7 +57,9 @@ class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLoc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("cellForRowAt")
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        print(self.addresses[indexPath.row])
         cell.textLabel?.text = self.addresses[indexPath.row].title
         cell.detailTextLabel?.text = self.addresses[indexPath.row].subtitle
         return cell

@@ -21,9 +21,13 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Jhf-Ae-QoJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="AFs-cC-WVV" appends="YES" id="x1D-9O-FjX"/>
+                                </connections>
                             </mapView>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtO-Qp-dVi" customClass="RoundedButton" customModule="Catcaller" customModuleProvider="target">
-                                <rect key="frame" x="163" y="533" width="50" height="50"/>
+                                <rect key="frame" x="162.5" y="533" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="KxP-Gg-DPm"/>
                                     <constraint firstAttribute="width" constant="50" id="sdl-Nn-Z0d"/>
@@ -216,6 +220,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="AFs-cC-WVV">
+                    <connections>
+                        <action selector="touchMap:" destination="BYZ-38-t0r" id="3ky-dV-SsB"/>
+                        <outlet property="delegate" destination="Jhf-Ae-QoJ" id="wHA-fa-At0"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-3063.1999999999998" y="-554.57271364317842"/>
         </scene>

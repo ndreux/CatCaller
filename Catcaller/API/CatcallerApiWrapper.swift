@@ -67,15 +67,17 @@ class CatcallerApiWrapper {
     /**
      Load the reports made to the
      */
-    public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) {
+    public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees, harassmentTypes: [Int:HarassmentType]) {
 
         let url: String = self.baseURL + "reports"
 
+        print("HarassmentKeys : \(Array(harassmentTypes.keys))")
 
         let parameters: Parameters = [
             "harassment.location.latitude[between]": "\(minLat)..\(maxLat)",
             "harassment.location.longitude[between]": "\(minLong)..\(maxLong)",
-            "itemsPerPage": 500
+            "itemsPerPage": 500,
+            "harassment.types.id": Array(harassmentTypes.keys)
         ]
 
         print("Load pins request parameters : \(parameters)")
