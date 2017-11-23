@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5C5B2EA2667E61D1F4253AA692A3A07A"
+               BlueprintIdentifier = "69ED12B79089B2EACF6B9C357A0018D5"
                BuildableName = "Pods_Catcaller.framework"
                BlueprintName = "Pods-Catcaller"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5C5B2EA2667E61D1F4253AA692A3A07A"
+            BlueprintIdentifier = "69ED12B79089B2EACF6B9C357A0018D5"
             BuildableName = "Pods_Catcaller.framework"
             BlueprintName = "Pods-Catcaller"
             ReferencedContainer = "container:Pods.xcodeproj">
