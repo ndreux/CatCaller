@@ -143,12 +143,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
 
-        print("load reports")
-        print("Selected harassment types : \(self.selectedHarassmentTypes)")
-
         if self.selectedHarassmentTypes.count == 0 {
+            // TODO: (ndreux - 2017-11-23) Manage summary bar count
             self.mapView.removeAnnotations(self.mapView.annotations)
-            print("Remove all annotations")
             return
         }
 
@@ -417,10 +414,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     @IBAction func toggleHarassmentTypesSwitch(_ sender: UISwitch) {
-        print("MVC - Toggle Switch")
-        print("MVC - is on ? \(sender.isOn)")
         sender.isOn = !sender.isOn
-        print("MVC - Switched to \(sender.isOn)")
         sender.isOn ? self.selectAllHarassmentTypes() : self.deselectAllHarassmentTypes()
         DispatchQueue.main.async {
             self.harassmentTypesTableView.reloadData()
@@ -446,7 +440,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func selectAllHarassmentTypes() {
-        print("MVC - Select all harassment types")
         for (row, harassmentType) in self.harassmentTypes.enumerated() {
             self.selectHarassmentType(harassmentType: harassmentType)
             let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
@@ -455,7 +448,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func deselectAllHarassmentTypes() {
-        print("MVC - Deselect all harassment types")
         for (row, harassmentType) in self.harassmentTypes.enumerated() {
             self.deselectHarassmentType(harassmentType: harassmentType)
             let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
@@ -464,13 +456,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func selectHarassmentType(harassmentType: HarassmentType) {
-        print("MVC - Select harassment type : \(harassmentType.label)")
         self.selectedHarassmentTypes[harassmentType.id] = harassmentType
         self.updateHarassmentTypeSwitchStatus()
     }
 
     private func deselectHarassmentType(harassmentType: HarassmentType) {
-        print("MVC - Deselect harassment type : \(harassmentType.label)")
         self.selectedHarassmentTypes.removeValue(forKey: harassmentType.id)
         self.updateHarassmentTypeSwitchStatus()
     }

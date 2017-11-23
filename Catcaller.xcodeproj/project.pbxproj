@@ -222,9 +222,9 @@
 			isa = PBXGroup;
 			children = (
 				44635C171FC6BC8D00DA0DA8 /* Map */,
+				44635C181FC6BC9700DA0DA8 /* Report creation */,
 				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
 				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
-				44635C181FC6BC9700DA0DA8 /* Report creation */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -243,8 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				44635C191FC6BCC500DA0DA8 /* Map */,
-				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
 				44635C1A1FC6BCD100DA0DA8 /* Report creation */,
+				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,10 +252,10 @@
 		44F65D721FA2213600E43783 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				44F8E1E71FB34C9E001ECA2B /* Report.swift */,
 				44F8E1E91FB34CB9001ECA2B /* Harassment.swift */,
-				44F8E1EF1FB44767001ECA2B /* Location.swift */,
 				44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */,
+				44F8E1EF1FB44767001ECA2B /* Location.swift */,
+				44F8E1E71FB34C9E001ECA2B /* Report.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
