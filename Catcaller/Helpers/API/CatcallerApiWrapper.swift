@@ -14,14 +14,18 @@ import MapKit
 class CatcallerApiWrapper {
 
     let baseURL: String = "https://blooming-mesa-38452.herokuapp.com/"
-    var from: UIViewController? = nil
+
     var apiFormatter: CatcallerApiFormatter!
+    var authenticationHelper: AuthenticationHelper!
+    var from: UIViewController? = nil
 
     var headers: HTTPHeaders = HTTPHeaders()
 
     init() {
         self.apiFormatter = CatcallerApiFormatter()
-        self.headers["Authorization"] = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJ1c2VyQHRlc3QuY29tIiwiaWF0IjoxNTA5OTU2MTk1LCJleHAiOjE1NDE0OTIxOTV9.UaZCJEyWGwPzyg1JL6T6ocgOKr65Hn4x7vaDvtaLQd6YCeo9nPH9hWpOYV41CNUJ7cEqO6aywa4LYbZmgYdoug2-8B3csO2BawkBAOzY1GmwjIcPHyhaeBVTSXlhXTZiKz9Xpw5OgzXTYJZPuOO1fSC2qsEN7v0wTczeenseSTXdjtBZvjf1XnKlcIjWZ6ygV4qmryBZhYg8EcNRB0nn2kjE5ziqBd-RyGKtNksYWR2CxbH_war6vh64L8gNqrpKm3MIU8ow-D4Bn5MLstgZ73yDJmyLln-tw3gsBZjFW-dqmp45QXXblQjEHPlCJQPnrNOhszNhQC3hY-eCD_xYBGtHpohG6hdC2cVJVPEV6kWUv6vYNMJM7E2QG5JcDDOC2F9tSf3BeiW4x3IEaFnZcbaCryRruktya6STkFuyhSt5XnMSsTpBc6L0SU79RXwGKx6LkfKrwKjToeaVO6ZmJwYOrz4-yGJKK5Yk5IfNSmVN6n8CIc1-1DpvER1Q2bdnoSMsHY_aHLw2sWP5p14mcFjMr_kylYHgKWLjBABH8sw4XVXb7W4THXla_oRoTjpv4KlCnyVTP82fE6zQRdtEU1tkxMBkNdqWSFrOhDd4OEyXOq-90wGXOIUMu124Z4RRFEaDtcaD7-nDNaDDo-n0vD1yfu5dIgkgA9RTKtMAAE4"
+        self.authenticationHelper = AuthenticationHelper()
+
+        self.reloadUserAuthorization()
     }
 
     public func createUser(email: String, password: String) {
@@ -35,11 +39,9 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                print("Success")
                 let json = JSON(value)
-                print("JSON: \(json)")
             case .failure(let error):
-                print("Error")
+                print("Error - createUser")
                 print(error)
             }
         }
@@ -47,17 +49,34 @@ class CatcallerApiWrapper {
 
     public func authenticate(email: String, password: String) {
         let url: String = self.baseURL + "login_check"
+
         let parameters: Parameters = [
-            "email": email,
-            "password": password
+            "_username": email,
+            "_password": password
         ]
+        
         Alamofire.request(url, method: .post, parameters: parameters).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                let json = JSON(value)
+
+                let token = JSON(value)["token"].string!
+                self.authenticationHelper.storeUserToken(token: token)
+                self.setAuthorizationHeader(token: token)
+
+                if let controller = self.from as? LoginController {
+                    controller.authenticationSuccess()
+                }
+
             case .failure(let error):
-                print("Error")
-                print(error)
+                if let controller = self.from as? LoginController {
+                    print("Error - authenticate")
+                    print(error)
+                    if let error = error as? AFError {
+                        controller.authenticationError(errorCode: error.responseCode)
+                    }
+
+
+                }
             }
         }
     }
@@ -65,16 +84,26 @@ class CatcallerApiWrapper {
     /**
      Load the reports made to the
      */
-    public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees, harassmentTypes: [Int:HarassmentType]) {
+    public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees, harassmentTypes: [Int:HarassmentType], onlyMyReports: Bool) {
+
+        self.reloadUserAuthorization()
 
         let url: String = self.baseURL + "reports"
 
-        let parameters: Parameters = [
+        var parameters: Parameters = [
             "harassment.location.latitude[between]": "\(minLat)..\(maxLat)",
             "harassment.location.longitude[between]": "\(minLong)..\(maxLong)",
             "itemsPerPage": 500,
             "harassment.types.id": Array(harassmentTypes.keys)
         ]
+
+        if onlyMyReports {
+            print("Only my report")
+            parameters["reporter.id"] = self.authenticationHelper.getUserId()
+        }
+        else {
+            print("All reports")
+        }
         
         Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
@@ -84,7 +113,7 @@ class CatcallerApiWrapper {
                     controller.displayReports(reports: reports)
                 }
             case .failure(let error):
-                print("Error")
+                print("Error - loadReportsInArea")
                 print(error)
             }
         }
@@ -92,6 +121,8 @@ class CatcallerApiWrapper {
     }
 
     public func loadHarassmentTypes() {
+
+        self.reloadUserAuthorization()
 
         let url: String = self.baseURL + "harassment_types"
 
@@ -106,20 +137,19 @@ class CatcallerApiWrapper {
                     controller.updateHarassmentTypeList(harassmentTypes: harassmentTypes)
                 }
             case .failure(let error):
-                print("Error")
+                print("Error - loadHarassmentTypes")
                 print(error)
             }
         }
-
     }
 
     public func createReport(report: Report) {
 
+        self.reloadUserAuthorization()
+
         let url: String = self.baseURL + "reports"
 
         let jsonReport = self.apiFormatter.formatReportToJson(report: report)
-
-        self.headers["Content-type"] = "application/json"
 
         Alamofire.request(url, method: .post, parameters: jsonReport.dictionaryObject!, encoding: JSONEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
@@ -134,6 +164,16 @@ class CatcallerApiWrapper {
                 }
                 print(error)
             }
+        }
+    }
+
+    private func reloadUserAuthorization() {
+        self.setAuthorizationHeader(token: self.authenticationHelper.getUserToken())
+    }
+
+    private func setAuthorizationHeader(token: String?) {
+        if token != nil {
+            self.headers["Authorization"] = "Bearer \(token!)"
         }
     }
 }

@@ -17,6 +17,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var navItem: UINavigationItem!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var onlyMyReportsSwitch: UISwitch!
     @IBOutlet weak var harassmentTypesSwitch: UISwitch!
     @IBOutlet weak var harassmentTypesTableView: UITableView!
 
@@ -35,6 +36,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     var locationManager: CLLocationManager?
     var catcallerApi: CatcallerApiWrapper!
+    var authenticationHelper: AuthenticationHelper!
 
     var userLocation: CLLocation?
     var selectedAnnotation: Pin?
@@ -42,19 +44,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int:HarassmentType]!
 
-    // MARK: Main view loading functions
+    // MARK: View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.authenticationHelper = AuthenticationHelper()
+
         self.mapView!.delegate = self
-
-        self.catcallerApi = CatcallerApiWrapper()
-        self.catcallerApi.from = self
-
-        DispatchQueue.main.async {
-            self.loadHarassmentTypes()
-        }
 
         self.locationManager = CLLocationManager()
         self.locationManager!.delegate = self
@@ -65,26 +62,50 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.harassmentTypes = [HarassmentType]()
         self.selectedHarassmentTypes = [Int:HarassmentType]()
 
-        self.checkLocationAuthorizationStatus()
+        self.catcallerApi = CatcallerApiWrapper()
+        self.catcallerApi.from = self
 
-        self.hideBottomPanel()
-        self.hideSummaryBar()
+        if !self.authenticationHelper.isUserAuthenticated() {
+            self.showAuthenticationNavigationController()
+            return
+        }
+
+        self.checkLocationAuthorizationStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.hideBottomPanel()
-        self.hideMenu()
-        self.loadReports()
-
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.activityIndicator.hidesWhenStopped = true
-
         self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
         self.navItem.rightBarButtonItem = self.refreshButton
 
         self.summaryLabel.textColor = .white
+
+        self.hideMenu()
+        self.hideBottomPanel()
+        self.hideSummaryBar()
+
+        self.view.isHidden = false
+        if !self.authenticationHelper.isUserAuthenticated() {
+            self.view.isHidden = true
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.loadHarassmentTypes()
+            self.loadReports()
+        }
+    }
+
+    @IBAction func logoutAction(_ sender: UIButton) {
+        AuthenticationHelper().logout()
+        self.showAuthenticationNavigationController()
+    }
+
+    func showAuthenticationNavigationController() {
+        self.performSegue(withIdentifier: "showAuthenticationController", sender: self)
     }
 
     // MARK: User location management
@@ -160,7 +181,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.startLoading()
         self.hideSummaryBar()
 
-        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes)
+        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes, onlyMyReports: self.onlyMyReportsSwitch.isOn)
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -189,6 +210,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func displayReports(reports: [Report]) -> Void {
         var oldAnnotations: [MKAnnotation] = [MKAnnotation]()
 
+        print("Annotations count before updates : \(self.mapView.annotations.count)")
         for annotation in self.mapView.annotations {
             let annotationIsNotSelected = (annotation as? Pin)?.report.id != self.selectedAnnotation?.report.id
             if annotationIsNotSelected {
@@ -196,6 +218,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             }
         }
 
+        print("New annotations count : \(reports.count)")
         for report:Report in reports {
             let annotationIsNotSelected = report.id != self.selectedAnnotation?.report.id
             if annotationIsNotSelected {
@@ -372,7 +395,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         UIView.animate(withDuration: 0.3, animations: {
             self.menuView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
-
     }
 
     private func hideMenu() -> Void {
@@ -467,6 +489,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func updateHarassmentTypeSwitchStatus() {
         self.harassmentTypesSwitch.isOn = self.harassmentTypes.count == self.selectedHarassmentTypes.count
+    }
+
+    @IBAction func toggleOnlyMyReportsSwitch(_ sender: UISwitch) {
+        self.loadReports()
     }
 }
 

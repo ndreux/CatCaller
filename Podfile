@@ -7,4 +7,5 @@ pod 'Alamofire'
 pod 'SwiftyJSON'
 pod 'IQKeyboardManagerSwift'
 pod 'KeychainAccess'
+pod 'JWTDecode', '~> 2.1'
 end

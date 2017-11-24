@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4404E8071FACBB930086FE0C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4404E8061FACBB930086FE0C /* Pin.swift */; };
 		440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */; };
+		4421CA6C1FC6C28800EA928E /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */; };
+		4421CA6E1FC6C78C00EA928E /* AuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */; };
 		442BEE301FBED10D00A6298B /* HarassmentLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */; };
 		4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */; };
 		4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */; };
@@ -31,6 +33,7 @@
 		44CE2AAD1FA1D63C0011E8A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */; };
 		44CE2AB81FA1D63C0011E8A1 /* CatcallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */; };
 		44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */; };
+		44F51E6E1FC8711B007D93D2 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */; };
 		44F8E1E81FB34C9E001ECA2B /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1E71FB34C9E001ECA2B /* Report.swift */; };
 		44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1E91FB34CB9001ECA2B /* Harassment.swift */; };
 		44F8E1EC1FB44012001ECA2B /* BottomPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1EB1FB44012001ECA2B /* BottomPanelView.swift */; };
@@ -53,6 +56,8 @@
 		3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.release.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.release.xcconfig"; sourceTree = "<group>"; };
 		4404E8061FACBB930086FE0C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FirstLetterCapitalized.swift"; sourceTree = "<group>"; };
+		4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
+		4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationController.swift; sourceTree = "<group>"; };
 		442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentLocationController.swift; sourceTree = "<group>"; };
 		4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+DisclosureIcon.swift"; sourceTree = "<group>"; };
 		4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Alpha.swift"; sourceTree = "<group>"; };
@@ -79,6 +84,7 @@
 		44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerTests.swift; sourceTree = "<group>"; };
 		44CE2AB91FA1D63C0011E8A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserController.swift; sourceTree = "<group>"; };
+		44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
 		44F8E1E71FB34C9E001ECA2B /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		44F8E1E91FB34CB9001ECA2B /* Harassment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Harassment.swift; sourceTree = "<group>"; };
 		44F8E1EB1FB44012001ECA2B /* BottomPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPanelView.swift; sourceTree = "<group>"; };
@@ -107,6 +113,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4421CA6A1FC6C26D00EA928E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		4421CA6F1FC6C79100EA928E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
+				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
+				4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		44460B241FA2258E00A898AD /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +155,7 @@
 		44635C161FC6BC3500DA0DA8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				4421CA6A1FC6C26D00EA928E /* Authentication */,
 				44572EC71FB1F40900FD0544 /* Extension */,
 				44460B241FA2258E00A898AD /* API */,
 			);
@@ -223,10 +248,17 @@
 			children = (
 				44635C171FC6BC8D00DA0DA8 /* Map */,
 				44635C181FC6BC9700DA0DA8 /* Report creation */,
-				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
-				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
+				4421CA6F1FC6C79100EA928E /* Authentication */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		44F51E6C1FC87107007D93D2 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		44F65D701FA2210400E43783 /* Supporting Files */ = {
@@ -242,6 +274,7 @@
 		44F65D711FA2212300E43783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				44F51E6C1FC87107007D93D2 /* Authentication */,
 				44635C191FC6BCC500DA0DA8 /* Map */,
 				44635C1A1FC6BCD100DA0DA8 /* Report creation */,
 				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
@@ -406,6 +439,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/JWTDecode/JWTDecode.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
@@ -413,6 +447,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWTDecode.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
@@ -450,12 +485,15 @@
 				44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */,
 				442BEE301FBED10D00A6298B /* HarassmentLocationController.swift in Sources */,
 				4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */,
+				4421CA6E1FC6C78C00EA928E /* AuthenticationController.swift in Sources */,
+				44F51E6E1FC8711B007D93D2 /* LoadingButton.swift in Sources */,
 				444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */,
 				44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */,
 				440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */,
 				44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */,
 				44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */,
 				44B1A5681FBAE16500369623 /* CreateReportTableController.swift in Sources */,
+				4421CA6C1FC6C28800EA928E /* AuthenticationHelper.swift in Sources */,
 				44F8E1F01FB44767001ECA2B /* Location.swift in Sources */,
 				444C49121FBD828200AD3CF6 /* TableViewCellTextField.swift in Sources */,
 				44B1A56C1FBB3B3E00369623 /* HarassmentType.swift in Sources */,
