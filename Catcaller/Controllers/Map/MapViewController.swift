@@ -41,8 +41,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var userLocation: CLLocation?
     var selectedAnnotation: Pin?
 
-    var harassmentTypes: [HarassmentType]!
-    var selectedHarassmentTypes: [Int:HarassmentType]!
+    var harassmentTypes: [HarassmentType]?
+    var selectedHarassmentTypes: [Int:HarassmentType]?
 
     // MARK: View lifecycle
 
@@ -59,9 +59,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.harassmentTypesTableView.delegate = self
         self.harassmentTypesTableView.dataSource = self
 
-        self.harassmentTypes = [HarassmentType]()
-        self.selectedHarassmentTypes = [Int:HarassmentType]()
-
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.from = self
 
@@ -69,8 +66,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.showAuthenticationNavigationController()
             return
         }
-
-        self.checkLocationAuthorizationStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +87,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.view.isHidden = true
             return
         }
+
+        self.checkLocationAuthorizationStatus()
 
         DispatchQueue.main.async {
             self.loadHarassmentTypes()
@@ -136,6 +133,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         case .authorizedWhenInUse:
             print("AuthorizedWhenInUse")
             locationManager!.startUpdatingLocation()
+            self.mapView.showsUserLocation = true
         }
     }
 
@@ -164,7 +162,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      */
     func loadReports() -> Void {
 
-        if self.selectedHarassmentTypes.count == 0 {
+        if self.selectedHarassmentTypes == nil || self.selectedHarassmentTypes!.count == 0 {
             // TODO: (ndreux - 2017-11-23) Manage summary bar count
             self.mapView.removeAnnotations(self.mapView.annotations)
             return
@@ -181,7 +179,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.startLoading()
         self.hideSummaryBar()
 
-        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes, onlyMyReports: self.onlyMyReportsSwitch.isOn)
+        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes!, onlyMyReports: self.onlyMyReportsSwitch.isOn)
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -377,7 +375,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     // MARK: Menu
 
     func loadHarassmentTypes() {
-        self.catcallerApi.loadHarassmentTypes()
+
+        if self.harassmentTypes == nil {
+            self.harassmentTypes = [HarassmentType]()
+        }
+
+        if let harassmentTypesData = UserDefaults.standard.value(forKey: "harassmentTypes") as? Data {
+            if let harassmentTypes = NSKeyedUnarchiver.unarchiveObject(with: harassmentTypesData) as? [HarassmentType] {
+                self.updateHarassmentTypeList(harassmentTypes: harassmentTypes)
+            }
+        } else {
+            self.catcallerApi.loadHarassmentTypes()
+        }
     }
 
     @IBAction func toggleMenu(_ sender: UIBarButtonItem) {
@@ -407,15 +416,29 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func updateHarassmentTypeList(harassmentTypes: [HarassmentType]) {
         self.harassmentTypes = harassmentTypes
-        self.selectAllHarassmentTypes()
+
+        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: harassmentTypes), forKey: "harassmentTypes")
+
+        self.loadSelectedHarassmentTypes()
         self.harassmentTypesTableView.reloadData()
 
         self.updateHarassmentTypeSwitchStatus()
         self.loadReports()
     }
 
+    func loadSelectedHarassmentTypes() {
+        self.selectedHarassmentTypes = [Int:HarassmentType]()
+        if let selectedHarassmentTypesData = UserDefaults.standard.value(forKey: "selectedHarassmentTypes") as? Data {
+            if let selectedHarassmentTypes = NSKeyedUnarchiver.unarchiveObject(with: selectedHarassmentTypesData) as? [Int:HarassmentType] {
+                self.selectHarassmentTypes(harassmentTypes: selectedHarassmentTypes)
+            }
+        } else {
+            self.selectAllHarassmentTypes()
+        }
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.harassmentTypes.count
+        return (self.harassmentTypes != nil) ? self.harassmentTypes!.count : 0
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -425,9 +448,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentTypeMenuCell", for: indexPath)
 
-        cell.textLabel?.text = self.harassmentTypes[indexPath.row].label
+        cell.textLabel?.text = self.harassmentTypes![indexPath.row].label
 
-        if self.selectedHarassmentTypes[self.harassmentTypes[indexPath.row].id] != nil {
+        if self.selectedHarassmentTypes![self.harassmentTypes![indexPath.row].id] != nil {
             cell.accessoryType = .checkmark
         }
 
@@ -450,19 +473,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
             if cell.accessoryType == .checkmark{
                 cell.accessoryType = .none
-                self.deselectHarassmentType(harassmentType: self.harassmentTypes[indexPath.row])
+                self.deselectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
             }
             else{
                 cell.accessoryType = .checkmark
-                self.selectHarassmentType(harassmentType: self.harassmentTypes[indexPath.row])
+                self.selectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
             }
             self.updateHarassmentTypeSwitchStatus()
             self.loadReports()
         }
     }
 
+    private func selectHarassmentTypes(harassmentTypes: [Int:HarassmentType]) {
+        for (row, harassmentType) in harassmentTypes {
+            self.selectHarassmentType(harassmentType: harassmentType)
+            let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
+            cell?.accessoryType = .checkmark
+        }
+    }
+
     private func selectAllHarassmentTypes() {
-        for (row, harassmentType) in self.harassmentTypes.enumerated() {
+        if self.harassmentTypes == nil {
+            return
+        }
+
+        for (row, harassmentType) in self.harassmentTypes!.enumerated() {
             self.selectHarassmentType(harassmentType: harassmentType)
             let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
             cell?.accessoryType = .checkmark
@@ -470,7 +505,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func deselectAllHarassmentTypes() {
-        for (row, harassmentType) in self.harassmentTypes.enumerated() {
+        if self.harassmentTypes == nil {
+            return
+        }
+
+        for (row, harassmentType) in self.harassmentTypes!.enumerated() {
             self.deselectHarassmentType(harassmentType: harassmentType)
             let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
             cell?.accessoryType = .none
@@ -478,17 +517,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     private func selectHarassmentType(harassmentType: HarassmentType) {
-        self.selectedHarassmentTypes[harassmentType.id] = harassmentType
+        self.selectedHarassmentTypes![harassmentType.id] = harassmentType
         self.updateHarassmentTypeSwitchStatus()
+
+        DispatchQueue.main.async(execute: {
+            let selectedHarassmentTypesData = NSKeyedArchiver.archivedData(withRootObject: self.selectedHarassmentTypes as Any)
+            UserDefaults.standard.set(selectedHarassmentTypesData, forKey: "selectedHarassmentTypes")
+        })
     }
 
     private func deselectHarassmentType(harassmentType: HarassmentType) {
-        self.selectedHarassmentTypes.removeValue(forKey: harassmentType.id)
+        self.selectedHarassmentTypes!.removeValue(forKey: harassmentType.id)
         self.updateHarassmentTypeSwitchStatus()
+
+        DispatchQueue.main.async(execute: {
+            let selectedHarassmentTypesData = NSKeyedArchiver.archivedData(withRootObject: self.selectedHarassmentTypes as Any)
+            UserDefaults.standard.set(selectedHarassmentTypesData, forKey: "selectedHarassmentTypes")
+        })
     }
 
     func updateHarassmentTypeSwitchStatus() {
-        self.harassmentTypesSwitch.isOn = self.harassmentTypes.count == self.selectedHarassmentTypes.count
+        if self.harassmentTypes == nil {
+            return
+        }
+
+        self.harassmentTypesSwitch.isOn = self.harassmentTypes!.count == self.selectedHarassmentTypes!.count
     }
 
     @IBAction func toggleOnlyMyReportsSwitch(_ sender: UISwitch) {

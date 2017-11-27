@@ -25,7 +25,6 @@
 		44B1A5681FBAE16500369623 /* CreateReportTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A5671FBAE16500369623 /* CreateReportTableController.swift */; };
 		44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A5691FBB274600369623 /* HarassmentTypesController.swift */; };
 		44B1A56C1FBB3B3E00369623 /* HarassmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */; };
-		44B1A56E1FBB3E1600369623 /* HarassmentType+Printable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A56D1FBB3E1600369623 /* HarassmentType+Printable.swift */; };
 		44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */; };
 		44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */; };
 		44CE2AA81FA1D63C0011E8A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */; };
@@ -72,7 +71,6 @@
 		44B1A5671FBAE16500369623 /* CreateReportTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportTableController.swift; sourceTree = "<group>"; };
 		44B1A5691FBB274600369623 /* HarassmentTypesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentTypesController.swift; sourceTree = "<group>"; };
 		44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentType.swift; sourceTree = "<group>"; };
-		44B1A56D1FBB3E1600369623 /* HarassmentType+Printable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HarassmentType+Printable.swift"; sourceTree = "<group>"; };
 		44CE2A9F1FA1D63C0011E8A1 /* Catcaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catcaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 		44572EC71FB1F40900FD0544 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				44B1A56D1FBB3E1600369623 /* HarassmentType+Printable.swift */,
 				44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */,
 				4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */,
 				4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */,
@@ -478,7 +475,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44B1A56E1FBB3E1600369623 /* HarassmentType+Printable.swift in Sources */,
 				44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */,
 				44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */,
 				44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */,
