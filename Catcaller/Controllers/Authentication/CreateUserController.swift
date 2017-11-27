@@ -8,35 +8,101 @@
 
 import UIKit
 
+protocol CreateUserControllerDelegate {
+    func createUserSuccess()
+}
+
 class CreateUserController: UIViewController {
 
     @IBOutlet var email: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var passwordVerification: UITextField!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var createUserButton: LoadingButton!
+
+    var formErrors: [String:String] = [String:String]()
+
+    var apiWrapper: CatcallerApiWrapper!
+    var delegate: CreateUserControllerDelegate?
+
+    // MARK: View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        self.updateCreateUserButtonStatus()
+        self.apiWrapper = CatcallerApiWrapper()
+        self.apiWrapper.from = self
+
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: Form validation
+    @IBAction func valueChanged(_ sender: UITextField) {
+        self.updateCreateUserButtonStatus()
     }
+
+    @IBAction func passwordsChanged(_ sender: UITextField) {
+        if !self.doPasswordsMatch() {
+            self.formErrors["passwords"] = "Passwords do not match"
+        } else {
+            self.formErrors.removeValue(forKey: "passwords")
+        }
+
+        self.displayErrorMessage()
+    }
+
+    @IBAction func emailEditDidEnd(_ sender: UITextField) {
+        if !self.isEmailValid() {
+            self.formErrors["email"] = "Invalid email."
+        } else {
+            self.formErrors.removeValue(forKey: "email")
+        }
+
+        self.displayErrorMessage()
+    }
+
+    func updateCreateUserButtonStatus() {
+        let fieldsFilled = !self.email.text!.isEmpty && !self.password.text!.isEmpty && !self.passwordVerification.text!.isEmpty
+
+        self.createUserButton.isEnabled = fieldsFilled && self.errorLabel.text!.isEmpty
+    }
+
+    func doPasswordsMatch() -> Bool {
+        return self.password.text! == self.passwordVerification.text!
+    }
+
+    func isEmailValid() -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+
+        return emailTest.evaluate(with: self.email.text!)
+    }
+
+    func displayErrorMessage() {
+        var errorMessage = ""
+        for (_, error) in self.formErrors {
+            errorMessage.append("\(error) ")
+        }
+        self.errorLabel.text = errorMessage
+    }
+
+    // MARK: Form submition
 
     @IBAction func createUser(_ sender: UIButton) {
-
-        let email: String = self.email.text!
-        let password: String = self.password.text!
-
-        print("Create user")
-        print(email)
-        print(password)
-
-        let apiWrapper: CatcallerApiWrapper = CatcallerApiWrapper()
-        apiWrapper.createUser(email: email, password: password)
-
+        self.createUserButton.showLoading()
+        self.apiWrapper.createUser(email: self.email.text!, password: self.password.text!)
     }
 
+    func createUserSuccess() {
+        self.createUserButton.hideLoading()
+        self.delegate?.createUserSuccess()
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+
+    func createUserError(message: String) {
+        self.createUserButton.hideLoading()
+        self.formErrors["email"] = message
+        self.displayErrorMessage()
+    }
 
 }

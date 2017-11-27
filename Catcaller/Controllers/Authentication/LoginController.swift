@@ -18,7 +18,7 @@ class LoginController: UIViewController {
 
     var apiWrapper: CatcallerApiWrapper!
 
-    // MARK: VIew Lifecycle
+    // MARK: View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

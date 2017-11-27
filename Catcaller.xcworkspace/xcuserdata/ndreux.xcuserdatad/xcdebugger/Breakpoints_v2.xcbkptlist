@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.093753"
+            timestampString = "533467193.913886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.404776"
+            timestampString = "533467193.914227"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "loadHarassmentTypes()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.405004"
+            timestampString = "533467193.914476"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "authenticate(email:password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.094517"
+            timestampString = "533467193.914677"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
@@ -202,7 +202,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.095025"
+            timestampString = "533467193.914921"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -218,7 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.095542"
+            timestampString = "533467193.915173"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "380"
@@ -234,7 +234,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.096062"
+            timestampString = "533467193.915385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "167"
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.406679"
+            timestampString = "533467193.915594"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "loadHarassmentTypes()"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.406863"
+            timestampString = "533467193.915816"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "loadHarassmentTypes()"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.407032"
+            timestampString = "533467193.916057"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "loadReportsInArea(minLat:minLong:maxLat:maxLong:harassmentTypes:onlyMyReports:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
-            timestampString = "533245212.407202"
+            timestampString = "533467193.916241"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "loadReportsInArea(minLat:minLong:maxLat:maxLong:harassmentTypes:onlyMyReports:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,12 +314,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Catcaller/Controllers/Map/MapViewController.swift"
-            timestampString = "533245392.096616"
+            timestampString = "533467193.916426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
             landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Catcaller/Controllers/Authentication/CreateUserController.swift"
+            timestampString = "533467193.916645"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "passwordsChanged(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Catcaller/Controllers/Authentication/CreateUserController.swift"
+            timestampString = "533467193.916881"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "valueChanged(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Catcaller/Controllers/Authentication/CreateUserController.swift"
+            timestampString = "533467193.917083"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "displayErrorMessage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Catcaller/Controllers/Authentication/CreateUserController.swift"
+            timestampString = "533467193.917285"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "CreateUserController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Catcaller/Helpers/API/CatcallerApiWrapper.swift"
+            timestampString = "533467193.917498"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "createUser(email:password:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

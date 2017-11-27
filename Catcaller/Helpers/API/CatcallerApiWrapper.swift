@@ -33,16 +33,27 @@ class CatcallerApiWrapper {
         let url: String = self.baseURL + "users"
         let parameters: Parameters = [
             "email": email,
-            "password": password
+            "plainPassword": password
         ]
 
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseJSON { response in
             switch response.result {
-            case .success(let value):
-                let json = JSON(value)
+            case .success(_):
+                if let controller = self.from as? CreateUserController {
+                    controller.createUserSuccess()
+                }
             case .failure(let error):
                 print("Error - createUser")
                 print(error)
+                if let controller = self.from as? CreateUserController {
+                    var errorMessage = String()
+                    if let data = response.data {
+                        errorMessage = JSON(data)["hydra:description"].string!
+                        print("Error message : \(errorMessage)")
+                    }
+
+                    controller.createUserError(message: errorMessage)
+                }
             }
         }
     }
@@ -74,8 +85,6 @@ class CatcallerApiWrapper {
                     if let error = error as? AFError {
                         controller.authenticationError(errorCode: error.responseCode)
                     }
-
-
                 }
             }
         }
