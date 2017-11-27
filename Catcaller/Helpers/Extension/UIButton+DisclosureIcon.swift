@@ -8,8 +8,7 @@
 
 import UIKit
 
-extension UIButton
-{
+extension UIButton {
     /*
      Add right arrow disclosure indicator to the button with normal and
      highlighted colors for the title text and the image

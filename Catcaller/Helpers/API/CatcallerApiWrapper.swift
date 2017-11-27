@@ -11,13 +11,40 @@ import Alamofire
 import SwiftyJSON
 import MapKit
 
+protocol CatCallerApiDelegate {}
+
+protocol CatCallerApiGetHarassmentTypesDelegate: CatCallerApiDelegate {
+    func getHarassmentTypesSuccess(harassmentTypes: [HarassmentType])
+    func getHarassmentTypesError()
+}
+
+protocol CatCallerApiCreateUserDelegate: CatCallerApiDelegate {
+    func createUserSuccess()
+    func createUserError(message: String)
+}
+
+protocol CatCallerApiAuthenticationDelegate: CatCallerApiDelegate {
+    func authenticationSuccess()
+    func authenticationError(errorCode: Int?)
+}
+
+protocol CatCallerApiGetReportsDelegate: CatCallerApiDelegate {
+    func getReportsSuccess(reports: [Report])
+    func getReportsError(error: Error)
+}
+
+protocol CatCallerApiCreateReportDelegate: CatCallerApiDelegate {
+    func createReportSuccess()
+    func createReportError()
+}
+
 class CatcallerApiWrapper {
 
     let baseURL: String = "https://blooming-mesa-38452.herokuapp.com/"
 
     var apiFormatter: CatcallerApiFormatter!
     var authenticationHelper: AuthenticationHelper!
-    var from: UIViewController? = nil
+    var delegate: CatCallerApiDelegate?
 
     var headers: HTTPHeaders = HTTPHeaders()
 
@@ -31,27 +58,21 @@ class CatcallerApiWrapper {
     public func createUser(email: String, password: String) {
 
         let url: String = self.baseURL + "users"
-        let parameters: Parameters = [
-            "email": email,
-            "plainPassword": password
-        ]
+        let parameters: Parameters = ["email": email,"plainPassword": password]
 
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseJSON { response in
             switch response.result {
             case .success(_):
-                if let controller = self.from as? CreateUserController {
+                if let controller = self.delegate as? CatCallerApiCreateUserDelegate {
                     controller.createUserSuccess()
                 }
             case .failure(let error):
-                print("Error - createUser")
-                print(error)
-                if let controller = self.from as? CreateUserController {
+                print("Error - createUser: \(error)")
+                if let controller = self.delegate as? CatCallerApiCreateUserDelegate {
                     var errorMessage = String()
                     if let data = response.data {
                         errorMessage = JSON(data)["hydra:description"].string!
-                        print("Error message : \(errorMessage)")
                     }
-
                     controller.createUserError(message: errorMessage)
                 }
             }
@@ -59,12 +80,9 @@ class CatcallerApiWrapper {
     }
 
     public func authenticate(email: String, password: String) {
-        let url: String = self.baseURL + "login_check"
 
-        let parameters: Parameters = [
-            "_username": email,
-            "_password": password
-        ]
+        let url: String = self.baseURL + "login_check"
+        let parameters: Parameters = ["_username": email,"_password": password]
         
         Alamofire.request(url, method: .post, parameters: parameters).validate().responseJSON { response in
             switch response.result {
@@ -74,14 +92,13 @@ class CatcallerApiWrapper {
                 self.authenticationHelper.storeUserToken(token: token)
                 self.setAuthorizationHeader(token: token)
 
-                if let controller = self.from as? LoginController {
+                if let controller = self.delegate as? CatCallerApiAuthenticationDelegate {
                     controller.authenticationSuccess()
                 }
 
             case .failure(let error):
-                if let controller = self.from as? LoginController {
-                    print("Error - authenticate")
-                    print(error)
+                if let controller = self.delegate as? CatCallerApiAuthenticationDelegate {
+                    print("Error - authenticate: \(error)")
                     if let error = error as? AFError {
                         controller.authenticationError(errorCode: error.responseCode)
                     }
@@ -93,7 +110,7 @@ class CatcallerApiWrapper {
     /**
      Load the reports made to the
      */
-    public func loadReportsInArea(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees, harassmentTypes: [Int:HarassmentType], onlyMyReports: Bool) {
+    public func getReports(minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees, harassmentTypes: [Int:HarassmentType], onlyMyReports: Bool) {
 
         self.reloadUserAuthorization()
 
@@ -107,29 +124,26 @@ class CatcallerApiWrapper {
         ]
 
         if onlyMyReports {
-            print("Only my report")
             parameters["reporter.id"] = self.authenticationHelper.getUserId()
-        }
-        else {
-            print("All reports")
         }
         
         Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                if let controller = self.from as? MapViewController {
+                if let controller = self.delegate as? CatCallerApiGetReportsDelegate {
                     let reports: [Report] = self.apiFormatter.formatJsonIntoReports(json: JSON(value))
-                    controller.displayReports(reports: reports)
+                    controller.getReportsSuccess(reports: reports)
                 }
             case .failure(let error):
-                print("Error - loadReportsInArea")
-                print(error)
+                print("Error - loadReportsInArea: \(error)")
+                if let controller = self.delegate as? CatCallerApiGetReportsDelegate {
+                    controller.getReportsError(error: error)
+                }
             }
         }
-
     }
 
-    public func loadHarassmentTypes() {
+    public func getHarassmentTypes() {
 
         self.reloadUserAuthorization()
 
@@ -138,16 +152,15 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .get, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success(let value):
-                let harassmentTypes: [HarassmentType] = self.apiFormatter.formatJsonIntoHarassmentTypes(json: JSON(value))
-                if let controller = self.from as? CreateReportTableController {
-                    controller.harassmentTypes = harassmentTypes
-                }
-                if let controller = self.from as? MapViewController {
-                    controller.updateHarassmentTypeList(harassmentTypes: harassmentTypes)
+                if let controller = self.delegate as? CatCallerApiGetHarassmentTypesDelegate {
+                    let harassmentTypes: [HarassmentType] = self.apiFormatter.formatJsonIntoHarassmentTypes(json: JSON(value))
+                    controller.getHarassmentTypesSuccess(harassmentTypes: harassmentTypes)
                 }
             case .failure(let error):
-                print("Error - loadHarassmentTypes")
-                print(error)
+                print("Error - loadHarassmentTypes: \(error)")
+                if let controller = self.delegate as? CatCallerApiGetHarassmentTypesDelegate {
+                    controller.getHarassmentTypesError()
+                }
             }
         }
     }
@@ -163,15 +176,15 @@ class CatcallerApiWrapper {
         Alamofire.request(url, method: .post, parameters: jsonReport.dictionaryObject!, encoding: JSONEncoding.default, headers: self.headers).validate().responseJSON { response in
             switch response.result {
             case .success( _):
-                if let controller = self.from as? CreateReportTableController {
-                    controller.saveReportSuccess()
+                if let controller = self.delegate as? CatCallerApiCreateReportDelegate {
+                    controller.createReportSuccess()
                 }
             case .failure(let error):
-                print("Error")
-                if let controller = self.from as? CreateReportTableController {
-                    controller.saveReportError()
+                print("Error - createReport: \(error)")
+
+                if let controller = self.delegate as? CatCallerApiCreateReportDelegate {
+                    controller.createReportError()
                 }
-                print(error)
             }
         }
     }

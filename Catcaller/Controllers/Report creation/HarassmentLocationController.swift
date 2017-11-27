@@ -9,33 +9,20 @@
 import UIKit
 import MapKit
 
-class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLocalSearchCompleterDelegate, UITableViewDelegate, UITableViewDataSource {
+protocol HarassmentLocationControllerDelegate {
+    func getHarassmentLocationSuccess(placemark: MKPlacemark)
+}
 
-    // MARK: Properties
-    let completer: MKLocalSearchCompleter = MKLocalSearchCompleter()
-    var addresses: [MKLocalSearchCompletion] = [MKLocalSearchCompletion]()
-    var searchString: String = String()
-    var from: UIViewController!
-
-    // MARK: IBOutlet
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var searchResultTableView: UITableView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.searchBar.delegate = self
-
-        self.searchResultTableView.delegate = self
-        self.searchResultTableView.dataSource = self
-
-        self.searchBar.text = self.searchString
-
-        self.completer.delegate = self
-        self.completer.queryFragment = self.searchString
-
+extension HarassmentLocationController: UISearchBarDelegate {
+    // MARK: UISearchBarDelegate
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("search - TEXT DID CHANGE - \(searchText)")
+        self.completer.queryFragment = searchText
     }
+}
 
+extension HarassmentLocationController: MKLocalSearchCompleterDelegate {
+    // MARK: MKLocalSearchCompleterDelegate
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         print("search: \(completer.results)")
         DispatchQueue.main.async {
@@ -43,13 +30,9 @@ class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLoc
             self.searchResultTableView.reloadData()
         }
     }
+}
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("search - TEXT DID CHANGE - \(searchText)")
-        self.completer.queryFragment = searchText
-    }
-    
-
+extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSource{
     // MARK: Search Result Table View
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,12 +59,39 @@ class HarassmentLocationController: UIViewController, UISearchBarDelegate, MKLoc
         let search = MKLocalSearch(request: searchRequest)
 
         search.start { (response, error) in
-            if let presenter = self.from as? CreateReportTableController {
+            if let presenter = self.delegate {
                 print("Send data to presenter")
-                presenter.updateHarassmentLocation(placemark: (response?.mapItems[0].placemark)!)
+                presenter.getHarassmentLocationSuccess(placemark: (response?.mapItems[0].placemark)!)
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+}
+
+class HarassmentLocationController: UIViewController {
+
+    // MARK: Properties
+    let completer: MKLocalSearchCompleter = MKLocalSearchCompleter()
+    var addresses: [MKLocalSearchCompletion] = [MKLocalSearchCompletion]()
+    var searchString: String = String()
+    var delegate: HarassmentLocationControllerDelegate?
+
+    // MARK: IBOutlet
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchResultTableView: UITableView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.searchBar.delegate = self
+
+        self.searchResultTableView.delegate = self
+        self.searchResultTableView.dataSource = self
+
+        self.searchBar.text = self.searchString
+
+        self.completer.delegate = self
+        self.completer.queryFragment = self.searchString
     }
 
     // MARK: IBAction

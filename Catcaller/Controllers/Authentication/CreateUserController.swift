@@ -12,6 +12,20 @@ protocol CreateUserControllerDelegate {
     func createUserSuccess()
 }
 
+extension CreateUserController: CatCallerApiCreateUserDelegate {
+    func createUserSuccess() {
+        self.createUserButton.hideLoading()
+        self.delegate?.createUserSuccess()
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+
+    func createUserError(message: String) {
+        self.createUserButton.hideLoading()
+        self.formErrors["email"] = message
+        self.displayErrorMessage()
+    }
+}
+
 class CreateUserController: UIViewController {
 
     @IBOutlet var email: UITextField!
@@ -32,7 +46,7 @@ class CreateUserController: UIViewController {
 
         self.updateCreateUserButtonStatus()
         self.apiWrapper = CatcallerApiWrapper()
-        self.apiWrapper.from = self
+        self.apiWrapper.delegate = self
 
     }
 
@@ -92,17 +106,4 @@ class CreateUserController: UIViewController {
         self.createUserButton.showLoading()
         self.apiWrapper.createUser(email: self.email.text!, password: self.password.text!)
     }
-
-    func createUserSuccess() {
-        self.createUserButton.hideLoading()
-        self.delegate?.createUserSuccess()
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-
-    func createUserError(message: String) {
-        self.createUserButton.hideLoading()
-        self.formErrors["email"] = message
-        self.displayErrorMessage()
-    }
-
 }

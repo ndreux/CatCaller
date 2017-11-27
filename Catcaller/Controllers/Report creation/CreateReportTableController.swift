@@ -10,7 +10,127 @@ import UIKit
 import Alamofire
 import MapKit
 
-class CreateReportTableController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
+extension CreateReportTableController: CatCallerApiGetHarassmentTypesDelegate {
+    // MARK: CatCallerApiGetHarassmentTypesDelegate
+    func getHarassmentTypesSuccess(harassmentTypes: [HarassmentType]) {
+        self.harassmentTypes = harassmentTypes
+    }
+
+    func getHarassmentTypesError() {}
+}
+
+extension CreateReportTableController: CatCallerApiCreateReportDelegate {
+    // MARK: CatCallerApiCreateReportDelegate
+    func createReportSuccess() {
+        self.activityIndicator.stopAnimating()
+        self.navigationBar.rightBarButtonItem = self.saveReportButton
+        self.navigationController?.popViewController(animated: true)
+    }
+
+    func createReportError() {
+        self.activityIndicator.stopAnimating()
+        self.navigationBar.rightBarButtonItem = self.saveReportButton
+    }
+}
+
+extension CreateReportTableController: UIPickerViewDelegate, UIPickerViewDataSource {
+    // MARK: Report Type - UIPicker
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.reportType.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return self.reportType[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableViewCellTextField
+
+        if row == 0 {
+            cell.textField.text = self.sections[0][0]
+            cell.textField.textColor = UIColor.lightGray
+        } else {
+            cell.textField.textColor = UIColor.black
+            cell.textField.text = "you are a \(self.reportType[row]) of street harassment".lowercased().firstUppercased
+        }
+
+        self.report.type = self.reportType[row]
+        self.updateSaveButtonState()
+    }
+}
+
+extension CreateReportTableController: UITextViewDelegate {
+    // MARK: HarassmentNote - TextView
+
+    func textViewDidChange(_ textView: UITextView) {
+        self.report.harassment.note = textView.text
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == self.sections[1][3] {
+            textView.text.removeAll()
+            textView.textColor = UIColor.black
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = self.sections[1][3]
+            textView.textColor = UIColor.lightGray
+        }
+    }
+}
+
+extension CreateReportTableController: HarassmentTypesControllerDelegate {
+    func selectHarassmentTypesSuccess(harassmentTypes: [Int : HarassmentType]) {
+
+        let indexPath = IndexPath(row: 2, section: 1)
+        let cell = self.tableView.cellForRow(at: indexPath)
+
+        switch harassmentTypes.count {
+        case 0:
+            cell?.textLabel?.text = self.sections[1][2]
+            cell?.textLabel?.textColor = UIColor.lightGray
+        case 1:
+            cell?.textLabel?.text = harassmentTypes.first!.value.label
+            cell?.textLabel?.textColor = UIColor.black
+        default:
+            cell?.textLabel?.text = "\(harassmentTypes.first!.value.label) and \(harassmentTypes.count - 1) more"
+            cell?.textLabel?.textColor = UIColor.black
+        }
+
+        self.selectedHarassmentTypes = harassmentTypes
+        self.report.harassment.types = harassmentTypes.map {$0.value}
+
+        self.updateSaveButtonState()
+    }
+}
+
+extension CreateReportTableController: HarassmentLocationControllerDelegate {
+    func getHarassmentLocationSuccess(placemark: MKPlacemark) {
+        print("Placemark : \(placemark)")
+        print("Placemark : \(String(describing: placemark.title))")
+
+        self.harassmentLocation = placemark.title!
+        let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1))
+        cell?.textLabel?.text = self.harassmentLocation
+        cell?.textLabel?.textColor = UIColor.black
+        self.report.harassment.location = Location(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
+
+        self.updateSaveButtonState()
+    }
+
+
+}
+
+class CreateReportTableController: UITableViewController {
 
     var apiWrapper: CatcallerApiWrapper!
     var pickerView: UIPickerView!
@@ -18,13 +138,14 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
     var dateFormatter: DateFormatter!
     var activityIndicator: UIActivityIndicatorView!
 
-    let reportType: [String] = ["Victim", "Witness"]
+    let reportType: [String] = ["", "Victim", "Witness"]
     let sections = [["You are ?"],["Datetime", "Place", "Harassment types", "Note"]]
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int:HarassmentType]!
     var harassmentLocation: String = String()
 
     var report: Report!
+
     @IBOutlet weak var saveReportButton: UIBarButtonItem!
     @IBOutlet weak var navigationBar: UINavigationItem!
 
@@ -33,8 +154,8 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
         self.report = Report()
 
         self.apiWrapper = CatcallerApiWrapper()
-        self.apiWrapper.from = self
-        self.apiWrapper.loadHarassmentTypes()
+        self.apiWrapper.delegate = self
+        self.apiWrapper.getHarassmentTypes()
 
         self.pickerView = UIPickerView()
         self.pickerView.delegate = self
@@ -63,17 +184,6 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
         self.activityIndicator.startAnimating()
         self.navigationBar.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
         self.apiWrapper.createReport(report: self.report)
-    }
-
-    func saveReportSuccess() {
-        self.activityIndicator.stopAnimating()
-        self.navigationBar.rightBarButtonItem = self.saveReportButton
-        self.navigationController?.popViewController(animated: true)
-    }
-
-    func saveReportError() {
-        self.activityIndicator.stopAnimating()
-        self.navigationBar.rightBarButtonItem = self.saveReportButton
     }
 
     func updateSaveButtonState() {
@@ -166,78 +276,15 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? HarassmentTypesController {
+            destinationVC.delegate = self
             destinationVC.harassmentTypes = self.harassmentTypes
             destinationVC.selectedHarassmentTypes = self.selectedHarassmentTypes
-            destinationVC.from = self
         }
 
         if let destinationVC = segue.destination as? HarassmentLocationController {
-            destinationVC.from = self
+            destinationVC.delegate = self
             destinationVC.searchString = self.harassmentLocation
         }
-    }
-
-    func updateSelectedHarassmentTypes(harassmentTypes: [Int:HarassmentType]) -> Void {
-        print("updateSelectedHarassmentTypes - START")
-        print("Harassment types: \(harassmentTypes)")
-
-        let indexPath = IndexPath(row: 2, section: 1)
-        let cell = self.tableView.cellForRow(at: indexPath)
-
-        switch harassmentTypes.count {
-        case 0:
-            cell?.textLabel?.text = "Harassment types"
-            cell?.textLabel?.textColor = UIColor.lightGray
-        case 1:
-            cell?.textLabel?.text = harassmentTypes.first!.value.label
-            cell?.textLabel?.textColor = UIColor.black
-        default:
-            cell?.textLabel?.text = "\(harassmentTypes.first!.value.label) and \(harassmentTypes.count - 1) more"
-            cell?.textLabel?.textColor = UIColor.black
-        }
-
-        self.selectedHarassmentTypes = harassmentTypes
-        self.report.harassment.types = harassmentTypes.map {$0.value}
-
-        self.updateSaveButtonState()
-
-        print("updateSelectedHarassmentTypes - END")
-    }
-
-    func updateHarassmentLocation(placemark: MKPlacemark) {
-
-        print("Placemark : \(placemark)")
-        print("Placemark : \(String(describing: placemark.title))")
-
-        self.harassmentLocation = placemark.title!
-        let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1))
-        cell?.textLabel?.text = self.harassmentLocation
-        cell?.textLabel?.textColor = UIColor.black
-        self.report.harassment.location = Location(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
-
-        self.updateSaveButtonState()
-    }
-
-    // MARK: Report Type - UIPicker
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.reportType.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.reportType[row]
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableViewCellTextField
-        cell.textField.textColor = UIColor.black
-        cell.textField.text = "you are a \(self.reportType[row]) of street harassment".lowercased().firstUppercased
-        self.report.type = self.reportType[row]
-        self.updateSaveButtonState()
     }
 
     // MARK: Harassment DateTime - DatePicker
@@ -261,28 +308,4 @@ class CreateReportTableController: UITableViewController, UIPickerViewDelegate, 
 
         self.updateSaveButtonState()
     }
-
-    // MARK: HarassmentNote - TextView
-
-    func textViewDidChange(_ textView: UITextView) {
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
-    }
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == self.sections[1][3] {
-            textView.text.removeAll()
-            textView.textColor = UIColor.black
-        }
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        self.report.harassment.note = textView.text
-        print("TEXTVIEW: \(textView.text)")
-        if textView.text.isEmpty {
-            textView.text = self.sections[1][3]
-            textView.textColor = UIColor.lightGray
-        }
-    }
-
 }

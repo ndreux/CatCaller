@@ -8,11 +8,15 @@
 
 import UIKit
 
+protocol HarassmentTypesControllerDelegate {
+    func selectHarassmentTypesSuccess(harassmentTypes: [Int:HarassmentType])
+}
+
 class HarassmentTypesController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int: HarassmentType]!
-    var from: UIViewController!
+    var delegate: HarassmentTypesControllerDelegate?
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -28,13 +32,9 @@ class HarassmentTypesController: UIViewController, UITableViewDelegate, UITableV
     }
 
     @IBAction func done(_ sender: UIBarButtonItem) {
-
-        if let presenter = self.from as? CreateReportTableController {
-            print("Send data to presenter")
-            print("Selected harassment types : \(self.selectedHarassmentTypes)")
-            presenter.updateSelectedHarassmentTypes(harassmentTypes: self.selectedHarassmentTypes)
+        if let presenter = self.delegate as? HarassmentTypesControllerDelegate {
+            presenter.selectHarassmentTypesSuccess(harassmentTypes: self.selectedHarassmentTypes)
         }
-        print("DISMISS")
         dismiss(animated: true, completion: nil)
     }
 
@@ -45,9 +45,6 @@ class HarassmentTypesController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        print("Count : \(self.harassmentTypes.count)")
-
         return self.harassmentTypes.count
     }
 

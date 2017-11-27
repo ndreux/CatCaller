@@ -10,7 +10,179 @@ import MapKit
 import UIKit
 import SwiftyJSON
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
+extension MapViewController: CLLocationManagerDelegate {
+
+    // MARK: CLLocationManagerDelegate functions
+
+    /**
+     Check if the app has the authorization to use user location.
+     Use user location if true, ask for it if not.
+     */
+    func checkLocationAuthorizationStatus() -> Void {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            self.locationManager!.startUpdatingLocation()
+            self.mapView.showsUserLocation = true
+        } else {
+            self.locationManager!.requestWhenInUseAuthorization()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) -> Void {
+        if status == .authorizedWhenInUse {
+            self.locationManager!.startUpdatingLocation()
+            self.mapView.showsUserLocation = true
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) -> Void {
+        self.userLocation = manager.location
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
+
+        mapView.setRegion(coordinateRegion, animated: true)
+        locationManager?.stopUpdatingLocation()
+        locationManager = nil
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    // MARK: MapViewDelegate functions
+
+    /**
+     Loads the pins of the new region after it was changed
+     */
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if isRegionTooBig() {
+            self.refreshButton.isEnabled = false
+            self.summaryLabel.text = "This area is to big to be scanned"
+        }
+
+        self.loadReports()
+    }
+
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+
+        if let annotation = view.annotation as? Pin {
+            self.selectedAnnotation = annotation
+            let report = annotation.report
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM d, yyyy HH:mm"
+
+            self.reportTypeLabel.text = report.type
+            self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
+            let arrayMap: Array = report.harassment.types.map(){ $0.label }
+            self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
+
+            self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+
+            self.hideMenu()
+            self.showBottomPanel()
+            self.hideSummaryBar()
+            self.hideAddButton()
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        self.selectedAnnotation = nil
+        self.hideBottomPanel()
+        self.showSummaryBar()
+        self.showAddButton()
+    }
+}
+
+extension MapViewController: UITableViewDelegate, UITableViewDataSource {
+
+    // MARK: TableViewDelegate/DataSource functions
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (self.harassmentTypes != nil) ? self.harassmentTypes!.count : 0
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentTypeMenuCell", for: indexPath)
+
+        cell.textLabel?.text = self.harassmentTypes![indexPath.row].label
+
+        if self.selectedHarassmentTypes![self.harassmentTypes![indexPath.row].id] != nil {
+            cell.accessoryType = .checkmark
+        }
+
+        return cell
+
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.harassmentTypesTableView.deselectRow(at: indexPath, animated: true)
+
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+                self.deselectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
+            }
+            else{
+                cell.accessoryType = .checkmark
+                self.selectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
+            }
+            self.updateHarassmentTypeSwitchStatus()
+            self.loadReports()
+        }
+    }
+}
+
+extension MapViewController: CatCallerApiGetHarassmentTypesDelegate {
+
+    func getHarassmentTypesSuccess(harassmentTypes: [HarassmentType]) {
+        self.harassmentTypes = harassmentTypes
+
+        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: harassmentTypes), forKey: "harassmentTypes")
+
+        self.loadSelectedHarassmentTypes()
+        self.harassmentTypesTableView.reloadData()
+
+        self.updateHarassmentTypeSwitchStatus()
+        self.loadReports()
+    }
+
+    func getHarassmentTypesError() { }
+
+
+}
+
+extension MapViewController: CatCallerApiGetReportsDelegate {
+    func getReportsSuccess(reports: [Report]) {
+        var oldAnnotations: [MKAnnotation] = [MKAnnotation]()
+
+        for annotation in self.mapView.annotations {
+            let annotationIsNotSelected = (annotation as? Pin)?.report.id != self.selectedAnnotation?.report.id
+            if annotationIsNotSelected {
+                oldAnnotations.append(annotation)
+            }
+        }
+
+        for report:Report in reports {
+            let annotationIsNotSelected = report.id != self.selectedAnnotation?.report.id
+            if annotationIsNotSelected {
+                self.addPin(report: report)
+            }
+        }
+
+        self.mapView.removeAnnotations(oldAnnotations)
+
+        // TODO: (ndreux - 2017-11-09) Use localization
+        self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
+        self.showSummaryBar()
+        self.stopLoading()
+    }
+
+    func getReportsError(error: Error) {}
+
+
+}
+
+class MapViewController: UIViewController {
 
     // MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
@@ -60,7 +232,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.harassmentTypesTableView.dataSource = self
 
         self.catcallerApi = CatcallerApiWrapper()
-        self.catcallerApi.from = self
+        self.catcallerApi.delegate = self
+
+        self.checkLocationAuthorizationStatus()
 
         if !self.authenticationHelper.isUserAuthenticated() {
             self.showAuthenticationNavigationController()
@@ -88,8 +262,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             return
         }
 
-        self.checkLocationAuthorizationStatus()
-
         DispatchQueue.main.async {
             self.loadHarassmentTypes()
             self.loadReports()
@@ -103,52 +275,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     func showAuthenticationNavigationController() {
         self.performSegue(withIdentifier: "showAuthenticationController", sender: self)
-    }
-
-    // MARK: User location management
-
-    /**
-     Check if the app has the authorization to use user location.
-     Use user location if true, ask for it if not.
-     */
-    func checkLocationAuthorizationStatus() -> Void {
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            self.locationManager!.startUpdatingLocation()
-            self.mapView.showsUserLocation = true
-        } else {
-            self.locationManager!.requestWhenInUseAuthorization()
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) -> Void {
-        switch status {
-        case .notDetermined:
-            print("NotDetermined")
-        case .restricted:
-            print("Restricted")
-        case .denied:
-            print("Denied")
-        case .authorizedAlways:
-            print("AuthorizedAlways")
-        case .authorizedWhenInUse:
-            print("AuthorizedWhenInUse")
-            locationManager!.startUpdatingLocation()
-            self.mapView.showsUserLocation = true
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) -> Void {
-
-        self.userLocation = manager.location
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
-
-        mapView.setRegion(coordinateRegion, animated: true)
-        locationManager?.stopUpdatingLocation()
-        locationManager = nil
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) -> Void {
-        print("Failed to initialize GPS: ", error.localizedDescription)
     }
 
     @objc func refreshReportsAction(_ sender: Any) {
@@ -179,7 +305,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.startLoading()
         self.hideSummaryBar()
 
-        catcallerApi.loadReportsInArea(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes!, onlyMyReports: self.onlyMyReportsSwitch.isOn)
+        catcallerApi.getReports(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes!, onlyMyReports: self.onlyMyReportsSwitch.isOn)
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -201,38 +327,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     /**
-     This function is called after loadind reports.
-     Add a pin for each report.
-     - parameter reports: JSON object containing the reports
-     */
-    func displayReports(reports: [Report]) -> Void {
-        var oldAnnotations: [MKAnnotation] = [MKAnnotation]()
-
-        print("Annotations count before updates : \(self.mapView.annotations.count)")
-        for annotation in self.mapView.annotations {
-            let annotationIsNotSelected = (annotation as? Pin)?.report.id != self.selectedAnnotation?.report.id
-            if annotationIsNotSelected {
-                oldAnnotations.append(annotation)
-            }
-        }
-
-        print("New annotations count : \(reports.count)")
-        for report:Report in reports {
-            let annotationIsNotSelected = report.id != self.selectedAnnotation?.report.id
-            if annotationIsNotSelected {
-                self.addPin(report: report)
-            }
-        }
-
-        self.mapView.removeAnnotations(oldAnnotations)
-
-        // TODO: (ndreux - 2017-11-09) Use localization
-        self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
-        self.showSummaryBar()
-        self.stopLoading()
-    }
-
-    /**
      Add a pin to the given location
      - parameter latitude: Latitude of the pin
      - parameter longitude: Longitude of the pin
@@ -241,51 +335,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.addAnnotation(Pin(report: report))
     }
 
-    // MARK: MapViewDelegate functions
-
-    /**
-     Loads the pins of the new region after it was changed
-     */
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        if isRegionTooBig() {
-            self.refreshButton.isEnabled = false
-            self.summaryLabel.text = "This area is to big to be scanned"
-        }
-
-        self.mapView = mapView
-
-        loadReports()
-    }
-
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
-        if let annotation = view.annotation as? Pin {
-            self.selectedAnnotation = annotation
-            let report = annotation.report
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM d, yyyy HH:mm"
-
-            self.reportTypeLabel.text = report.type
-            self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-            let arrayMap: Array = report.harassment.types.map(){ $0.description }
-            self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
-
-            self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
-
-            self.hideMenu()
-            self.showBottomPanel()
-            self.hideSummaryBar()
-            self.hideAddButton()
-        }
-    }
-
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        self.selectedAnnotation = nil
-        self.hideBottomPanel()
-        self.showSummaryBar()
-        self.showAddButton()
-    }
 
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -382,10 +431,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         if let harassmentTypesData = UserDefaults.standard.value(forKey: "harassmentTypes") as? Data {
             if let harassmentTypes = NSKeyedUnarchiver.unarchiveObject(with: harassmentTypesData) as? [HarassmentType] {
-                self.updateHarassmentTypeList(harassmentTypes: harassmentTypes)
+                self.getHarassmentTypesSuccess(harassmentTypes: harassmentTypes)
             }
         } else {
-            self.catcallerApi.loadHarassmentTypes()
+            self.catcallerApi.getHarassmentTypes()
         }
     }
 
@@ -414,18 +463,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         })
     }
 
-    func updateHarassmentTypeList(harassmentTypes: [HarassmentType]) {
-        self.harassmentTypes = harassmentTypes
-
-        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: harassmentTypes), forKey: "harassmentTypes")
-
-        self.loadSelectedHarassmentTypes()
-        self.harassmentTypesTableView.reloadData()
-
-        self.updateHarassmentTypeSwitchStatus()
-        self.loadReports()
-    }
-
     func loadSelectedHarassmentTypes() {
         self.selectedHarassmentTypes = [Int:HarassmentType]()
         if let selectedHarassmentTypesData = UserDefaults.standard.value(forKey: "selectedHarassmentTypes") as? Data {
@@ -437,49 +474,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.harassmentTypes != nil) ? self.harassmentTypes!.count : 0
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentTypeMenuCell", for: indexPath)
-
-        cell.textLabel?.text = self.harassmentTypes![indexPath.row].label
-
-        if self.selectedHarassmentTypes![self.harassmentTypes![indexPath.row].id] != nil {
-            cell.accessoryType = .checkmark
-        }
-
-        return cell
-
-    }
-
     @IBAction func toggleHarassmentTypesSwitch(_ sender: UISwitch) {
         sender.isOn = !sender.isOn
         sender.isOn ? self.selectAllHarassmentTypes() : self.deselectAllHarassmentTypes()
         DispatchQueue.main.async {
             self.harassmentTypesTableView.reloadData()
-            self.loadReports()
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.harassmentTypesTableView.deselectRow(at: indexPath, animated: true)
-
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                self.deselectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
-            }
-            else{
-                cell.accessoryType = .checkmark
-                self.selectHarassmentType(harassmentType: self.harassmentTypes![indexPath.row])
-            }
-            self.updateHarassmentTypeSwitchStatus()
             self.loadReports()
         }
     }

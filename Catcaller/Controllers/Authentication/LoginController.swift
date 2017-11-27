@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, CatCallerApiAuthenticationDelegate {
 
     @IBOutlet var email: UITextField!
     @IBOutlet var password: UITextField!
@@ -25,7 +25,7 @@ class LoginController: UIViewController {
 
         self.updateLoginButtonStatus()
         self.apiWrapper = CatcallerApiWrapper()
-        self.apiWrapper.from = self
+        self.apiWrapper.delegate = self
 
     }
 
@@ -52,6 +52,7 @@ class LoginController: UIViewController {
             self.errorLabel.text = "Login/password do not match"
         }
     }
+
 
     func updateLoginButtonStatus() {
         self.loginButton.isEnabled = !self.email.text!.isEmpty && !self.password.text!.isEmpty
