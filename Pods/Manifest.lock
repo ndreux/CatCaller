@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (4.5.1)
+  - IQKeyboardManagerSwift (5.0.2)
+  - JWTDecode (2.1.1)
+  - KeychainAccess (3.1.0)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - Alamofire
+  - IQKeyboardManagerSwift
+  - JWTDecode (~> 2.1)
+  - KeychainAccess
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  IQKeyboardManagerSwift: e580da046d804d2836ee84668cc17e43a850a35d
+  JWTDecode: 83e8b381aafe27158d9f692cbdca2b12d61d460c
+  KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: b34e1ff87715eb03525d615f8cef3ff5fc500345
+
+COCOAPODS: 1.3.1

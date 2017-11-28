@@ -7,12 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4404E8071FACBB930086FE0C /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4404E8061FACBB930086FE0C /* Pin.swift */; };
+		440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */; };
+		4421CA6C1FC6C28800EA928E /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */; };
+		4421CA6E1FC6C78C00EA928E /* AuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */; };
+		442BEE301FBED10D00A6298B /* HarassmentLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */; };
+		4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */; };
+		4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */; };
+		44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */; };
+		444C49121FBD828200AD3CF6 /* TableViewCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */; };
+		444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */; };
+		444C49161FBDCBE800AD3CF6 /* TableViewCellTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */; };
+		44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */; };
+		44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44572ECC1FB2008500FD0544 /* RoundedButton.swift */; };
+		445FC6EE1FB4629A00C8EAB8 /* SummaryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */; };
+		446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446DEA1B1FA326E60086E7FD /* LoginController.swift */; };
+		44B1A5681FBAE16500369623 /* CreateReportTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A5671FBAE16500369623 /* CreateReportTableController.swift */; };
+		44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A5691FBB274600369623 /* HarassmentTypesController.swift */; };
+		44B1A56C1FBB3B3E00369623 /* HarassmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */; };
 		44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */; };
-		44CE2AA51FA1D63C0011E8A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */; };
+		44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */; };
 		44CE2AA81FA1D63C0011E8A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */; };
 		44CE2AAA1FA1D63C0011E8A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */; };
 		44CE2AAD1FA1D63C0011E8A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */; };
 		44CE2AB81FA1D63C0011E8A1 /* CatcallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */; };
+		44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */; };
+		44F51E6E1FC8711B007D93D2 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */; };
+		44F8E1E81FB34C9E001ECA2B /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1E71FB34C9E001ECA2B /* Report.swift */; };
+		44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1E91FB34CB9001ECA2B /* Harassment.swift */; };
+		44F8E1EC1FB44012001ECA2B /* BottomPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1EB1FB44012001ECA2B /* BottomPanelView.swift */; };
+		44F8E1EE1FB442EB001ECA2B /* CatcallerApiFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1ED1FB442EB001ECA2B /* CatcallerApiFormatter.swift */; };
+		44F8E1F01FB44767001ECA2B /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F8E1EF1FB44767001ECA2B /* Location.swift */; };
+		86D3C00B4A6B8A9A55E1BD19 /* Pods_Catcaller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +52,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.release.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.release.xcconfig"; sourceTree = "<group>"; };
+		4404E8061FACBB930086FE0C /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+FirstLetterCapitalized.swift"; sourceTree = "<group>"; };
+		4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
+		4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationController.swift; sourceTree = "<group>"; };
+		442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentLocationController.swift; sourceTree = "<group>"; };
+		4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+DisclosureIcon.swift"; sourceTree = "<group>"; };
+		4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Alpha.swift"; sourceTree = "<group>"; };
+		44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerApiWrapper.swift; sourceTree = "<group>"; };
+		444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellTextField.swift; sourceTree = "<group>"; };
+		444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellDatePicker.swift; sourceTree = "<group>"; };
+		444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellTextView.swift; sourceTree = "<group>"; };
+		44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FromHex.swift"; sourceTree = "<group>"; };
+		44572ECC1FB2008500FD0544 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryBar.swift; sourceTree = "<group>"; };
+		446DEA1B1FA326E60086E7FD /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		44B1A5671FBAE16500369623 /* CreateReportTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportTableController.swift; sourceTree = "<group>"; };
+		44B1A5691FBB274600369623 /* HarassmentTypesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentTypesController.swift; sourceTree = "<group>"; };
+		44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarassmentType.swift; sourceTree = "<group>"; };
 		44CE2A9F1FA1D63C0011E8A1 /* Catcaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catcaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		44CE2AA71FA1D63C0011E8A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44CE2AAC1FA1D63C0011E8A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +81,15 @@
 		44CE2AB31FA1D63C0011E8A1 /* CatcallerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatcallerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CE2AB71FA1D63C0011E8A1 /* CatcallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerTests.swift; sourceTree = "<group>"; };
 		44CE2AB91FA1D63C0011E8A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserController.swift; sourceTree = "<group>"; };
+		44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		44F8E1E71FB34C9E001ECA2B /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		44F8E1E91FB34CB9001ECA2B /* Harassment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Harassment.swift; sourceTree = "<group>"; };
+		44F8E1EB1FB44012001ECA2B /* BottomPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPanelView.swift; sourceTree = "<group>"; };
+		44F8E1ED1FB442EB001ECA2B /* CatcallerApiFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatcallerApiFormatter.swift; sourceTree = "<group>"; };
+		44F8E1EF1FB44767001ECA2B /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Catcaller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Catcaller.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86D3C00B4A6B8A9A55E1BD19 /* Pods_Catcaller.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +111,101 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4421CA6A1FC6C26D00EA928E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				4421CA6B1FC6C28800EA928E /* AuthenticationHelper.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		4421CA6F1FC6C79100EA928E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				44E207EF1FA218AF00D11CE0 /* CreateUserController.swift */,
+				446DEA1B1FA326E60086E7FD /* LoginController.swift */,
+				4421CA6D1FC6C78C00EA928E /* AuthenticationController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		44460B241FA2258E00A898AD /* API */ = {
+			isa = PBXGroup;
+			children = (
+				44460B251FA225AA00A898AD /* CatcallerApiWrapper.swift */,
+				44F8E1ED1FB442EB001ECA2B /* CatcallerApiFormatter.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		44572EC71FB1F40900FD0544 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				44572EC81FB1F42100FD0544 /* UIColor+FromHex.swift */,
+				4441A4031FBAD5880051C78D /* UIButton+DisclosureIcon.swift */,
+				4441A4051FBAD5AF0051C78D /* UIImage+Alpha.swift */,
+				440AF2D31FC06D170072DF33 /* String+FirstLetterCapitalized.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		44635C161FC6BC3500DA0DA8 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4421CA6A1FC6C26D00EA928E /* Authentication */,
+				44572EC71FB1F40900FD0544 /* Extension */,
+				44460B241FA2258E00A898AD /* API */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		44635C171FC6BC8D00DA0DA8 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				44CE2AA41FA1D63C0011E8A1 /* MapViewController.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		44635C181FC6BC9700DA0DA8 /* Report creation */ = {
+			isa = PBXGroup;
+			children = (
+				44B1A5671FBAE16500369623 /* CreateReportTableController.swift */,
+				44B1A5691FBB274600369623 /* HarassmentTypesController.swift */,
+				442BEE2F1FBED10D00A6298B /* HarassmentLocationController.swift */,
+			);
+			path = "Report creation";
+			sourceTree = "<group>";
+		};
+		44635C191FC6BCC500DA0DA8 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				44F8E1EB1FB44012001ECA2B /* BottomPanelView.swift */,
+				4404E8061FACBB930086FE0C /* Pin.swift */,
+				44572ECC1FB2008500FD0544 /* RoundedButton.swift */,
+				445FC6ED1FB4629A00C8EAB8 /* SummaryBar.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		44635C1A1FC6BCD100DA0DA8 /* Report creation */ = {
+			isa = PBXGroup;
+			children = (
+				444C49111FBD828200AD3CF6 /* TableViewCellTextField.swift */,
+				444C49131FBD903300AD3CF6 /* TableViewCellDatePicker.swift */,
+				444C49151FBDCBE800AD3CF6 /* TableViewCellTextView.swift */,
+			);
+			path = "Report creation";
+			sourceTree = "<group>";
+		};
 		44CE2A961FA1D63B0011E8A1 = {
 			isa = PBXGroup;
 			children = (
 				44CE2AA11FA1D63C0011E8A1 /* Catcaller */,
 				44CE2AB61FA1D63C0011E8A1 /* CatcallerTests */,
 				44CE2AA01FA1D63C0011E8A1 /* Products */,
+				C9C41762553E7680AFC2E4A8 /* Pods */,
+				F830867F4CA265FBE3E1C277 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,12 +221,12 @@
 		44CE2AA11FA1D63C0011E8A1 /* Catcaller */ = {
 			isa = PBXGroup;
 			children = (
-				44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */,
-				44CE2AA41FA1D63C0011E8A1 /* ViewController.swift */,
-				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
-				44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */,
-				44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */,
+				44635C161FC6BC3500DA0DA8 /* Helpers */,
 				44CE2AAE1FA1D63C0011E8A1 /* Info.plist */,
+				44F65D721FA2213600E43783 /* Models */,
+				44F65D711FA2212300E43783 /* Views */,
+				44E207EE1FA2163D00D11CE0 /* Controllers */,
+				44F65D701FA2210400E43783 /* Supporting Files */,
 			);
 			path = Catcaller;
 			sourceTree = "<group>";
@@ -96,6 +240,73 @@
 			path = CatcallerTests;
 			sourceTree = "<group>";
 		};
+		44E207EE1FA2163D00D11CE0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				44635C171FC6BC8D00DA0DA8 /* Map */,
+				44635C181FC6BC9700DA0DA8 /* Report creation */,
+				4421CA6F1FC6C79100EA928E /* Authentication */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		44F51E6C1FC87107007D93D2 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				44F51E6D1FC8711B007D93D2 /* LoadingButton.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		44F65D701FA2210400E43783 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				44CE2AA21FA1D63C0011E8A1 /* AppDelegate.swift */,
+				44CE2AA91FA1D63C0011E8A1 /* Assets.xcassets */,
+				44CE2AAB1FA1D63C0011E8A1 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		44F65D711FA2212300E43783 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				44F51E6C1FC87107007D93D2 /* Authentication */,
+				44635C191FC6BCC500DA0DA8 /* Map */,
+				44635C1A1FC6BCD100DA0DA8 /* Report creation */,
+				44CE2AA61FA1D63C0011E8A1 /* Main.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		44F65D721FA2213600E43783 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				44F8E1E91FB34CB9001ECA2B /* Harassment.swift */,
+				44B1A56B1FBB3B3E00369623 /* HarassmentType.swift */,
+				44F8E1EF1FB44767001ECA2B /* Location.swift */,
+				44F8E1E71FB34C9E001ECA2B /* Report.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C9C41762553E7680AFC2E4A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */,
+				3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F830867F4CA265FBE3E1C277 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1B66DF004DDD0165C743045 /* Pods_Catcaller.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,9 +314,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44CE2ABC1FA1D63C0011E8A1 /* Build configuration list for PBXNativeTarget "Catcaller" */;
 			buildPhases = (
+				9B04E752BBF4DF9E09BA7847 /* [CP] Check Pods Manifest.lock */,
 				44CE2A9B1FA1D63B0011E8A1 /* Sources */,
 				44CE2A9C1FA1D63B0011E8A1 /* Frameworks */,
 				44CE2A9D1FA1D63B0011E8A1 /* Resources */,
+				B013C77F93B45BE7F90131C2 /* [CP] Embed Pods Frameworks */,
+				E35C1F1D856C443720008443 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -194,13 +408,100 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9B04E752BBF4DF9E09BA7847 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Catcaller-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B013C77F93B45BE7F90131C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/JWTDecode/JWTDecode.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWTDecode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E35C1F1D856C443720008443 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Catcaller/Pods-Catcaller-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		44CE2A9B1FA1D63B0011E8A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44CE2AA51FA1D63C0011E8A1 /* ViewController.swift in Sources */,
+				44CE2AA51FA1D63C0011E8A1 /* MapViewController.swift in Sources */,
 				44CE2AA31FA1D63C0011E8A1 /* AppDelegate.swift in Sources */,
+				44460B261FA225AA00A898AD /* CatcallerApiWrapper.swift in Sources */,
+				44572ECD1FB2008500FD0544 /* RoundedButton.swift in Sources */,
+				442BEE301FBED10D00A6298B /* HarassmentLocationController.swift in Sources */,
+				4441A4041FBAD5880051C78D /* UIButton+DisclosureIcon.swift in Sources */,
+				4421CA6E1FC6C78C00EA928E /* AuthenticationController.swift in Sources */,
+				44F51E6E1FC8711B007D93D2 /* LoadingButton.swift in Sources */,
+				444C49141FBD903300AD3CF6 /* TableViewCellDatePicker.swift in Sources */,
+				44B1A56A1FBB274600369623 /* HarassmentTypesController.swift in Sources */,
+				440AF2D41FC06D170072DF33 /* String+FirstLetterCapitalized.swift in Sources */,
+				44572EC91FB1F42100FD0544 /* UIColor+FromHex.swift in Sources */,
+				44F8E1EA1FB34CB9001ECA2B /* Harassment.swift in Sources */,
+				44B1A5681FBAE16500369623 /* CreateReportTableController.swift in Sources */,
+				4421CA6C1FC6C28800EA928E /* AuthenticationHelper.swift in Sources */,
+				44F8E1F01FB44767001ECA2B /* Location.swift in Sources */,
+				444C49121FBD828200AD3CF6 /* TableViewCellTextField.swift in Sources */,
+				44B1A56C1FBB3B3E00369623 /* HarassmentType.swift in Sources */,
+				4441A4061FBAD5AF0051C78D /* UIImage+Alpha.swift in Sources */,
+				44F8E1E81FB34C9E001ECA2B /* Report.swift in Sources */,
+				444C49161FBDCBE800AD3CF6 /* TableViewCellTextView.swift in Sources */,
+				4404E8071FACBB930086FE0C /* Pin.swift in Sources */,
+				44F8E1EC1FB44012001ECA2B /* BottomPanelView.swift in Sources */,
+				445FC6EE1FB4629A00C8EAB8 /* SummaryBar.swift in Sources */,
+				44E207F01FA218AF00D11CE0 /* CreateUserController.swift in Sources */,
+				446DEA1C1FA326E60086E7FD /* LoginController.swift in Sources */,
+				44F8E1EE1FB442EB001ECA2B /* CatcallerApiFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +591,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -341,7 +642,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -351,6 +652,7 @@
 		};
 		44CE2ABD1FA1D63C0011E8A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC18508E44E1BE3F274E7A69 /* Pods-Catcaller.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -367,6 +669,7 @@
 		};
 		44CE2ABE1FA1D63C0011E8A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3668988295C9526C3018BEA7 /* Pods-Catcaller.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
