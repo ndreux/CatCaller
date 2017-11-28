@@ -62,53 +62,9 @@
                                     <constraint firstItem="abh-H1-4Z7" firstAttribute="trailing" secondItem="k5l-4s-EU1" secondAttribute="trailingMargin" id="tPH-eb-agG"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMF-JF-ijJ" customClass="BottomPanelView" customModule="Catcaller" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMF-JF-ijJ" customClass="BottomPanel" customModule="Catcaller" customModuleProvider="target">
                                 <rect key="frame" x="16" y="0.0" width="382" height="145"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbn-8O-AIe">
-                                        <rect key="frame" x="161" y="19" width="213" height="18"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O2f-uj-ZGY">
-                                        <rect key="frame" x="8" y="8" width="213" height="32"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harassment types :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hv-f4-nuU">
-                                        <rect key="frame" x="8" y="45" width="366" height="21"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="akdakldhadhakldhlasd lhakld ak ldhakl dh akldsh akld hakld haldk hakdl ahd lkahd klah a" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvk-P4-cwK">
-                                        <rect key="frame" x="8" y="74" width="366" height="21"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <accessibilityTraits key="traits" staticText="YES" adjustable="YES"/>
-                                        </accessibility>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="O2f-uj-ZGY" firstAttribute="trailing" secondItem="cMF-JF-ijJ" secondAttribute="centerX" constant="30" id="5aQ-Pb-Zy6"/>
-                                    <constraint firstItem="O2f-uj-ZGY" firstAttribute="top" secondItem="cMF-JF-ijJ" secondAttribute="top" constant="8" id="EC1-Pl-xL0"/>
-                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="trailing" secondItem="dvk-P4-cwK" secondAttribute="trailing" id="JZJ-vx-07w"/>
-                                    <constraint firstItem="O2f-uj-ZGY" firstAttribute="leading" secondItem="cMF-JF-ijJ" secondAttribute="leading" constant="8" id="Lb5-EU-V3e"/>
-                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="leading" secondItem="cMF-JF-ijJ" secondAttribute="centerX" constant="-30" id="Trc-Jr-hai"/>
-                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="baseline" secondItem="O2f-uj-ZGY" secondAttribute="baseline" id="ain-um-hDa"/>
-                                    <constraint firstItem="5hv-f4-nuU" firstAttribute="top" secondItem="O2f-uj-ZGY" secondAttribute="bottom" constant="5.5" id="b9I-yt-vmw"/>
-                                    <constraint firstAttribute="trailing" secondItem="Zbn-8O-AIe" secondAttribute="trailing" constant="8" id="dZx-wB-j7k"/>
-                                    <constraint firstItem="dvk-P4-cwK" firstAttribute="top" secondItem="5hv-f4-nuU" secondAttribute="bottom" constant="8" id="g3c-bW-rlD"/>
-                                    <constraint firstItem="Zbn-8O-AIe" firstAttribute="trailing" secondItem="5hv-f4-nuU" secondAttribute="trailing" id="lEq-dI-Bui"/>
-                                    <constraint firstAttribute="bottom" secondItem="dvk-P4-cwK" secondAttribute="bottom" constant="50" id="mtv-PZ-7R9" userLabel="bottom = Harassment Types Label.bottom + 50"/>
-                                    <constraint firstItem="5hv-f4-nuU" firstAttribute="leading" secondItem="O2f-uj-ZGY" secondAttribute="leading" id="rKz-Iz-sJ1"/>
-                                    <constraint firstItem="dvk-P4-cwK" firstAttribute="leading" secondItem="O2f-uj-ZGY" secondAttribute="leading" id="xyn-8b-zTM"/>
-                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pgk-ci-GWs" userLabel="Menu">
                                 <rect key="frame" x="0.0" y="0.0" width="255" height="672"/>
@@ -223,8 +179,6 @@
                     <connections>
                         <outlet property="addReportButton" destination="vtO-Qp-dVi" id="0E5-RA-cqF"/>
                         <outlet property="bottomPanel" destination="cMF-JF-ijJ" id="Ixz-Aw-N46"/>
-                        <outlet property="harassmentDatetimeLabel" destination="Zbn-8O-AIe" id="YHU-HR-Lbq"/>
-                        <outlet property="harassmentTypesLabel" destination="dvk-P4-cwK" id="or4-kj-lg8"/>
                         <outlet property="harassmentTypesSwitch" destination="Wl3-5v-GO6" id="9V8-hC-q76"/>
                         <outlet property="harassmentTypesTableView" destination="xgx-yv-1uy" id="2h0-GA-DPa"/>
                         <outlet property="mapView" destination="Jhf-Ae-QoJ" id="Ine-rD-iAa"/>
@@ -232,7 +186,6 @@
                         <outlet property="menuView" destination="Pgk-ci-GWs" id="Paf-Fz-61E"/>
                         <outlet property="navItem" destination="R7F-0G-JpD" id="yru-pt-GoM"/>
                         <outlet property="onlyMyReportsSwitch" destination="cVA-NJ-31A" id="EHH-TW-ioA"/>
-                        <outlet property="reportTypeLabel" destination="O2f-uj-ZGY" id="JwU-lg-i6P"/>
                         <outlet property="summaryBar" destination="k5l-4s-EU1" id="IU3-pD-2eg"/>
                         <outlet property="summaryLabel" destination="abh-H1-4Z7" id="qkB-D7-Ja9"/>
                         <segue destination="dZ1-n6-XEz" kind="presentation" identifier="showAuthenticationController" id="pdS-z1-Kgi"/>

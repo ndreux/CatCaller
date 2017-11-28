@@ -69,9 +69,9 @@ extension MapViewController: MKMapViewDelegate {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM d, yyyy HH:mm"
 
-            self.reportTypeLabel.text = report.type
-            self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-            self.harassmentTypesLabel.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
+            self.bottomPanel.reportType.text = report.type
+            self.bottomPanel.harassmentDate.text = formatter.string(from: report.harassment.datetime)
+            self.bottomPanel.harassmentTypes.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
 
             mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
@@ -198,10 +198,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var summaryBar: UIView!
     @IBOutlet weak var summaryLabel: UILabel!
 
-    @IBOutlet weak var bottomPanel: UIView!
-    @IBOutlet weak var reportTypeLabel: UILabel!
-    @IBOutlet weak var harassmentDatetimeLabel: UILabel!
-    @IBOutlet weak var harassmentTypesLabel: UILabel!
+    @IBOutlet weak var bottomPanel: BottomPanel!
 
     var activityIndicator: UIActivityIndicatorView!
     var refreshButton: UIBarButtonItem!
@@ -394,10 +391,15 @@ class MapViewController: UIViewController {
     }
 
     private func showBottomPanel() -> Void {
-        self.bottomPanel.layoutIfNeeded()
         self.bottomPanel.isHidden = false
+
+        self.bottomPanel.setNeedsLayout()
+        self.bottomPanel.layoutIfNeeded()
+
+        print("Content view size: \(self.bottomPanel.frame.size.height)")
+
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 30 )
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 10 )
         })
     }
 
