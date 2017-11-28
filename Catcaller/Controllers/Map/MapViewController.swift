@@ -254,9 +254,7 @@ class MapViewController: UIViewController {
 
         self.summaryLabel.textColor = .white
 
-        self.hideMenu()
-        self.hideBottomPanel()
-        self.hideSummaryBar()
+        self.hideAccessoryViews()
 
         self.view.isHidden = false
         if !self.authenticationHelper.isUserAuthenticated() {
@@ -270,6 +268,14 @@ class MapViewController: UIViewController {
         }
     }
 
+    func hideAccessoryViews() {
+        self.menuView.isHidden = true
+        self.bottomPanel.isHidden = true
+        self.summaryBar.isHidden = true
+        self.hideMenu()
+        self.hideBottomPanel()
+        self.hideSummaryBar()
+    }
     @IBAction func logoutAction(_ sender: UIButton) {
         AuthenticationHelper().logout()
         self.showAuthenticationNavigationController()
@@ -389,6 +395,7 @@ class MapViewController: UIViewController {
 
     private func showBottomPanel() -> Void {
         self.bottomPanel.layoutIfNeeded()
+        self.bottomPanel.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 30 )
         })
@@ -401,6 +408,7 @@ class MapViewController: UIViewController {
     }
 
     private func showAddButton() -> Void {
+        self.summaryBar.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.addReportButton.transform = CGAffineTransform(translationX: 0, y: 0)
         })
@@ -413,6 +421,7 @@ class MapViewController: UIViewController {
     }
 
     private func showSummaryBar() -> Void {
+        self.summaryBar.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
         })
