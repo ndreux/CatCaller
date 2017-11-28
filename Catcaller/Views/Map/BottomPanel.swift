@@ -28,7 +28,7 @@ class BottomPanel: UIView {
     func commonInit() {
         Bundle.main.loadNibNamed("BottomPanel", owner: self, options: nil)
         addSubview(contentView)
-        backgroundColor = UIColor(white: 1, alpha: 0.9)
+        contentView.backgroundColor = UIColor(white: 1, alpha: 0.9)
         layer.cornerRadius = 10
         clipsToBounds = true
         contentView.frame = self.bounds

@@ -8,7 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,21 +44,9 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5l-4s-EU1" customClass="SummaryBar" customModule="Catcaller" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="21"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abh-H1-4Z7">
-                                        <rect key="frame" x="8" y="0.0" width="398" height="21"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="abh-H1-4Z7" firstAttribute="leading" secondItem="k5l-4s-EU1" secondAttribute="leadingMargin" id="51c-8E-4YW"/>
-                                    <constraint firstAttribute="height" constant="21" id="esE-aI-yku"/>
-                                    <constraint firstAttribute="bottom" secondItem="abh-H1-4Z7" secondAttribute="bottom" id="iku-kR-8Fh"/>
-                                    <constraint firstItem="abh-H1-4Z7" firstAttribute="top" secondItem="k5l-4s-EU1" secondAttribute="top" id="kMf-Hb-Ldw"/>
-                                    <constraint firstItem="abh-H1-4Z7" firstAttribute="trailing" secondItem="k5l-4s-EU1" secondAttribute="trailingMargin" id="tPH-eb-agG"/>
+                                    <constraint firstAttribute="height" constant="21" id="k9w-7X-wpw"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMF-JF-ijJ" customClass="BottomPanel" customModule="Catcaller" customModuleProvider="target">
@@ -187,7 +174,6 @@
                         <outlet property="navItem" destination="R7F-0G-JpD" id="yru-pt-GoM"/>
                         <outlet property="onlyMyReportsSwitch" destination="cVA-NJ-31A" id="EHH-TW-ioA"/>
                         <outlet property="summaryBar" destination="k5l-4s-EU1" id="IU3-pD-2eg"/>
-                        <outlet property="summaryLabel" destination="abh-H1-4Z7" id="qkB-D7-Ja9"/>
                         <segue destination="dZ1-n6-XEz" kind="presentation" identifier="showAuthenticationController" id="pdS-z1-Kgi"/>
                     </connections>
                 </viewController>

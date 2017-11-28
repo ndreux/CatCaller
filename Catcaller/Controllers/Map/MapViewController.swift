@@ -54,7 +54,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if isRegionTooBig() {
             self.refreshButton.isEnabled = false
-            self.summaryLabel.text = "This area is to big to be scanned"
+            self.updateSummaryBar(reportsCount: nil)
         }
 
         self.loadReports()
@@ -195,9 +195,7 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var addReportButton: UIButton!
 
-    @IBOutlet weak var summaryBar: UIView!
-    @IBOutlet weak var summaryLabel: UILabel!
-
+    @IBOutlet weak var summaryBar: SummaryBar!
     @IBOutlet weak var bottomPanel: BottomPanel!
 
     var activityIndicator: UIActivityIndicatorView!
@@ -249,7 +247,6 @@ class MapViewController: UIViewController {
         self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
         self.navItem.rightBarButtonItem = self.refreshButton
 
-        self.summaryLabel.textColor = .white
 
         self.hideAccessoryViews()
 
@@ -273,6 +270,7 @@ class MapViewController: UIViewController {
         self.hideBottomPanel()
         self.hideSummaryBar()
     }
+    
     @IBAction func logoutAction(_ sender: UIButton) {
         AuthenticationHelper().logout()
         self.showAuthenticationNavigationController()
@@ -429,14 +427,16 @@ class MapViewController: UIViewController {
         })
     }
 
-    private func updateSummaryBar(reportsCount: Int) {
+    private func updateSummaryBar(reportsCount: Int?) {
         switch reportsCount {
-        case 0:
-            self.summaryLabel.text = "There is no report in this area"
-        case 1:
-            self.summaryLabel.text = "There is 1 report in this area"
+        case nil:
+            self.summaryBar.summaryText.text = "This area is too big to be scanned"
+        case 0?:
+            self.summaryBar.summaryText.text = "There is no report in this area"
+        case 1?:
+            self.summaryBar.summaryText.text = "There is 1 report in this area"
         default:
-            self.summaryLabel.text = "There are \(reportsCount) reports in this area"
+            self.summaryBar.summaryText.text = "There are \(reportsCount!) reports in this area"
         }
     }
 
