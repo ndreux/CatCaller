@@ -25,7 +25,7 @@ class BottomPanel: UIView {
         commonInit()
     }
 
-    func commonInit() {
+    private func commonInit() {
         Bundle.main.loadNibNamed("BottomPanel", owner: self, options: nil)
         addSubview(contentView)
         contentView.backgroundColor = UIColor(white: 1, alpha: 0.9)

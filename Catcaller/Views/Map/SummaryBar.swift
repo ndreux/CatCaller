@@ -23,17 +23,30 @@ class SummaryBar: UIView {
         commonInit()
     }
 
-    func commonInit() {
+    private func commonInit() {
 
         Bundle.main.loadNibNamed("SummaryBar", owner: self, options: nil)
 
         contentView.backgroundColor = UIColor(hex: "020440")
-
         summaryText.textColor = .white
+        
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
         addSubview(contentView)
+    }
+
+    func updateSummary(reportsCount: Int?) {
+        switch reportsCount {
+        case nil:
+            self.summaryText.text = "This area is too big to be scanned"
+        case 0?:
+            self.summaryText.text = "There is no report in this area"
+        case 1?:
+            self.summaryText.text = "There is 1 report in this area"
+        default:
+            self.summaryText.text = "There are \(reportsCount!) reports in this area"
+        }
     }
 
 }

@@ -25,8 +25,8 @@ extension HarassmentLocationController: MKLocalSearchCompleterDelegate {
     // MARK: MKLocalSearchCompleterDelegate
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         print("search: \(completer.results)")
+        self.addresses = completer.results
         DispatchQueue.main.async {
-            self.addresses = completer.results
             self.searchResultTableView.reloadData()
         }
     }
@@ -41,8 +41,9 @@ extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cellForRowAt")
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        print(self.addresses[indexPath.row])
+
+        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
+//        print(self.addresses?[indexPath.row])
         cell.textLabel?.text = self.addresses[indexPath.row].title
         cell.detailTextLabel?.text = self.addresses[indexPath.row].subtitle
         return cell
@@ -93,6 +94,7 @@ class HarassmentLocationController: UIViewController {
         self.completer.delegate = self
         self.completer.queryFragment = self.searchString
     }
+
 
     // MARK: IBAction
     @IBAction func cancel(_ sender: UIBarButtonItem) {

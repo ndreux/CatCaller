@@ -54,7 +54,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if isRegionTooBig() {
             self.refreshButton.isEnabled = false
-            self.updateSummaryBar(reportsCount: nil)
+            self.summaryBar.updateSummary(reportsCount: nil)
         }
 
         self.loadReports()
@@ -172,7 +172,7 @@ extension MapViewController: CatCallerApiGetReportsDelegate {
         self.mapView.removeAnnotations(oldAnnotations)
 
         // TODO: (ndreux - 2017-11-09) Use localization
-        self.updateSummaryBar(reportsCount: reports.count)
+        self.summaryBar.updateSummary(reportsCount: reports.count)
         self.showSummaryBar()
         self.stopLoading()
     }
@@ -187,6 +187,7 @@ class MapViewController: UIViewController {
     // MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
+
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var onlyMyReportsSwitch: UISwitch!
@@ -194,7 +195,6 @@ class MapViewController: UIViewController {
     @IBOutlet weak var harassmentTypesTableView: UITableView!
 
     @IBOutlet weak var addReportButton: UIButton!
-
     @IBOutlet weak var summaryBar: SummaryBar!
     @IBOutlet weak var bottomPanel: BottomPanel!
 
@@ -219,6 +219,7 @@ class MapViewController: UIViewController {
         self.authenticationHelper = AuthenticationHelper()
 
         self.mapView!.delegate = self
+        self.mapView.isRotateEnabled = false
 
         self.locationManager = CLLocationManager()
         self.locationManager!.delegate = self
@@ -228,8 +229,6 @@ class MapViewController: UIViewController {
 
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.delegate = self
-
-        self.mapView.isRotateEnabled = false
 
         self.checkLocationAuthorizationStatus()
 
@@ -246,7 +245,6 @@ class MapViewController: UIViewController {
         self.activityIndicator.hidesWhenStopped = true
         self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
         self.navItem.rightBarButtonItem = self.refreshButton
-
 
         self.hideAccessoryViews()
 
@@ -292,7 +290,7 @@ class MapViewController: UIViewController {
     func loadReports() -> Void {
 
         if self.selectedHarassmentTypes == nil || self.selectedHarassmentTypes!.count == 0 {
-            self.updateSummaryBar(reportsCount: 0)
+            self.summaryBar.updateSummary(reportsCount: 0)
             self.mapView.removeAnnotations(self.mapView.annotations)
             return
         }
@@ -389,8 +387,8 @@ class MapViewController: UIViewController {
     }
 
     private func showBottomPanel() -> Void {
-        self.bottomPanel.isHidden = false
 
+        self.bottomPanel.isHidden = false
         self.bottomPanel.setNeedsLayout()
         self.bottomPanel.layoutIfNeeded()
 
@@ -423,19 +421,6 @@ class MapViewController: UIViewController {
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
         })
-    }
-
-    private func updateSummaryBar(reportsCount: Int?) {
-        switch reportsCount {
-        case nil:
-            self.summaryBar.summaryText.text = "This area is too big to be scanned"
-        case 0?:
-            self.summaryBar.summaryText.text = "There is no report in this area"
-        case 1?:
-            self.summaryBar.summaryText.text = "There is 1 report in this area"
-        default:
-            self.summaryBar.summaryText.text = "There are \(reportsCount!) reports in this area"
-        }
     }
 
     private func hideSummaryBar() -> Void {
@@ -558,6 +543,9 @@ class MapViewController: UIViewController {
         })
     }
 
+    /**
+     If all harassment types are selected, activates the switch. Deactivates it otherwise.
+     */
     func updateHarassmentTypeSwitchStatus() {
         if self.harassmentTypes == nil {
             return
@@ -565,6 +553,7 @@ class MapViewController: UIViewController {
 
         self.harassmentTypesSwitch.isOn = self.harassmentTypes!.count == self.selectedHarassmentTypes!.count
     }
+
 
     @IBAction func toggleOnlyMyReportsSwitch(_ sender: UISwitch) {
         self.loadReports()
