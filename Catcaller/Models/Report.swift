@@ -13,8 +13,10 @@ class Report {
     var id: Int?
     var harassment: Harassment
     var type: String
+    var reporter: Int
 
-    init() {
+    init(reporter: Int) {
+        self.reporter = reporter
         self.type = String()
         self.harassment = Harassment()
     }

@@ -25,7 +25,8 @@ class CatcallerApiFormatter {
 
     func formatJsonIntoReport(json: JSON) -> Report {
 
-        let report: Report = Report()
+        let reporterId = Int(json["reporter"].string!.replacingOccurrences(of: "/users/", with: ""))
+        let report: Report = Report(reporter: reporterId!)
         report.harassment = self.formatJsonIntoHarassment(json: json["harassment"])
         report.type = self.formatReportTypeFromApiToModel(reportType: json["type"].int!)
         report.id = json["id"].int!
@@ -105,7 +106,7 @@ class CatcallerApiFormatter {
 
         var json: JSON = JSON()
 
-        json["reporter"].string = "/users/1"
+        json["reporter"].string = "/users/\(report.reporter)"
         json["type"].int = report.type == "Victim" ? 1 : 2
         json["harassment"] = self.formatHarassmentToJson(harassment: report.harassment)
 

@@ -32,7 +32,7 @@ class HarassmentTypesController: UIViewController, UITableViewDelegate, UITableV
     }
 
     @IBAction func done(_ sender: UIBarButtonItem) {
-        if let presenter = self.delegate as? HarassmentTypesControllerDelegate {
+        if let presenter = self.delegate {
             presenter.selectHarassmentTypesSuccess(harassmentTypes: self.selectedHarassmentTypes)
         }
         dismiss(animated: true, completion: nil)

@@ -151,7 +151,7 @@ class CreateReportTableController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.report = Report()
+        self.report = Report(reporter: AuthenticationHelper().getUserId()!)
 
         self.apiWrapper = CatcallerApiWrapper()
         self.apiWrapper.delegate = self

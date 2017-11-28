@@ -36,9 +36,10 @@ extension MapViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) -> Void {
         self.userLocation = manager.location
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
 
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(self.userLocation!.coordinate, 500, 500)
         mapView.setRegion(coordinateRegion, animated: true)
+
         locationManager?.stopUpdatingLocation()
         locationManager = nil
     }
@@ -70,10 +71,9 @@ extension MapViewController: MKMapViewDelegate {
 
             self.reportTypeLabel.text = report.type
             self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-            let arrayMap: Array = report.harassment.types.map(){ $0.label }
-            self.harassmentTypesLabel.text = arrayMap.joined(separator: ", ")
+            self.harassmentTypesLabel.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
 
-            self.mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+            mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
             self.hideMenu()
             self.showBottomPanel()
@@ -172,7 +172,7 @@ extension MapViewController: CatCallerApiGetReportsDelegate {
         self.mapView.removeAnnotations(oldAnnotations)
 
         // TODO: (ndreux - 2017-11-09) Use localization
-        self.summaryLabel.text = "There are \(reports.count) report(s) in this area"
+        self.updateSummaryBar(reportsCount: reports.count)
         self.showSummaryBar()
         self.stopLoading()
     }
@@ -234,6 +234,8 @@ class MapViewController: UIViewController {
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.delegate = self
 
+        self.mapView.isRotateEnabled = false
+
         self.checkLocationAuthorizationStatus()
 
         if !self.authenticationHelper.isUserAuthenticated() {
@@ -289,7 +291,7 @@ class MapViewController: UIViewController {
     func loadReports() -> Void {
 
         if self.selectedHarassmentTypes == nil || self.selectedHarassmentTypes!.count == 0 {
-            // TODO: (ndreux - 2017-11-23) Manage summary bar count
+            self.updateSummaryBar(reportsCount: 0)
             self.mapView.removeAnnotations(self.mapView.annotations)
             return
         }
@@ -373,6 +375,7 @@ class MapViewController: UIViewController {
      */
     private func startLoading() -> Void {
         self.activityIndicator.startAnimating()
+        self.refreshButton.isEnabled = true
         self.navItem.rightBarButtonItem = UIBarButtonItem(customView: self.activityIndicator)
     }
 
@@ -413,6 +416,17 @@ class MapViewController: UIViewController {
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: 0)
         })
+    }
+
+    private func updateSummaryBar(reportsCount: Int) {
+        switch reportsCount {
+        case 0:
+            self.summaryLabel.text = "There is no report in this area"
+        case 1:
+            self.summaryLabel.text = "There is 1 report in this area"
+        default:
+            self.summaryLabel.text = "There are \(reportsCount) reports in this area"
+        }
     }
 
     private func hideSummaryBar() -> Void {

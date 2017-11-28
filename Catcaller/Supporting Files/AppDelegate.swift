@@ -57,6 +57,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         statusBar.backgroundColor = UIColor(hex: "020440")
     }
 
-
 }
 
