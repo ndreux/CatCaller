@@ -394,10 +394,8 @@ class MapViewController: UIViewController {
         self.bottomPanel.setNeedsLayout()
         self.bottomPanel.layoutIfNeeded()
 
-        print("Content view size: \(self.bottomPanel.frame.size.height)")
-
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 10 )
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 90 )
         })
     }
 

@@ -115,9 +115,6 @@ extension CreateReportTableController: HarassmentTypesControllerDelegate {
 
 extension CreateReportTableController: HarassmentLocationControllerDelegate {
     func getHarassmentLocationSuccess(placemark: MKPlacemark) {
-        print("Placemark : \(placemark)")
-        print("Placemark : \(String(describing: placemark.title))")
-
         self.harassmentLocation = placemark.title!
         let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1))
         cell?.textLabel?.text = self.harassmentLocation

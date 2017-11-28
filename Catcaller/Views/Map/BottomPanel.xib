@@ -24,26 +24,26 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LzA-ma-DcU">
-                    <rect key="frame" x="157.5" y="31" width="201" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LzA-ma-DcU">
+                    <rect key="frame" x="157.5" y="488" width="201" height="18"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thd-PK-9KA">
-                    <rect key="frame" x="16" y="20" width="141.5" height="32"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thd-PK-9KA">
+                    <rect key="frame" x="16" y="40" width="141.5" height="469"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Harassment types :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2V-pz-w22">
-                    <rect key="frame" x="16" y="60" width="343" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Harassment types :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2V-pz-w22">
+                    <rect key="frame" x="16" y="517" width="343" height="21"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="akdakldhadhakldhlasd lhakld ak ldhakl dh akldsh akld hakld haldk hakdl ahd lkahd klah a" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CvC-Bk-vf4">
-                    <rect key="frame" x="16" y="89" width="343" height="21"/>
+                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="akdakldhadhakldhlasd lhakld ak ldhakl dh akldsh akld hakld haldk hakdl ahd lkahd klah a" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CvC-Bk-vf4">
+                    <rect key="frame" x="16" y="546" width="343" height="21"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" staticText="YES" adjustable="YES"/>
                     </accessibility>
@@ -65,7 +65,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="CvC-Bk-vf4" secondAttribute="trailing" constant="16" id="mDG-La-8Nr"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="R2V-pz-w22" secondAttribute="trailing" constant="16" id="nax-2C-TEm"/>
                 <constraint firstItem="CvC-Bk-vf4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="rr1-3e-WuY"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="CvC-Bk-vf4" secondAttribute="bottom" constant="30" id="uyM-NW-slZ" userLabel="Safe Area.bottom = Harassment Types.bottom + 30"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="CvC-Bk-vf4" secondAttribute="bottom" constant="100" id="uyM-NW-slZ" userLabel="Safe Area.bottom = Harassment Types.bottom + 30"/>
                 <constraint firstItem="thd-PK-9KA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="vRg-7R-y8p"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
