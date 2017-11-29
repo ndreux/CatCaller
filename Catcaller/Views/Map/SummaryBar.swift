@@ -39,13 +39,13 @@ class SummaryBar: UIView {
     func updateSummary(reportsCount: Int?) {
         switch reportsCount {
         case nil:
-            self.summaryText.text = "This area is too big to be scanned"
+            self.summaryText.text = NSLocalizedString("summary_bar.area_too_big", comment: "")
         case 0?:
-            self.summaryText.text = "There is no report in this area"
+            self.summaryText.text = NSLocalizedString("summary_bar.report.zero", comment: "")
         case 1?:
-            self.summaryText.text = "There is 1 report in this area"
+            self.summaryText.text = NSLocalizedString("summary_bar.report.one", comment: "")
         default:
-            self.summaryText.text = "There are \(reportsCount!) reports in this area"
+            self.summaryText.text = String(format: NSLocalizedString("summary_bar.report.more", comment: ""), reportsCount!)
         }
     }
 

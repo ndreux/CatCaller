@@ -10,15 +10,6 @@ import UIKit
 import Alamofire
 import MapKit
 
-extension CreateReportTableController: CatCallerApiGetHarassmentTypesDelegate {
-    // MARK: CatCallerApiGetHarassmentTypesDelegate
-    func getHarassmentTypesSuccess(harassmentTypes: [HarassmentType]) {
-        self.harassmentTypes = harassmentTypes
-    }
-
-    func getHarassmentTypesError() {}
-}
-
 extension CreateReportTableController: CatCallerApiCreateReportDelegate {
     // MARK: CatCallerApiCreateReportDelegate
     func createReportSuccess() {

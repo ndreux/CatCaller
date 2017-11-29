@@ -143,12 +143,13 @@ extension MapViewController: CatCallerApiGetHarassmentTypesDelegate {
         self.harassmentTypesTableView.reloadData()
 
         self.updateHarassmentTypeSwitchStatus()
+        self.stopLoading()
         self.loadReports()
     }
 
-    func getHarassmentTypesError() { }
-
-
+    func getHarassmentTypesError() {
+        self.stopLoading()
+    }
 }
 
 extension MapViewController: CatCallerApiGetReportsDelegate {
@@ -271,7 +272,13 @@ class MapViewController: UIViewController {
     
     @IBAction func logoutAction(_ sender: UIButton) {
         AuthenticationHelper().logout()
+        self.cleanSavedData()
         self.showAuthenticationNavigationController()
+    }
+
+    func cleanSavedData() {
+        UserDefaults.standard.setValue(nil, forKey: "harassmentTypes")
+        UserDefaults.standard.setValue(nil, forKey: "selectedHarassmentTypes")
     }
 
     func showAuthenticationNavigationController() {
@@ -340,6 +347,7 @@ class MapViewController: UIViewController {
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? CreateReportTableController {
+            destinationVC.harassmentTypes = self.harassmentTypes
             if self.userLocation != nil {
                 let geocoder = CLGeocoder()
                 geocoder.reverseGeocodeLocation(self.userLocation!){
@@ -432,6 +440,8 @@ class MapViewController: UIViewController {
     // MARK: Menu
 
     func loadHarassmentTypes() {
+
+        self.startLoading()
 
         if self.harassmentTypes == nil {
             self.harassmentTypes = [HarassmentType]()
@@ -553,7 +563,6 @@ class MapViewController: UIViewController {
 
         self.harassmentTypesSwitch.isOn = self.harassmentTypes!.count == self.selectedHarassmentTypes!.count
     }
-
 
     @IBAction func toggleOnlyMyReportsSwitch(_ sender: UISwitch) {
         self.loadReports()

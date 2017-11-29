@@ -57,7 +57,7 @@ class CreateUserController: UIViewController {
 
     @IBAction func passwordsChanged(_ sender: UITextField) {
         if !self.doPasswordsMatch() {
-            self.formErrors["passwords"] = "Passwords do not match"
+            self.formErrors["passwords"] = NSLocalizedString("form.create_account.error.password.no_match", comment: "")
         } else {
             self.formErrors.removeValue(forKey: "passwords")
         }
@@ -67,7 +67,7 @@ class CreateUserController: UIViewController {
 
     @IBAction func emailEditDidEnd(_ sender: UITextField) {
         if !self.isEmailValid() {
-            self.formErrors["email"] = "Invalid email."
+            self.formErrors["email"] = NSLocalizedString("form.create_account.error.email.invalid", comment: "")
         } else {
             self.formErrors.removeValue(forKey: "email")
         }
