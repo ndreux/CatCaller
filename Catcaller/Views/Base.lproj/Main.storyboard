@@ -28,7 +28,7 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtO-Qp-dVi" customClass="RoundedButton" customModule="Catcaller" customModuleProvider="target">
-                                <rect key="frame" x="191" y="602" width="50" height="50"/>
+                                <rect key="frame" x="182" y="602" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="KxP-Gg-DPm"/>
                                     <constraint firstAttribute="width" constant="50" id="sdl-Nn-Z0d"/>
@@ -50,26 +50,26 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMF-JF-ijJ" customClass="BottomPanel" customModule="Catcaller" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="382" height="145"/>
+                                <rect key="frame" x="16" y="0.0" width="382" height="145"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pgk-ci-GWs" userLabel="Menu">
                                 <rect key="frame" x="0.0" y="0.0" width="255" height="672"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reports" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNi-rO-PwP">
-                                        <rect key="frame" x="0.0" y="8" width="239" height="24"/>
+                                        <rect key="frame" x="8" y="8" width="239" height="24"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cVA-NJ-31A">
-                                        <rect key="frame" x="166" y="40" width="51" height="31"/>
+                                        <rect key="frame" x="198" y="40" width="51" height="31"/>
                                         <connections>
                                             <action selector="toggleOnlyMyReportsSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="BkV-bw-Lww"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show only my reports" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdT-aa-8LP">
-                                        <rect key="frame" x="0.0" y="45" width="166" height="21"/>
+                                        <rect key="frame" x="8" y="45" width="166" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -89,20 +89,20 @@
                                         </prototypes>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GCh-bX-Dd9">
-                                        <rect key="frame" x="0.0" y="634" width="239" height="30"/>
+                                        <rect key="frame" x="8" y="634" width="239" height="30"/>
                                         <state key="normal" title="Log out"/>
                                         <connections>
                                             <action selector="logoutAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MxF-tg-val"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harassment types" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfD-70-8je">
-                                        <rect key="frame" x="0.0" y="103" width="164" height="24"/>
+                                        <rect key="frame" x="8" y="103" width="164" height="24"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wl3-5v-GO6">
-                                        <rect key="frame" x="-49" y="100" width="51" height="31"/>
+                                        <rect key="frame" x="196" y="100" width="51" height="31"/>
                                         <connections>
                                             <action selector="toggleHarassmentTypesSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="NHH-zq-ZOl"/>
                                         </connections>
@@ -332,13 +332,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Kcz-HP-gTC">
-                                <rect key="frame" x="0.0" y="64" width="414" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="N7y-NN-6MP" id="PII-8y-Kz0"/>
-                                </connections>
-                            </searchBar>
                             <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oca-2r-YoZ">
                                 <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                                 <color key="barTintColor" red="0.0078431372550000003" green="0.015686274510000001" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -356,7 +349,7 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="8o5-4R-Irm">
-                                <rect key="frame" x="0.0" y="120" width="414" height="616"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationCell" textLabel="WXk-ES-6rr" detailTextLabel="Qs9-vg-2Vx" imageView="Nl3-XW-WnF" style="IBUITableViewCellStyleSubtitle" id="Gdx-Fn-BMN">
@@ -393,13 +386,10 @@
                         <color key="backgroundColor" red="0.0078431372550000003" green="0.015686274510000001" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="oca-2r-YoZ" firstAttribute="trailing" secondItem="36s-WF-QUd" secondAttribute="trailing" id="6zL-0C-mdp"/>
-                            <constraint firstItem="8o5-4R-Irm" firstAttribute="top" secondItem="Kcz-HP-gTC" secondAttribute="bottom" id="77a-ya-H7J"/>
-                            <constraint firstItem="Kcz-HP-gTC" firstAttribute="trailing" secondItem="36s-WF-QUd" secondAttribute="trailing" id="EhW-ss-cCJ"/>
                             <constraint firstItem="8o5-4R-Irm" firstAttribute="leading" secondItem="36s-WF-QUd" secondAttribute="leading" id="Kkl-Ou-wer"/>
+                            <constraint firstItem="8o5-4R-Irm" firstAttribute="top" secondItem="oca-2r-YoZ" secondAttribute="bottom" id="WCF-XP-Qpg"/>
                             <constraint firstItem="oca-2r-YoZ" firstAttribute="top" secondItem="36s-WF-QUd" secondAttribute="top" id="dgB-yL-XJm"/>
                             <constraint firstItem="8o5-4R-Irm" firstAttribute="bottom" secondItem="36s-WF-QUd" secondAttribute="bottom" id="ftE-Px-SfZ"/>
-                            <constraint firstItem="Kcz-HP-gTC" firstAttribute="leading" secondItem="36s-WF-QUd" secondAttribute="leading" id="i6C-fG-LTU"/>
-                            <constraint firstItem="Kcz-HP-gTC" firstAttribute="top" secondItem="oca-2r-YoZ" secondAttribute="bottom" id="n3q-ng-YwT"/>
                             <constraint firstItem="oca-2r-YoZ" firstAttribute="leading" secondItem="36s-WF-QUd" secondAttribute="leading" id="pnW-d4-8nQ"/>
                             <constraint firstItem="8o5-4R-Irm" firstAttribute="trailing" secondItem="36s-WF-QUd" secondAttribute="trailing" id="tUQ-VQ-foQ"/>
                         </constraints>
@@ -409,7 +399,6 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="00v-VJ-2cr"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchBar" destination="Kcz-HP-gTC" id="lYl-K6-7GO"/>
                         <outlet property="searchDisplayController" destination="nlZ-C5-B7l" id="sVy-xC-dvN"/>
                         <outlet property="searchResultTableView" destination="8o5-4R-Irm" id="jQK-4Y-5i9"/>
                     </connections>
@@ -418,14 +407,13 @@
                 <searchDisplayController id="nlZ-C5-B7l">
                     <connections>
                         <outlet property="delegate" destination="N7y-NN-6MP" id="Z9o-mu-5sT"/>
-                        <outlet property="searchBar" destination="Kcz-HP-gTC" id="cDN-d3-BQW"/>
                         <outlet property="searchContentsController" destination="N7y-NN-6MP" id="wPB-gL-7Ht"/>
                         <outlet property="searchResultsDataSource" destination="N7y-NN-6MP" id="hdP-ag-8Iq"/>
                         <outlet property="searchResultsDelegate" destination="N7y-NN-6MP" id="aff-1J-gDn"/>
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1351.2" y="-217.24137931034485"/>
+            <point key="canvasLocation" x="-1352.1739130434785" y="-217.66304347826087"/>
         </scene>
         <!--Harassment Types Controller-->
         <scene sceneID="7Iw-mU-Xi6">
