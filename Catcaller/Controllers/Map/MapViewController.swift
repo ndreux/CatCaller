@@ -172,15 +172,12 @@ extension MapViewController: CatCallerApiGetReportsDelegate {
 
         self.mapView.removeAnnotations(oldAnnotations)
 
-        // TODO: (ndreux - 2017-11-09) Use localization
         self.summaryBar.updateSummary(reportsCount: reports.count)
         self.showSummaryBar()
         self.stopLoading()
     }
 
     func getReportsError(error: Error) {}
-
-
 }
 
 class MapViewController: UIViewController {
@@ -211,6 +208,7 @@ class MapViewController: UIViewController {
 
     var harassmentTypes: [HarassmentType]?
     var selectedHarassmentTypes: [Int:HarassmentType]?
+    var toBeCreatedReportLocation: Location?
 
     // MARK: View lifecycle
 
@@ -231,6 +229,10 @@ class MapViewController: UIViewController {
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.delegate = self
 
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        self.activityIndicator.hidesWhenStopped = true
+        self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
+
         self.checkLocationAuthorizationStatus()
 
         if !self.authenticationHelper.isUserAuthenticated() {
@@ -242,9 +244,6 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        self.activityIndicator.hidesWhenStopped = true
-        self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
         self.navItem.rightBarButtonItem = self.refreshButton
 
         self.hideAccessoryViews()
@@ -261,6 +260,9 @@ class MapViewController: UIViewController {
         }
     }
 
+    /**
+     Hide menu, summary bar and bottom panel
+     */
     func hideAccessoryViews() {
         self.menuView.isHidden = true
         self.bottomPanel.isHidden = true
@@ -348,31 +350,53 @@ class MapViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? CreateReportTableController {
             destinationVC.harassmentTypes = self.harassmentTypes
+
+            if self.toBeCreatedReportLocation != nil {
+                destinationVC.harassmentLocation = self.toBeCreatedReportLocation!.address
+                destinationVC.report.harassment.location = self.toBeCreatedReportLocation
+                self.toBeCreatedReportLocation = nil
+
+                return
+            }
+
             if self.userLocation != nil {
-                let geocoder = CLGeocoder()
-                geocoder.reverseGeocodeLocation(self.userLocation!){
-                    (placemarks, error) -> Void in
-                    let placeArray = placemarks as [CLPlacemark]!
-                    let placeMark: CLPlacemark! = placeArray?[0]
+                self.getAddressFromLocation(location: self.userLocation!,  completionHandler: { (address, error) -> Void in
+                    destinationVC.harassmentLocation = address
+                })
+            }
 
-                    if let locationName = placeMark.addressDictionary?["Name"] as? String {
-                        destinationVC.harassmentLocation.append(locationName)
-                    }
+        }
+    }
 
-                    if let city = placeMark.addressDictionary?["City"] as? String {
-                        destinationVC.harassmentLocation.append(" \(city)")
-                    }
+    private func getAddressFromCoordinate(coordinate: CLLocationCoordinate2D, completionHandler : @escaping (_ address : String, _ error : Error?) -> Void) {
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        self.getAddressFromLocation(location: location, completionHandler: completionHandler)
+    }
 
-                    if let zip = placeMark.addressDictionary?["ZIP"] as? String {
-                        destinationVC.harassmentLocation.append(" \(zip)")
-                    }
+    private func getAddressFromLocation(location: CLLocation, completionHandler : @escaping (_ address : String, _ error : Error?) -> Void) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location){
+            (placemarks, error) -> Void in
 
-                    if let country = placeMark.addressDictionary?["Country"] as? String {
-                        destinationVC.harassmentLocation.append(" \(country)")
-                    }
-                }
+            let placeMark: CLPlacemark! = (placemarks as [CLPlacemark]!)?[0]
+            let address: String = self.getAddressFromPlacemark(placeMark: placeMark)
+
+            completionHandler(address, error)
+        }
+    }
+
+    private func getAddressFromPlacemark(placeMark: CLPlacemark) -> String {
+        var addressData = [String]()
+
+        let neededData = ["Name", "City", "ZIP", "Country"]
+        for data in neededData {
+            if placeMark.addressDictionary?[data] is String {
+                addressData.append(placeMark.addressDictionary?[data] as! String)
             }
         }
+
+        return addressData.joined(separator: ", ")
+
     }
 
     // MARK: Helpers
@@ -466,6 +490,44 @@ class MapViewController: UIViewController {
         }
     }
 
+    @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
+        if sender.state  == .began {
+            let coordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
+            self.getAddressFromCoordinate(coordinate: coordinate, completionHandler: { (address, error) -> Void in
+
+                self.mapView.setCenter(coordinate, animated: true)
+
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                self.mapView.addAnnotation(annotation)
+                self.mapView.selectAnnotation(annotation, animated: true)
+
+                self.presentCreateReportActionSheet(annotation: annotation, address: address)
+            })
+        }
+    }
+
+    private func presentCreateReportActionSheet(annotation: MKPointAnnotation, address: String) {
+        let actionSheet: UIAlertController = UIAlertController(title: NSLocalizedString("action_sheet.create_report.title", comment: ""), message: address, preferredStyle: .actionSheet)
+
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.mapView.removeAnnotation(annotation)
+            self.toBeCreatedReportLocation = nil
+        }
+        actionSheet.addAction(cancelActionButton)
+
+        let createActionButton = UIAlertAction(title: "Create", style: .default) { _ in
+            let coordinate = annotation.coordinate
+            self.toBeCreatedReportLocation = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            self.toBeCreatedReportLocation!.address = address
+            self.performSegue(withIdentifier: "showCreateReportTableController", sender: self)
+            self.mapView.removeAnnotation(annotation)
+        }
+        actionSheet.addAction(createActionButton)
+
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+
     private func showMenu() -> Void {
         self.menuView.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
@@ -504,8 +566,7 @@ class MapViewController: UIViewController {
     private func selectHarassmentTypes(harassmentTypes: [Int:HarassmentType]) {
         for (row, harassmentType) in harassmentTypes {
             self.selectHarassmentType(harassmentType: harassmentType)
-            let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
-            cell?.accessoryType = .checkmark
+            self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))?.accessoryType = .checkmark
         }
     }
 

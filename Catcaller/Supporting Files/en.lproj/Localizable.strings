@@ -15,3 +15,5 @@
 "form.create_account.error.password.no_match"  = "Passwords do not match.";
 "form.create_account.success" = "Your account has successefuly been created. You can now log in.";
 "form.authentication.error.401" = "Bad credentials";
+
+"action_sheet.create_report.title" = "Create a new report at this location ?";

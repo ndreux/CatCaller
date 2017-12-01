@@ -130,16 +130,15 @@ class CreateReportTableController: UITableViewController {
     let sections = [["You are ?"],["Datetime", "Place", "Harassment types", "Note"]]
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int:HarassmentType]!
-    var harassmentLocation: String = String()
+    var harassmentLocation: String?
 
-    var report: Report!
+    var report: Report = Report(reporter: AuthenticationHelper().getUserId()!)
 
     @IBOutlet weak var saveReportButton: UIBarButtonItem!
     @IBOutlet weak var navigationBar: UINavigationItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.report = Report(reporter: AuthenticationHelper().getUserId()!)
 
         self.apiWrapper = CatcallerApiWrapper()
         self.apiWrapper.delegate = self
@@ -217,6 +216,13 @@ class CreateReportTableController: UITableViewController {
             cell.textField.textColor = UIColor.black
 
             return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CreateReportCell", for: indexPath)
+            cell.textLabel?.text = self.harassmentLocation ?? sections[indexPath.section][indexPath.row]
+            cell.textLabel?.textColor = self.harassmentLocation != nil ? UIColor.black : UIColor.lightGray
+            cell.accessoryType = .disclosureIndicator
+
+            return cell
         // Note
         case 3:
 
@@ -257,7 +263,6 @@ class CreateReportTableController: UITableViewController {
             default: break
             }
         }
-
     }
 
     // MARK: Segues

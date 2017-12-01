@@ -19,7 +19,6 @@ extension HarassmentLocationController: UISearchBarDelegate {
         guard let searchBarText = searchBar.text else { return }
         self.completer.queryFragment = searchBarText
     }
-    
 }
 
 extension HarassmentLocationController: MKLocalSearchCompleterDelegate {
@@ -30,7 +29,7 @@ extension HarassmentLocationController: MKLocalSearchCompleterDelegate {
     }
 }
 
-extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSource{
+extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSource {
     // MARK: Search Result Table View
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -72,7 +71,7 @@ class HarassmentLocationController: UIViewController {
     let searchBar = UISearchBar()
     let completer: MKLocalSearchCompleter = MKLocalSearchCompleter()
     var addresses: [MKLocalSearchCompletion] = [MKLocalSearchCompletion]()
-    var searchString: String = String()
+    var searchString: String?
     var delegate: HarassmentLocationControllerDelegate?
 
     // MARK: IBOutlet
@@ -88,8 +87,10 @@ class HarassmentLocationController: UIViewController {
         self.searchResultTableView.delegate = self
         self.searchResultTableView.dataSource = self
 
-        self.completer.delegate = self
-        self.completer.queryFragment = self.searchString
+        if self.searchString != nil {
+            self.completer.delegate = self
+            self.completer.queryFragment = self.searchString!
+        }
 
         self.searchResultTableView.tableHeaderView = self.searchBar
     }
