@@ -57,32 +57,53 @@ class CatcallerApiFormatter {
         return Location(latitude: latitude, longitude: longitude)
     }
 
-    func formatDateFromApiToModel(datetime: String) -> Date {
-
-        // TODO: Manage TimeZone
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-
-        return dateFormatter.date(from: datetime)!
+    func formatDateFromApiToModel(datetime: String) -> String {
+        return self.UTCToLocal(date: datetime)
     }
 
-    func formatDateFromModelToJson(date: Date) -> String {
+    func UTCToLocal(date:String) -> String {
 
-        // TODO: Manage TimeZone
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-        return dateFormatter.string(from: date)
+        let dateUTC = dateFormatter.date(from: date)
+
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+
+        return dateFormatter.string(from: dateUTC!)
     }
 
-    func formatReportTypeFromApiToModel(reportType: Int) -> String {
+    func formatDateFromModelToJson(date: String) -> String {
+        return self.localToUTC(date: date)
+    }
+
+    func localToUTC(date:String) -> String {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateFormatter.calendar = NSCalendar.current
+        dateFormatter.timeZone = TimeZone.current
+
+        let dateLocal = dateFormatter.date(from: date)
+
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+        return dateFormatter.string(from: dateLocal!)
+    }
+
+    func formatReportTypeFromApiToModel(reportType: Int) -> ReportType {
         switch reportType {
         case 1:
-            return "Victim"
+            return ReportType.Victim
         case 2:
-            return "Witness"
+            return ReportType.Witness
         default:
-            return "Victim"
+            return ReportType.Victim
         }
     }
 
@@ -107,7 +128,7 @@ class CatcallerApiFormatter {
         var json: JSON = JSON()
 
         json["reporter"].string = "/users/\(report.reporter)"
-        json["type"].int = report.type == "Victim" ? 1 : 2
+        json["type"].int = report.type?.rawValue
         json["harassment"] = self.formatHarassmentToJson(harassment: report.harassment)
 
         return json
@@ -116,10 +137,13 @@ class CatcallerApiFormatter {
     func formatHarassmentToJson(harassment: Harassment) -> JSON {
         var json = JSON()
 
-        json["datetime"].string = self.formatDateFromModelToJson(date: harassment.datetime)
+        json["datetime"].string = self.formatDateFromModelToJson(date: harassment.datetime!)
         json["location"] = self.formatLocationToJson(location: harassment.location)
         json["types"].arrayObject = self.formatHarassmentTypesToJson(harassmentTypes: harassment.types)
-        json["note"].string = harassment.note
+
+        if harassment.note != nil {
+            json["note"].string = harassment.note
+        }
 
         return json
     }

@@ -69,8 +69,8 @@ extension MapViewController: MKMapViewDelegate {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM d, yyyy HH:mm"
 
-            self.bottomPanel.reportType.text = report.type
-            self.bottomPanel.harassmentDate.text = formatter.string(from: report.harassment.datetime)
+            self.bottomPanel.reportType.text = "\(report.type!)"
+            self.bottomPanel.harassmentDate.text = report.harassment.datetime!
             self.bottomPanel.harassmentTypes.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
 
             mapView.setCenter((view.annotation?.coordinate)!, animated: true)
@@ -364,7 +364,6 @@ class MapViewController: UIViewController {
                     destinationVC.harassmentLocation = address
                 })
             }
-
         }
     }
 
