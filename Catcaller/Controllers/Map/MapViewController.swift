@@ -424,7 +424,7 @@ class MapViewController: UIViewController {
         self.bottomPanel.layoutIfNeeded()
 
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 90 )
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 80 )
         })
     }
 
