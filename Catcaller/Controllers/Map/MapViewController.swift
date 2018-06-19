@@ -315,7 +315,7 @@ class MapViewController: UIViewController {
         self.startLoading()
         self.hideSummaryBar()
 
-        catcallerApi.getReports(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes!, onlyMyReports: self.onlyMyReportsSwitch.isOn)
+        self.catcallerApi.getReports(minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude, harassmentTypes: self.selectedHarassmentTypes!, onlyMyReports: self.onlyMyReportsSwitch.isOn)
     }
 
     private func isRegionTooBig (minLat: CLLocationDegrees, minLong: CLLocationDegrees, maxLat: CLLocationDegrees, maxLong: CLLocationDegrees) -> Bool {
@@ -336,15 +336,54 @@ class MapViewController: UIViewController {
         return self.isRegionTooBig (minLat: southWest.latitude, minLong: southWest.longitude, maxLat: northEast.latitude, maxLong: northEast.longitude)
     }
 
-    /**
-     Add a pin to the given location
-     - parameter latitude: Latitude of the pin
-     - parameter longitude: Longitude of the pin
-     */
     func addPin(report: Report) -> Void {
-        mapView.addAnnotation(Pin(report: report))
+        self.mapView.addAnnotation(Pin(report: report))
     }
 
+    // MARK: Gesture recognisers
+    @IBAction func touchMap(_ sender: UITapGestureRecognizer) {
+        if !self.menuView.isHidden {
+            self.hideMenu()
+        }
+    }
+
+    @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
+        if sender.state  == .began {
+            let coordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
+            self.getAddressFromCoordinate(coordinate: coordinate, completionHandler: { (address, error) -> Void in
+
+                self.mapView.setCenter(coordinate, animated: true)
+
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                self.mapView.addAnnotation(annotation)
+                self.mapView.selectAnnotation(annotation, animated: true)
+
+                self.presentCreateReportActionSheet(annotation: annotation, address: address)
+            })
+        }
+    }
+
+    private func presentCreateReportActionSheet(annotation: MKPointAnnotation, address: String) {
+        let actionSheet: UIAlertController = UIAlertController(title: NSLocalizedString("action_sheet.create_report.title", comment: ""), message: address, preferredStyle: .actionSheet)
+
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.mapView.removeAnnotation(annotation)
+            self.toBeCreatedReportLocation = nil
+        }
+        actionSheet.addAction(cancelActionButton)
+
+        let createActionButton = UIAlertAction(title: "Create", style: .default) { _ in
+            let coordinate = annotation.coordinate
+            self.toBeCreatedReportLocation = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            self.toBeCreatedReportLocation!.address = address
+            self.performSegue(withIdentifier: "showCreateReportTableController", sender: self)
+            self.mapView.removeAnnotation(annotation)
+        }
+        actionSheet.addAction(createActionButton)
+
+        self.present(actionSheet, animated: true, completion: nil)
+    }
 
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -395,7 +434,6 @@ class MapViewController: UIViewController {
         }
 
         return addressData.joined(separator: ", ")
-
     }
 
     // MARK: Helpers
@@ -481,50 +519,6 @@ class MapViewController: UIViewController {
 
     @IBAction func toggleMenu(_ sender: UIBarButtonItem) {
         self.menuView.isHidden ? self.showMenu() : self.hideMenu()
-    }
-
-    @IBAction func touchMap(_ sender: UITapGestureRecognizer) {
-        if !self.menuView.isHidden {
-            self.hideMenu()
-        }
-    }
-
-    @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
-        if sender.state  == .began {
-            let coordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
-            self.getAddressFromCoordinate(coordinate: coordinate, completionHandler: { (address, error) -> Void in
-
-                self.mapView.setCenter(coordinate, animated: true)
-
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                self.mapView.addAnnotation(annotation)
-                self.mapView.selectAnnotation(annotation, animated: true)
-
-                self.presentCreateReportActionSheet(annotation: annotation, address: address)
-            })
-        }
-    }
-
-    private func presentCreateReportActionSheet(annotation: MKPointAnnotation, address: String) {
-        let actionSheet: UIAlertController = UIAlertController(title: NSLocalizedString("action_sheet.create_report.title", comment: ""), message: address, preferredStyle: .actionSheet)
-
-        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-            self.mapView.removeAnnotation(annotation)
-            self.toBeCreatedReportLocation = nil
-        }
-        actionSheet.addAction(cancelActionButton)
-
-        let createActionButton = UIAlertAction(title: "Create", style: .default) { _ in
-            let coordinate = annotation.coordinate
-            self.toBeCreatedReportLocation = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            self.toBeCreatedReportLocation!.address = address
-            self.performSegue(withIdentifier: "showCreateReportTableController", sender: self)
-            self.mapView.removeAnnotation(annotation)
-        }
-        actionSheet.addAction(createActionButton)
-
-        self.present(actionSheet, animated: true, completion: nil)
     }
 
     private func showMenu() -> Void {
