@@ -16,23 +16,20 @@ protocol HarassmentLocationControllerDelegate {
 extension HarassmentLocationController: UISearchBarDelegate {
     // MARK: UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("search - TEXT DID CHANGE - \(searchText)")
-        self.completer.queryFragment = searchText
+        guard let searchBarText = searchBar.text else { return }
+        self.completer.queryFragment = searchBarText
     }
 }
 
 extension HarassmentLocationController: MKLocalSearchCompleterDelegate {
     // MARK: MKLocalSearchCompleterDelegate
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        print("search: \(completer.results)")
-        DispatchQueue.main.async {
-            self.addresses = completer.results
-            self.searchResultTableView.reloadData()
-        }
+        self.addresses = completer.results
+        self.searchResultTableView.reloadData()
     }
 }
 
-extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSource{
+extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSource {
     // MARK: Search Result Table View
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -40,11 +37,12 @@ extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cellForRowAt")
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        print(self.addresses[indexPath.row])
+
+        let cell = self.searchResultTableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
+
         cell.textLabel?.text = self.addresses[indexPath.row].title
         cell.detailTextLabel?.text = self.addresses[indexPath.row].subtitle
+
         return cell
     }
 
@@ -60,7 +58,6 @@ extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSour
 
         search.start { (response, error) in
             if let presenter = self.delegate {
-                print("Send data to presenter")
                 presenter.getHarassmentLocationSuccess(placemark: (response?.mapItems[0].placemark)!)
                 self.dismiss(animated: true, completion: nil)
             }
@@ -71,27 +68,31 @@ extension HarassmentLocationController: UITableViewDelegate, UITableViewDataSour
 class HarassmentLocationController: UIViewController {
 
     // MARK: Properties
+    let searchBar = UISearchBar()
     let completer: MKLocalSearchCompleter = MKLocalSearchCompleter()
     var addresses: [MKLocalSearchCompletion] = [MKLocalSearchCompletion]()
-    var searchString: String = String()
+    var searchString: String?
     var delegate: HarassmentLocationControllerDelegate?
 
     // MARK: IBOutlet
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var searchResultTableView: UITableView!
+    @IBOutlet var searchResultTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.searchBar.sizeToFit()
         self.searchBar.delegate = self
+        self.searchBar.text = self.searchString
 
         self.searchResultTableView.delegate = self
         self.searchResultTableView.dataSource = self
 
-        self.searchBar.text = self.searchString
+        if self.searchString != nil {
+            self.completer.delegate = self
+            self.completer.queryFragment = self.searchString!
+        }
 
-        self.completer.delegate = self
-        self.completer.queryFragment = self.searchString
+        self.searchResultTableView.tableHeaderView = self.searchBar
     }
 
     // MARK: IBAction

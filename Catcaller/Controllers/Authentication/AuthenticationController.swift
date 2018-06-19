@@ -19,7 +19,7 @@ class AuthenticationController: UIViewController, CreateUserControllerDelegate {
     }
 
     func createUserSuccess() {
-        self.flashMessage.text = "Your account has successefuly been created. You can now log in."
+        self.flashMessage.text = NSLocalizedString("form.create_account.success", comment: "")
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

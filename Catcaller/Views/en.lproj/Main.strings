@@ -1,0 +1,69 @@
+
+/* Class = "UITextField"; placeholder = "Password verification"; ObjectID = "3Pr-SE-qo1"; */
+"3Pr-SE-qo1.placeholder" = "Password verification";
+
+/* Class = "UINavigationItem"; title = "Catcaller"; ObjectID = "F3k-5b-M7i"; */
+"F3k-5b-M7i.title" = "Catcaller";
+
+/* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "GCh-bX-Dd9"; */
+"GCh-bX-Dd9.normalTitle" = "Log out";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "KhR-wd-IXr"; */
+"KhR-wd-IXr.title" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Create my account"; ObjectID = "QmD-7b-TCa"; */
+"QmD-7b-TCa.normalTitle" = "Create my account";
+
+/* Class = "UINavigationItem"; title = "Location"; ObjectID = "QoG-bE-3Of"; */
+"QoG-bE-3Of.title" = "Location";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "Qs9-vg-2Vx"; */
+"Qs9-vg-2Vx.text" = "Subtitle";
+
+/* Class = "UIButton"; normalTitle = "Create your account"; ObjectID = "VV9-Dg-nen"; */
+"VV9-Dg-nen.normalTitle" = "Create your account";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "Vxk-N5-VeW"; */
+"Vxk-N5-VeW.title" = "Item";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "WXk-ES-6rr"; */
+"WXk-ES-6rr.text" = "Title";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "Y12-hd-bMi"; */
+"Y12-hd-bMi.placeholder" = "Email";
+
+/* Class = "UILabel"; text = "Reports"; ObjectID = "YNi-rO-PwP"; */
+"YNi-rO-PwP.text" = "Reports";
+
+/* Class = "UINavigationItem"; title = "Location"; ObjectID = "dZB-ep-6hU"; */
+"dZB-ep-6hU.title" = "Location";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "eIX-ch-MoH"; */
+"eIX-ch-MoH.placeholder" = "Password";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "i5w-dH-PB6"; */
+"i5w-dH-PB6.placeholder" = "Password";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "i8d-MT-5K0"; */
+"i8d-MT-5K0.placeholder" = "Email";
+
+/* Class = "UINavigationItem"; title = "Create report"; ObjectID = "j5y-dN-nfc"; */
+"j5y-dN-nfc.title" = "Create report";
+
+/* Class = "UILabel"; text = "Show only my reports"; ObjectID = "kdT-aa-8LP"; */
+"kdT-aa-8LP.text" = "Show only my reports";
+
+/* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "p8y-V6-ule"; */
+"p8y-V6-ule.normalTitle" = "Log in";
+
+/* Class = "UILabel"; text = "Harassment types"; ObjectID = "qfD-70-8je"; */
+"qfD-70-8je.text" = "Harassment types";
+
+/* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "udj-hh-zRI"; */
+"udj-hh-zRI.normalTitle" = "Log in";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "vXS-T7-fYk"; */
+"vXS-T7-fYk.text" = "Title";
+
+/* Class = "UINavigationItem"; title = "Harassment types"; ObjectID = "x2T-Fh-XcJ"; */
+"x2T-Fh-XcJ.title" = "Harassment types";

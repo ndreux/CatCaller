@@ -8,16 +8,20 @@
 
 import Foundation
 
+enum ReportType: Int {
+    case Victim = 1
+    case Witness = 2
+}
+
 class Report {
 
     var id: Int?
     var harassment: Harassment
-    var type: String
+    var type: ReportType?
     var reporter: Int
 
     init(reporter: Int) {
         self.reporter = reporter
-        self.type = String()
         self.harassment = Harassment()
     }
 }

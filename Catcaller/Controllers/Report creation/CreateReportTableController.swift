@@ -10,15 +10,6 @@ import UIKit
 import Alamofire
 import MapKit
 
-extension CreateReportTableController: CatCallerApiGetHarassmentTypesDelegate {
-    // MARK: CatCallerApiGetHarassmentTypesDelegate
-    func getHarassmentTypesSuccess(harassmentTypes: [HarassmentType]) {
-        self.harassmentTypes = harassmentTypes
-    }
-
-    func getHarassmentTypesError() {}
-}
-
 extension CreateReportTableController: CatCallerApiCreateReportDelegate {
     // MARK: CatCallerApiCreateReportDelegate
     func createReportSuccess() {
@@ -45,18 +36,21 @@ extension CreateReportTableController: UIPickerViewDelegate, UIPickerViewDataSou
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.reportType[row]
+        if let rowValue = self.reportType[row] {
+            return "\(rowValue)"
+        }
+        return nil
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableViewCellTextField
 
         if row == 0 {
-            cell.textField.text = self.sections[0][0]
+            cell.textField.text = ""
             cell.textField.textColor = UIColor.lightGray
         } else {
             cell.textField.textColor = UIColor.black
-            cell.textField.text = "you are a \(self.reportType[row]) of street harassment".lowercased().firstUppercased
+            cell.textField.text = "you are a \(self.reportType[row]!) of street harassment".lowercased().firstUppercased
         }
 
         self.report.type = self.reportType[row]
@@ -115,9 +109,6 @@ extension CreateReportTableController: HarassmentTypesControllerDelegate {
 
 extension CreateReportTableController: HarassmentLocationControllerDelegate {
     func getHarassmentLocationSuccess(placemark: MKPlacemark) {
-        print("Placemark : \(placemark)")
-        print("Placemark : \(String(describing: placemark.title))")
-
         self.harassmentLocation = placemark.title!
         let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1))
         cell?.textLabel?.text = self.harassmentLocation
@@ -126,8 +117,6 @@ extension CreateReportTableController: HarassmentLocationControllerDelegate {
 
         self.updateSaveButtonState()
     }
-
-
 }
 
 class CreateReportTableController: UITableViewController {
@@ -138,20 +127,19 @@ class CreateReportTableController: UITableViewController {
     var dateFormatter: DateFormatter!
     var activityIndicator: UIActivityIndicatorView!
 
-    let reportType: [String] = ["", "Victim", "Witness"]
+    let reportType: [ReportType?] = [nil, ReportType.Victim, ReportType.Witness]
     let sections = [["You are ?"],["Datetime", "Place", "Harassment types", "Note"]]
     var harassmentTypes: [HarassmentType]!
     var selectedHarassmentTypes: [Int:HarassmentType]!
-    var harassmentLocation: String = String()
+    var harassmentLocation: String?
 
-    var report: Report!
+    var report: Report = Report(reporter: AuthenticationHelper().getUserId()!)
 
     @IBOutlet weak var saveReportButton: UIBarButtonItem!
     @IBOutlet weak var navigationBar: UINavigationItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.report = Report(reporter: AuthenticationHelper().getUserId()!)
 
         self.apiWrapper = CatcallerApiWrapper()
         self.apiWrapper.delegate = self
@@ -164,6 +152,7 @@ class CreateReportTableController: UITableViewController {
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateStyle = .medium
         self.dateFormatter.timeStyle = .short
+        self.dateFormatter.timeZone = TimeZone.current
 
         self.selectedHarassmentTypes = [Int:HarassmentType]()
 
@@ -187,7 +176,7 @@ class CreateReportTableController: UITableViewController {
     }
 
     func updateSaveButtonState() {
-        let hasReportType = !self.report.type.isEmpty
+        let hasReportType = self.report.type != nil
         let hasPlace = self.report.harassment.location != nil
         let hasTypes = !self.report.harassment.types.isEmpty
 
@@ -224,9 +213,16 @@ class CreateReportTableController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HarassmentDateTimeCell", for: indexPath) as! TableViewCellDatePicker
 
             let now = Date()
-            self.report.harassment.datetime = now
+            self.report.harassment.datetime = self.dateFormatter.string(from: now)
             cell.textField.text = self.dateFormatter.string(from: now)
             cell.textField.textColor = UIColor.black
+
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CreateReportCell", for: indexPath)
+            cell.textLabel?.text = self.harassmentLocation ?? sections[indexPath.section][indexPath.row]
+            cell.textLabel?.textColor = self.harassmentLocation != nil ? UIColor.black : UIColor.lightGray
+            cell.accessoryType = .disclosureIndicator
 
             return cell
         // Note
@@ -237,7 +233,6 @@ class CreateReportTableController: UITableViewController {
             cell.textView?.textColor = UIColor.lightGray
             cell.textView.delegate = self
             cell.accessoryType = .none
-
 
             return cell
         default:
@@ -269,7 +264,6 @@ class CreateReportTableController: UITableViewController {
             default: break
             }
         }
-
     }
 
     // MARK: Segues
@@ -304,7 +298,7 @@ class CreateReportTableController: UITableViewController {
     @objc func datePickerValueChanged(sender:UIDatePicker) {
         let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as! TableViewCellDatePicker
         cell.textField.text = self.dateFormatter.string(from: sender.date)
-        self.report.harassment.datetime = sender.date
+        self.report.harassment.datetime = self.dateFormatter.string(from: sender.date)
 
         self.updateSaveButtonState()
     }

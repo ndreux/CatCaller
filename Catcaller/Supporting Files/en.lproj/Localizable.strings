@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  Catcaller
+
+  Created by Nicolas Dreux on 29/11/2017.
+  Copyright © 2017 Nicolas Dreux. All rights reserved.
+*/
+
+"summary_bar.area_too_big" = "This area is too big to be scanned";
+"summary_bar.report.zero" = "There is no report in this area";
+"summary_bar.report.one" = "There is 1 report in this area";
+"summary_bar.report.more" = "There are %d reports in this area";
+
+"form.create_account.error.email.invalid" = "Invalid email.";
+"form.create_account.error.password.no_match"  = "Passwords do not match.";
+"form.create_account.success" = "Your account has successefuly been created. You can now log in.";
+"form.authentication.error.401" = "Bad credentials";
+
+"action_sheet.create_report.title" = "Create a new report at this location ?";

@@ -49,7 +49,7 @@ class LoginController: UIViewController, CatCallerApiAuthenticationDelegate {
     func authenticationError(errorCode: Int?) {
         self.loginButton.hideLoading()
         if errorCode == 401 {
-            self.errorLabel.text = "Login/password do not match"
+            self.errorLabel.text = NSLocalizedString("form.authentication.error.401", comment: "")
         }
     }
 

@@ -54,7 +54,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if isRegionTooBig() {
             self.refreshButton.isEnabled = false
-            self.summaryLabel.text = "This area is to big to be scanned"
+            self.summaryBar.updateSummary(reportsCount: nil)
         }
 
         self.loadReports()
@@ -69,9 +69,9 @@ extension MapViewController: MKMapViewDelegate {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM d, yyyy HH:mm"
 
-            self.reportTypeLabel.text = report.type
-            self.harassmentDatetimeLabel.text = formatter.string(from: report.harassment.datetime)
-            self.harassmentTypesLabel.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
+            self.bottomPanel.reportType.text = "\(report.type!)"
+            self.bottomPanel.harassmentDate.text = report.harassment.datetime!
+            self.bottomPanel.harassmentTypes.text = report.harassment.types.map(){ $0.label }.joined(separator: ", ")
 
             mapView.setCenter((view.annotation?.coordinate)!, animated: true)
 
@@ -143,12 +143,13 @@ extension MapViewController: CatCallerApiGetHarassmentTypesDelegate {
         self.harassmentTypesTableView.reloadData()
 
         self.updateHarassmentTypeSwitchStatus()
+        self.stopLoading()
         self.loadReports()
     }
 
-    func getHarassmentTypesError() { }
-
-
+    func getHarassmentTypesError() {
+        self.stopLoading()
+    }
 }
 
 extension MapViewController: CatCallerApiGetReportsDelegate {
@@ -171,15 +172,12 @@ extension MapViewController: CatCallerApiGetReportsDelegate {
 
         self.mapView.removeAnnotations(oldAnnotations)
 
-        // TODO: (ndreux - 2017-11-09) Use localization
-        self.updateSummaryBar(reportsCount: reports.count)
+        self.summaryBar.updateSummary(reportsCount: reports.count)
         self.showSummaryBar()
         self.stopLoading()
     }
 
     func getReportsError(error: Error) {}
-
-
 }
 
 class MapViewController: UIViewController {
@@ -187,6 +185,7 @@ class MapViewController: UIViewController {
     // MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var navItem: UINavigationItem!
+
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var onlyMyReportsSwitch: UISwitch!
@@ -194,14 +193,8 @@ class MapViewController: UIViewController {
     @IBOutlet weak var harassmentTypesTableView: UITableView!
 
     @IBOutlet weak var addReportButton: UIButton!
-
-    @IBOutlet weak var summaryBar: UIView!
-    @IBOutlet weak var summaryLabel: UILabel!
-
-    @IBOutlet weak var bottomPanel: UIView!
-    @IBOutlet weak var reportTypeLabel: UILabel!
-    @IBOutlet weak var harassmentDatetimeLabel: UILabel!
-    @IBOutlet weak var harassmentTypesLabel: UILabel!
+    @IBOutlet weak var summaryBar: SummaryBar!
+    @IBOutlet weak var bottomPanel: BottomPanel!
 
     var activityIndicator: UIActivityIndicatorView!
     var refreshButton: UIBarButtonItem!
@@ -215,6 +208,7 @@ class MapViewController: UIViewController {
 
     var harassmentTypes: [HarassmentType]?
     var selectedHarassmentTypes: [Int:HarassmentType]?
+    var toBeCreatedReportLocation: Location?
 
     // MARK: View lifecycle
 
@@ -224,6 +218,7 @@ class MapViewController: UIViewController {
         self.authenticationHelper = AuthenticationHelper()
 
         self.mapView!.delegate = self
+        self.mapView.isRotateEnabled = false
 
         self.locationManager = CLLocationManager()
         self.locationManager!.delegate = self
@@ -234,7 +229,9 @@ class MapViewController: UIViewController {
         self.catcallerApi = CatcallerApiWrapper()
         self.catcallerApi.delegate = self
 
-        self.mapView.isRotateEnabled = false
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        self.activityIndicator.hidesWhenStopped = true
+        self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
 
         self.checkLocationAuthorizationStatus()
 
@@ -247,12 +244,7 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        self.activityIndicator.hidesWhenStopped = true
-        self.refreshButton =  UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshReportsAction(_:)))
         self.navItem.rightBarButtonItem = self.refreshButton
-
-        self.summaryLabel.textColor = .white
 
         self.hideAccessoryViews()
 
@@ -268,6 +260,9 @@ class MapViewController: UIViewController {
         }
     }
 
+    /**
+     Hide menu, summary bar and bottom panel
+     */
     func hideAccessoryViews() {
         self.menuView.isHidden = true
         self.bottomPanel.isHidden = true
@@ -276,9 +271,16 @@ class MapViewController: UIViewController {
         self.hideBottomPanel()
         self.hideSummaryBar()
     }
+    
     @IBAction func logoutAction(_ sender: UIButton) {
         AuthenticationHelper().logout()
+        self.cleanSavedData()
         self.showAuthenticationNavigationController()
+    }
+
+    func cleanSavedData() {
+        UserDefaults.standard.setValue(nil, forKey: "harassmentTypes")
+        UserDefaults.standard.setValue(nil, forKey: "selectedHarassmentTypes")
     }
 
     func showAuthenticationNavigationController() {
@@ -297,7 +299,7 @@ class MapViewController: UIViewController {
     func loadReports() -> Void {
 
         if self.selectedHarassmentTypes == nil || self.selectedHarassmentTypes!.count == 0 {
-            self.updateSummaryBar(reportsCount: 0)
+            self.summaryBar.updateSummary(reportsCount: 0)
             self.mapView.removeAnnotations(self.mapView.annotations)
             return
         }
@@ -347,31 +349,53 @@ class MapViewController: UIViewController {
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? CreateReportTableController {
+            destinationVC.harassmentTypes = self.harassmentTypes
+
+            if self.toBeCreatedReportLocation != nil {
+                destinationVC.harassmentLocation = self.toBeCreatedReportLocation!.address
+                destinationVC.report.harassment.location = self.toBeCreatedReportLocation
+                self.toBeCreatedReportLocation = nil
+
+                return
+            }
+
             if self.userLocation != nil {
-                let geocoder = CLGeocoder()
-                geocoder.reverseGeocodeLocation(self.userLocation!){
-                    (placemarks, error) -> Void in
-                    let placeArray = placemarks as [CLPlacemark]!
-                    let placeMark: CLPlacemark! = placeArray?[0]
-
-                    if let locationName = placeMark.addressDictionary?["Name"] as? String {
-                        destinationVC.harassmentLocation.append(locationName)
-                    }
-
-                    if let city = placeMark.addressDictionary?["City"] as? String {
-                        destinationVC.harassmentLocation.append(" \(city)")
-                    }
-
-                    if let zip = placeMark.addressDictionary?["ZIP"] as? String {
-                        destinationVC.harassmentLocation.append(" \(zip)")
-                    }
-
-                    if let country = placeMark.addressDictionary?["Country"] as? String {
-                        destinationVC.harassmentLocation.append(" \(country)")
-                    }
-                }
+                self.getAddressFromLocation(location: self.userLocation!,  completionHandler: { (address, error) -> Void in
+                    destinationVC.harassmentLocation = address
+                })
             }
         }
+    }
+
+    private func getAddressFromCoordinate(coordinate: CLLocationCoordinate2D, completionHandler : @escaping (_ address : String, _ error : Error?) -> Void) {
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        self.getAddressFromLocation(location: location, completionHandler: completionHandler)
+    }
+
+    private func getAddressFromLocation(location: CLLocation, completionHandler : @escaping (_ address : String, _ error : Error?) -> Void) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location){
+            (placemarks, error) -> Void in
+
+            let placeMark: CLPlacemark! = (placemarks as [CLPlacemark]!)?[0]
+            let address: String = self.getAddressFromPlacemark(placeMark: placeMark)
+
+            completionHandler(address, error)
+        }
+    }
+
+    private func getAddressFromPlacemark(placeMark: CLPlacemark) -> String {
+        var addressData = [String]()
+
+        let neededData = ["Name", "City", "ZIP", "Country"]
+        for data in neededData {
+            if placeMark.addressDictionary?[data] is String {
+                addressData.append(placeMark.addressDictionary?[data] as! String)
+            }
+        }
+
+        return addressData.joined(separator: ", ")
+
     }
 
     // MARK: Helpers
@@ -394,10 +418,13 @@ class MapViewController: UIViewController {
     }
 
     private func showBottomPanel() -> Void {
-        self.bottomPanel.layoutIfNeeded()
+
         self.bottomPanel.isHidden = false
+        self.bottomPanel.setNeedsLayout()
+        self.bottomPanel.layoutIfNeeded()
+
         UIView.animate(withDuration: 0.3, animations: {
-            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 30 )
+            self.bottomPanel.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - self.bottomPanel.frame.size.height + 80 )
         })
     }
 
@@ -427,17 +454,6 @@ class MapViewController: UIViewController {
         })
     }
 
-    private func updateSummaryBar(reportsCount: Int) {
-        switch reportsCount {
-        case 0:
-            self.summaryLabel.text = "There is no report in this area"
-        case 1:
-            self.summaryLabel.text = "There is 1 report in this area"
-        default:
-            self.summaryLabel.text = "There are \(reportsCount) reports in this area"
-        }
-    }
-
     private func hideSummaryBar() -> Void {
         UIView.animate(withDuration: 0.3, animations: {
             self.summaryBar.transform = CGAffineTransform(translationX: 0, y: -20)
@@ -447,6 +463,8 @@ class MapViewController: UIViewController {
     // MARK: Menu
 
     func loadHarassmentTypes() {
+
+        self.startLoading()
 
         if self.harassmentTypes == nil {
             self.harassmentTypes = [HarassmentType]()
@@ -469,6 +487,44 @@ class MapViewController: UIViewController {
         if !self.menuView.isHidden {
             self.hideMenu()
         }
+    }
+
+    @IBAction func longPressGesture(_ sender: UILongPressGestureRecognizer) {
+        if sender.state  == .began {
+            let coordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
+            self.getAddressFromCoordinate(coordinate: coordinate, completionHandler: { (address, error) -> Void in
+
+                self.mapView.setCenter(coordinate, animated: true)
+
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                self.mapView.addAnnotation(annotation)
+                self.mapView.selectAnnotation(annotation, animated: true)
+
+                self.presentCreateReportActionSheet(annotation: annotation, address: address)
+            })
+        }
+    }
+
+    private func presentCreateReportActionSheet(annotation: MKPointAnnotation, address: String) {
+        let actionSheet: UIAlertController = UIAlertController(title: NSLocalizedString("action_sheet.create_report.title", comment: ""), message: address, preferredStyle: .actionSheet)
+
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.mapView.removeAnnotation(annotation)
+            self.toBeCreatedReportLocation = nil
+        }
+        actionSheet.addAction(cancelActionButton)
+
+        let createActionButton = UIAlertAction(title: "Create", style: .default) { _ in
+            let coordinate = annotation.coordinate
+            self.toBeCreatedReportLocation = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            self.toBeCreatedReportLocation!.address = address
+            self.performSegue(withIdentifier: "showCreateReportTableController", sender: self)
+            self.mapView.removeAnnotation(annotation)
+        }
+        actionSheet.addAction(createActionButton)
+
+        self.present(actionSheet, animated: true, completion: nil)
     }
 
     private func showMenu() -> Void {
@@ -509,8 +565,7 @@ class MapViewController: UIViewController {
     private func selectHarassmentTypes(harassmentTypes: [Int:HarassmentType]) {
         for (row, harassmentType) in harassmentTypes {
             self.selectHarassmentType(harassmentType: harassmentType)
-            let cell = self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))
-            cell?.accessoryType = .checkmark
+            self.harassmentTypesTableView.cellForRow(at: IndexPath(row: row, section: 0))?.accessoryType = .checkmark
         }
     }
 
@@ -558,6 +613,9 @@ class MapViewController: UIViewController {
         })
     }
 
+    /**
+     If all harassment types are selected, activates the switch. Deactivates it otherwise.
+     */
     func updateHarassmentTypeSwitchStatus() {
         if self.harassmentTypes == nil {
             return

@@ -12,6 +12,7 @@ class Location {
 
     var latitude: Double!
     var longitude: Double!
+    var address: String?
 
     init(latitude: Double, longitude: Double) {
         self.latitude = latitude
